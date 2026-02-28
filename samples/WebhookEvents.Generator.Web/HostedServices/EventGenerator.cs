@@ -1,4 +1,4 @@
-using WebhooksCore;
+using Webhooks.Core;
 
 namespace WebhookEvents.Generator.Web.HostedServices;
 

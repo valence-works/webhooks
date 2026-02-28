@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\WebhooksCore\WebhooksCore.csproj" />
+      <ProjectReference Include="..\..\src\Webhooks.Core\Webhooks.Core.csproj" />
       <ProjectReference Include="..\WebhookEvents.Shared\WebhookEvents.Shared.csproj" />
     </ItemGroup>
 

@@ -1,7 +1,7 @@
 using WebhookEvents.Generator.Web.HostedServices;
-using WebhooksCore;
-using WebhooksCore.Options;
-using WebhooksCore.Strategies;
+using Webhooks.Core;
+using Webhooks.Core.Options;
+using Webhooks.Core.Strategies;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

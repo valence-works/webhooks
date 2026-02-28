@@ -13,7 +13,7 @@ on:
   release:
     types: [ prereleased, published ]
 env:
-  base_version: '0.0.1'
+  base_version: '0.0.2'
   feedz_feed_source: 'https://f.feedz.io/sfmskywalker/webhooks-core/nuget/index.json'
   nuget_feed_source: 'https://api.nuget.org/v3/index.json'
 
