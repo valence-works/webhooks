@@ -92,6 +92,12 @@ If no type is specified, the default will be a `JsonElement`.
 |        |                                                                                                                                                                                                                                  |
 ```
 
+## Architecture Decision Records
+
+Architecture decisions are documented in [docs/adr](docs/adr).
+
+- [ADR 0001: Use GitHub Spec Kit](docs/adr/0001-use-github-spec-kit.md)
+
 ## Contributing
 
 Looking to contribute? We'd love your help, and there are plenty of ways to get involved.
