@@ -25,6 +25,12 @@
 - Q: How should idempotency, signing extensibility, and backpressure concerns be handled? → A: Event IDs are required, deduplication is optional and policy-driven, delivery middleware can mutate/sign outbound delivery requests, and advanced backlog escalation (dead-letter/re-drive) is explicitly future-scope unless configured by extensions.
 - Q: When must a generated EventId be assigned if the host does not provide one? → A: At broadcast API entry, before broadcast middleware, orchestration, and dispatch.
 
+### Session 2026-03-01
+
+- Q: For EventId-based deduplication, what should the default be when the application does not configure a policy? → A: Disabled by default.
+- Q: If one enabled dispatcher is temporarily unavailable at runtime for a sink attempt, what should the default behavior be? → A: Mark that sink attempt failed and continue processing other sinks.
+- Q: What is the minimum required observability scope for each sink delivery attempt? → A: Record status, attempt count, final failure reason, and EventId correlation.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Deliver events to subscribed sinks (Priority: P1)
@@ -77,6 +83,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - What happens when the same EventId is broadcast more than once? Behavior follows configured deduplication policy; baseline behavior allows duplicates unless deduplication is enabled.
 - What happens when a sink delivery attempt fails transiently? The default HTTP dispatcher retries delivery attempts before final failure.
 - What happens when a sink delivery attempt ultimately fails? Failure is recorded as an error and does not stop attempts to other sinks.
+- What happens when a dispatcher is temporarily unavailable for one sink delivery attempt? That sink attempt is recorded as failed and other eligible sinks continue by default.
 - What happens when retry behavior differs across dispatchers? Dispatchers must follow the common retry contract: per-sink retry boundaries, dispatcher-owned retries, and host-configurable transient detection.
 - What happens to middleware during retries? Delivery middleware executes for each retry attempt, not only for the initial attempt.
 - What happens when a payload rule references a field path missing in the event payload? That sink is not considered a successful match for that rule set.
@@ -115,10 +122,12 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-010c**: Delivery middleware MUST execute for each retry attempt.
 - **FR-010d**: In queued mode, retry execution MUST occur within the worker-owned sink delivery attempt lifecycle and MUST NOT rely on implicit whole-message requeue as the retry mechanism.
 - **FR-011**: System MUST continue processing other sinks when a single sink delivery fails.
+- **FR-011a**: When dispatcher unavailability causes a sink attempt failure, default behavior MUST record that sink attempt as failed and continue processing other eligible sinks.
 - **FR-012**: Broadcaster orchestration MUST provide configurable queue capacity and worker parallelism for queued background processing.
 - **FR-013**: System MUST provide a default dispatcher implementation in core that performs HTTP delivery using `IWebhookEndpointInvoker`.
 - **FR-014**: System MUST reject subscription configurations that define payload filters without an explicit payload matching mode.
 - **FR-014a**: System MUST support an optional deduplication policy based on EventId with host-configurable scope/retention.
+- **FR-014b**: EventId-based deduplication MUST be disabled by default when no host policy is configured.
 - **FR-015**: Broadcaster orchestration MUST allow host applications to configure queue-full handling policy for queued background processing.
 - **FR-016**: Broadcaster orchestration MUST default queue-full handling policy to immediate failure when the host application does not override it.
 - **FR-017**: The default HTTP dispatcher MUST allow host applications to configure outbound HTTP retry attempts and backoff strategy.
@@ -130,8 +139,8 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-021a**: Delivery middleware MUST be able to access and mutate outbound delivery request metadata before terminal dispatch.
 - **FR-021b**: Delivery middleware MUST support pluggable signing/authentication extensions for outbound delivery requests.
 - **FR-022**: System MUST execute middleware components in deterministic host-configured order for both middleware scopes.
-- **FR-023**: System MUST route terminal delivery through the installed `IWebhookDispatcher` after middleware execution.
-- **FR-023a**: System MUST route terminal delivery through the dispatcher invocation coordinator after middleware execution.
+- **FR-022a**: Minimum observability per sink delivery attempt MUST include delivery status, attempt count, final failure reason (when failed), and EventId-based correlation.
+- **FR-023**: System MUST route terminal delivery through the dispatcher invocation coordinator after middleware execution.
 - **FR-024**: System MUST validate dispatcher registration and fail startup/configuration when no dispatchers are configured or coordinator resolution is invalid.
 - **FR-025**: System MUST support a Delivery Orchestration Policy (Broadcaster-owned) with sequential, concurrent, and queued modes configurable by the host application.
 - **FR-026**: Dispatcher implementations MUST NOT be required to implement Delivery Orchestration Policy (Broadcaster-owned) semantics.
@@ -150,6 +159,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **Delivery Middleware Component**: A middleware unit executed per matched sink delivery attempt for per-delivery cross-cutting behavior.
 - **Delivery Orchestration Policy (Broadcaster-owned)**: The selected scheduling behavior for per-sink dispatcher invocations (sequential, concurrent, queued).
 - **Deduplication Policy**: Optional EventId-based policy that determines duplicate handling behavior and retention scope.
+- **Delivery Outcome Record**: Structured result for observability that captures delivery status, attempt count, retry progression, final failure reason (when failed), and EventId correlation.
 
 ### Dependencies
 
