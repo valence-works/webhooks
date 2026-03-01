@@ -7,6 +7,10 @@
 
 **Organization**: Tasks are grouped by user story so each story can be implemented and verified independently.
 
+**Scope Note**: Phase 1 and Phase 2 are intentionally shared cross-story prerequisites; story-scoped execution begins in Phase 3.
+
+**Traceability Conventions**: FR traceability tables under each user story are quick reference summaries; task-level FR tags (for example `[FR-012]`) are authoritative when present.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependency on incomplete tasks)
@@ -49,6 +53,20 @@
 
 **Independent Test**: Configure multiple sinks with different subscriptions and verify only subscribed sinks receive each event type.
 
+**US1 FR Traceability**
+
+| FR | Covered By Tasks |
+|----|------------------|
+| FR-001 | T015, T017 |
+| FR-003 | T016 |
+| FR-003a, FR-003b | T016 |
+| FR-004 | T013, T018 |
+| FR-006, FR-025 | T019 |
+| FR-007, FR-007a | T021 |
+| FR-011 | T022 |
+| FR-013 | T020 |
+| FR-023, FR-023a, FR-023b | T019, T020 |
+
 ### Tests for User Story 1
 
 - [ ] T013 [P] [US1] Add exact event-type routing tests in `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs`
@@ -75,6 +93,15 @@
 
 **Independent Test**: Publish same event type with different payloads and verify only predicate-matching events are delivered.
 
+**US2 FR Traceability**
+
+| FR | Covered By Tasks |
+|----|------------------|
+| FR-005, FR-005a | T023, T032 |
+| FR-005b, FR-005c, FR-005d | T030, T031, T027 |
+| FR-014 | T025, T033 |
+| FR-014a, FR-014b | T026, T034, T035 |
+
 ### Tests for User Story 2
 
 - [ ] T023 [P] [US2] Add AND/OR payload matching tests in `tests/Webhooks.Core.Tests/Routing/PayloadMatchingModeTests.cs`
@@ -99,11 +126,29 @@
 
 ---
 
-## Phase 5: User Story 3 - Plug in delivery dispatchers and middleware (Priority: P3)
+## Phase 5: User Story 3 - Plug in delivery dispatcher and middleware (Priority: P3)
 
 **Goal**: Enable pluggable dispatcher/middleware extension points in Webhooks Core while keeping optional queue/worker execution in dispatcher extension modules.
 
 **Independent Test**: Swap default and custom dispatchers through DI and verify behavior changes only in transport path; if a queued dispatcher module is installed, verify queue/worker behavior remains module-owned while middleware ordering and invocation semantics remain stable.
+
+**US3 FR Traceability**
+
+| FR | Covered By Tasks |
+|----|------------------|
+| FR-008, FR-009, FR-009a, FR-009b, FR-009c | T037, T052, T054, T057 |
+| FR-010, FR-010a, FR-010b, FR-010c, FR-010d | T039, T043, T044, T053, T060, T061 |
+| FR-011a | T050, T066 |
+| FR-012, FR-012a | T041, T058 |
+| FR-015, FR-016 | T042, T059 |
+| FR-017, FR-018 | T043, T060 |
+| FR-019 | T037, T057 |
+| FR-020, FR-020a, FR-021, FR-021a, FR-021b, FR-022 | T038, T039, T046, T052, T053, T063 |
+| FR-022a | T049 |
+| FR-023c | T045, T062 |
+| FR-024 | T009, T011, T012 |
+| FR-026 | T051, T067 |
+| FR-027 | T070 |
 
 ### Tests for User Story 3
 
@@ -150,10 +195,10 @@
 
 **Purpose**: Final consistency, docs, and end-to-end validation.
 
-- [ ] T068 [P] Update architecture notes for final implementation behavior in `docs/architecture/system-components.md`
-- [ ] T069 [P] Update feature quickstart verification checklist in `specs/001-initial-src-spec/quickstart.md`
-- [ ] T070 Add scope-guard documentation/conformance check to ensure non-webhook stream/workflow features remain out of baseline scope in `specs/001-initial-src-spec/quickstart.md`
-- [ ] T071 Run end-to-end build and tests per quickstart in `specs/001-initial-src-spec/quickstart.md`
+- [ ] T068 [P] [US3] Update architecture notes for final implementation behavior in `docs/architecture/system-components.md`
+- [ ] T069 [P] [US3] Update feature quickstart verification checklist in `specs/001-initial-src-spec/quickstart.md`
+- [ ] T070 [US3] Add scope-guard documentation/conformance check to ensure non-webhook stream/workflow features remain out of baseline scope in `specs/001-initial-src-spec/quickstart.md`
+- [ ] T071 [US3] Run end-to-end build and tests per quickstart in `specs/001-initial-src-spec/quickstart.md`
 
 ---
 

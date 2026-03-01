@@ -34,3 +34,4 @@ Generate executable implementation work items:
 - Tests confirm exactly one dispatcher is selected per sink delivery attempt.
 - Tests confirm sink-level dispatcher override takes precedence over application default dispatcher selection.
 - Dispatcher registration and payload predicate validation failures surface at startup.
+- Validation confirms non-webhook stream/workflow features remain out of baseline scope for this feature.
