@@ -9,18 +9,18 @@
 
 ### Session 2026-02-28
 
-- Q: For sink subscriptions with multiple payload filters, how should matching work? → A: Support both modes per subscription (configurable AND/OR).
-- Q: If a subscription has payload filters but no matching mode is specified, what should happen? → A: Reject configuration as invalid (mode required).
+- Q: For sink subscriptions with multiple payload predicates, how should matching work? → A: Support both modes per subscription (configurable AND/OR).
+- Q: If a subscription has payload predicates but no matching mode is specified, what should happen? → A: Reject configuration as invalid (mode required).
 - Q: In queued background mode, what should happen when the queue is at capacity? → A: Host app can configure policy; default is Fail.
 - Q: How should outbound HTTP retry behavior be specified? → A: Host app configures attempts and backoff strategy, with library defaults.
 - Q: Should webhook delivery be extensible/pluggable at dispatch time? → A: Yes, via a single active `IWebhookDispatcher` resolved from DI, with a default implementation in core.
-- Q: Where should middleware extensibility be introduced? → A: Support both broadcast-level middleware and per-sink delivery middleware, with terminal dispatch through the installed `IWebhookDispatcher`.
+- Q: Where should middleware extensibility be introduced? → A: Support both broadcast-level middleware and per-delivery-attempt middleware, with terminal dispatch through the installed `IWebhookDispatcher`.
 - Q: How should execution policy abstraction evolve with dispatcher pluggability? → A: Execution policy is owned by broadcaster orchestration while dispatcher remains terminal transport; a standalone strategy abstraction is not required.
-- Q: How should payload filtering evolve to avoid brittle string-only matching? → A: Payload filtering uses structured field comparison with a pluggable value comparison strategy; v1 defaults to string equality.
+- Q: How should payload predicate evaluation evolve to avoid brittle string-only matching? → A: Payload predicate evaluation uses structured field comparison with a pluggable value comparison strategy; v1 defaults to string equality.
 - Q: Should payload field addressing specify a default implementation? → A: Yes, default field addressing uses JsonPath (restricted subset), while allowing host-provided alternatives.
-- Q: How should retry boundaries and transient detection be specified? → A: Retry is per sink delivery attempt, performed inside the dispatcher, middleware executes per retry attempt, and transient detection is host-configurable.
+- Q: How should retry boundaries and transient detection be specified? → A: Retry is per delivery attempt, performed inside the dispatcher, middleware executes per retry attempt, and transient detection is host-configurable.
 - Q: Should the Webhook Source concept be part of this baseline? → A: No. Webhook Source is removed from this baseline specification as non-behavioral metadata.
-- Q: What exact scope does broadcast middleware wrap? → A: Broadcast middleware wraps the full broadcast operation, including sink iteration and invocation of per-sink delivery middleware/dispatcher flows.
+- Q: What exact scope does broadcast middleware wrap? → A: Broadcast middleware wraps the full broadcast operation, including sink iteration and invocation of per-delivery-attempt middleware/dispatcher flows.
 - Q: How should dispatcher registration be modeled at startup? → A: Support one or more registered dispatchers resolved as an enumerable and invoked through a single dispatcher invocation coordinator.
 - Q: How should idempotency, signing extensibility, and backpressure concerns be handled? → A: Event IDs are required, deduplication is optional and policy-driven, delivery middleware can mutate/sign outbound delivery requests, and advanced backlog escalation (dead-letter/re-drive) is explicitly future-scope unless configured by extensions.
 - Q: When must a generated EventId be assigned if the host does not provide one? → A: At broadcast API entry, before broadcast middleware, orchestration, and dispatch.
@@ -28,8 +28,30 @@
 ### Session 2026-03-01
 
 - Q: For EventId-based deduplication, what should the default be when the application does not configure a policy? → A: Disabled by default.
-- Q: If one enabled dispatcher is temporarily unavailable at runtime for a sink attempt, what should the default behavior be? → A: Mark that sink attempt failed and continue processing other sinks.
-- Q: What is the minimum required observability scope for each sink delivery attempt? → A: Record status, attempt count, final failure reason, and EventId correlation.
+- Q: If one enabled dispatcher is temporarily unavailable at runtime for a delivery attempt, what should the default behavior be? → A: Mark that delivery attempt failed and continue processing other sinks.
+- Q: What is the minimum required observability scope for each delivery attempt? → A: Record status, attempt count, final failure reason, and EventId correlation.
+
+## Canonical Vocabulary
+
+Use the following terms consistently across specification, planning, implementation, and tests:
+
+Source of truth: `docs/architecture/vocabulary.md`.
+
+- **Publish Request**: Host-provided input submitted to the broadcast API.
+- **Delivery Envelope**: Normalized outbound message used by orchestration after input normalization.
+- **Subscription Criteria**: Subscription-side matching rule (event type + optional payload predicates + matching mode).
+- **Payload Predicate**: Field comparison condition used during subscription matching.
+- **Delivery Attempt**: One delivery execution for one `(Delivery Envelope, Sink)` pair.
+- **Delivery Result**: Structured outcome for a delivery attempt, including status and observability fields.
+- **Dispatch Mode**: Broadcaster-owned scheduling mode (`sequential`, `concurrent`, `queued`).
+- **Overflow Policy**: Configurable behavior when queued mode reaches capacity.
+
+Deprecated terms that should not be reintroduced:
+
+- `Broadcast Input`, `Broadcast Request`, `Broadcast Event`
+- `Webhook Event Filter`, `Subscription Match Rule`, `Payload Filter`
+- `Sink Delivery Attempt`, `Delivery Outcome Record`
+- `Delivery Orchestration Policy`, `queue-full policy`
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -52,7 +74,7 @@ As an application owner, I can define webhook sinks and event subscriptions so t
 
 As an application owner, I can define payload-based rules for a sink subscription so that sinks receive only events relevant to specific payload attributes.
 
-**Why this priority**: Payload filtering prevents noisy deliveries and allows finer-grained routing without introducing separate event types for every business variant.
+**Why this priority**: Payload predicate evaluation prevents noisy deliveries and allows finer-grained routing without introducing separate event types for every business variant.
 
 **Independent Test**: Configure one sink with payload rules and publish two events of the same type with different payload values; verify only matching payloads are delivered.
 
@@ -81,16 +103,16 @@ As an application owner, I can select or replace the delivery dispatcher and com
 
 - What happens when an event has no matching sink subscriptions? The broadcast completes without endpoint delivery attempts.
 - What happens when the same EventId is broadcast more than once? Behavior follows configured deduplication policy; baseline behavior allows duplicates unless deduplication is enabled.
-- What happens when a sink delivery attempt fails transiently? The default HTTP dispatcher retries delivery attempts before final failure.
-- What happens when a sink delivery attempt ultimately fails? Failure is recorded as an error and does not stop attempts to other sinks.
-- What happens when a dispatcher is temporarily unavailable for one sink delivery attempt? That sink attempt is recorded as failed and other eligible sinks continue by default.
-- What happens when retry behavior differs across dispatchers? Dispatchers must follow the common retry contract: per-sink retry boundaries, dispatcher-owned retries, and host-configurable transient detection.
+- What happens when a delivery attempt fails transiently? The default HTTP dispatcher retries delivery attempts before final failure.
+- What happens when a delivery attempt ultimately fails? Failure is recorded as an error and does not stop attempts to other sinks.
+- What happens when a dispatcher is temporarily unavailable for one delivery attempt? That delivery attempt is recorded as failed and other eligible sinks continue by default.
+- What happens when retry behavior differs across dispatchers? Dispatchers must follow the common retry contract: per-delivery-attempt retry boundaries, dispatcher-owned retries, and host-configurable transient detection.
 - What happens to middleware during retries? Delivery middleware executes for each retry attempt, not only for the initial attempt.
 - What happens when a payload rule references a field path missing in the event payload? That sink is not considered a successful match for that rule set.
 - What happens when payload value type and comparator expectations do not align? The filter evaluation returns non-match unless a host-provided comparison strategy handles that case.
-- What happens when a payload filter uses an invalid field path expression? Configuration validation fails for that filter definition.
-- What happens when queued execution receives more work than immediate processing capacity? Behavior follows host-configured queue-full policy; default behavior is fail-fast.
-- What happens when transient failures and retries cause sustained queued backlog growth? Queue-full policy applies immediately; dead-letter and re-drive behavior are extension-defined unless explicitly configured.
+- What happens when a payload predicate uses an invalid field path expression? Configuration validation fails for that rule definition.
+- What happens when queued execution receives more work than immediate processing capacity? Behavior follows host-configured overflow policy; default behavior is fail-fast.
+- What happens when transient failures and retries cause sustained queued backlog growth? Overflow policy applies immediately; dead-letter and re-drive behavior are extension-defined unless explicitly configured.
 - What happens when no dispatcher is registered? Startup/configuration validation fails.
 - What happens when multiple dispatchers are registered? The dispatcher invocation coordinator invokes them according to configured policy/order.
 - What happens when middleware throws for one sink delivery? That sink delivery fails and is recorded, while other matching sinks continue unless host policy explicitly changes this behavior.
@@ -106,8 +128,8 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-003b**: When EventId is library-generated, it MUST be assigned at broadcast API entry before middleware execution and delivery orchestration.
 - **FR-004**: System MUST match events to sinks by exact event type subscription.
 - **FR-005**: System MUST support optional payload-based filtering per event subscription using structured field comparisons with per-subscription matching mode (AND or OR).
-- **FR-005a**: System MUST require explicit payload matching mode for any subscription that defines one or more payload filters.
-- **FR-005b**: System MUST provide a pluggable payload value comparison strategy used during payload filter evaluation.
+- **FR-005a**: System MUST require explicit payload matching mode for any subscription that defines one or more payload predicates.
+- **FR-005b**: System MUST provide a pluggable payload value comparison strategy used during payload predicate evaluation.
 - **FR-005c**: The baseline default comparison strategy MUST support string-equality comparison for scalar values.
 - **FR-005d**: System MUST provide a pluggable payload field selector strategy; the baseline default selector MUST support a restricted JsonPath subset.
 - **FR-006**: System MUST attempt terminal delivery of each matched event to each matched sink destination through the configured dispatcher set via the dispatcher invocation coordinator.
@@ -116,50 +138,50 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-008**: System MUST provide a pluggable dispatcher abstraction (`IWebhookDispatcher`) responsible for terminal delivery transport of matched sink invocations.
 - **FR-009**: System MUST support resolving one or more dispatcher implementations from DI at runtime.
 - **FR-009a**: System MUST provide a dispatcher invocation coordinator service responsible for invoking resolved dispatchers for terminal delivery.
-- **FR-010**: Dispatcher retry behavior MUST be scoped per sink delivery attempt.
+- **FR-010**: Dispatcher retry behavior MUST be scoped per delivery attempt.
 - **FR-010a**: Retries MUST be executed inside the active dispatcher implementation.
 - **FR-010b**: Transient-failure detection used for retry decisions MUST be host-configurable.
 - **FR-010c**: Delivery middleware MUST execute for each retry attempt.
-- **FR-010d**: In queued mode, retry execution MUST occur within the worker-owned sink delivery attempt lifecycle and MUST NOT rely on implicit whole-message requeue as the retry mechanism.
+- **FR-010d**: In queued mode, retry execution MUST occur within the worker-owned delivery attempt lifecycle and MUST NOT rely on implicit whole-message requeue as the retry mechanism.
 - **FR-011**: System MUST continue processing other sinks when a single sink delivery fails.
-- **FR-011a**: When dispatcher unavailability causes a sink attempt failure, default behavior MUST record that sink attempt as failed and continue processing other eligible sinks.
+- **FR-011a**: When dispatcher unavailability causes an attempt failure, default behavior MUST record that delivery attempt as failed and continue processing other eligible sinks.
 - **FR-012**: Broadcaster orchestration MUST provide configurable queue capacity and worker parallelism for queued background processing.
 - **FR-013**: System MUST provide a default dispatcher implementation in core that performs HTTP delivery using `IWebhookEndpointInvoker`.
-- **FR-014**: System MUST reject subscription configurations that define payload filters without an explicit payload matching mode.
+- **FR-014**: System MUST reject subscription configurations that define payload predicates without an explicit payload matching mode.
 - **FR-014a**: System MUST support an optional deduplication policy based on EventId with host-configurable scope/retention.
 - **FR-014b**: EventId-based deduplication MUST be disabled by default when no host policy is configured.
-- **FR-015**: Broadcaster orchestration MUST allow host applications to configure queue-full handling policy for queued background processing.
-- **FR-016**: Broadcaster orchestration MUST default queue-full handling policy to immediate failure when the host application does not override it.
+- **FR-015**: Broadcaster orchestration MUST allow host applications to configure overflow policy for queued background processing.
+- **FR-016**: Broadcaster orchestration MUST default overflow policy to immediate failure when the host application does not override it.
 - **FR-017**: The default HTTP dispatcher MUST allow host applications to configure outbound HTTP retry attempts and backoff strategy.
 - **FR-018**: The default HTTP dispatcher MUST provide default outbound retry attempts and backoff strategy when host applications do not override retry settings.
 - **FR-019**: System MUST allow external modules to add or replace dispatcher implementations (for example Wolverine, RabbitMQ, or MassTransit-based dispatchers).
 - **FR-020**: System MUST support a broadcast middleware pipeline that executes once per broadcast operation.
-- **FR-020a**: Broadcast middleware MUST wrap the full broadcast operation boundary, including matched-sink iteration and invocation of per-sink delivery middleware/dispatcher flows.
-- **FR-021**: System MUST support a delivery middleware pipeline that executes once per matched sink delivery attempt.
+- **FR-020a**: Broadcast middleware MUST wrap the full broadcast operation boundary, including matched-sink iteration and invocation of per-delivery-attempt middleware/dispatcher flows.
+- **FR-021**: System MUST support a delivery middleware pipeline that executes once per matched delivery attempt.
 - **FR-021a**: Delivery middleware MUST be able to access and mutate outbound delivery request metadata before terminal dispatch.
 - **FR-021b**: Delivery middleware MUST support pluggable signing/authentication extensions for outbound delivery requests.
 - **FR-022**: System MUST execute middleware components in deterministic host-configured order for both middleware scopes.
-- **FR-022a**: Minimum observability per sink delivery attempt MUST include delivery status, attempt count, final failure reason (when failed), and EventId-based correlation.
+- **FR-022a**: Minimum observability per delivery attempt MUST include delivery status, attempt count, final failure reason (when failed), and EventId-based correlation.
 - **FR-023**: System MUST route terminal delivery through the dispatcher invocation coordinator after middleware execution.
 - **FR-024**: System MUST validate dispatcher registration and fail startup/configuration when no dispatchers are configured or coordinator resolution is invalid.
-- **FR-025**: System MUST support a Delivery Orchestration Policy (Broadcaster-owned) with sequential, concurrent, and queued modes configurable by the host application.
-- **FR-026**: Dispatcher implementations MUST NOT be required to implement Delivery Orchestration Policy (Broadcaster-owned) semantics.
+- **FR-025**: System MUST support a Dispatch Mode (Broadcaster-owned) with sequential, concurrent, and queued modes configurable by the host application.
+- **FR-026**: Dispatcher implementations MUST NOT be required to implement Dispatch Mode (Broadcaster-owned) semantics.
 - **FR-027**: The baseline scope MUST remain webhook broadcasting; generalized event-stream processing features (arbitrary stream processing, stateful workflow orchestration) are out of scope unless explicitly specified in a future feature.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Webhook Event (Outbound Request)**: A message containing EventId, event type, optional payload, and dispatch timestamp sent to sinks.
-- **New Webhook Event**: The input message submitted by the source application for broadcasting.
+- **Delivery Envelope**: The normalized outbound message used by orchestration, containing EventId, event type, optional payload, and dispatch timestamp.
+- **Publish Request**: The host-provided input submitted for broadcasting before normalization into a `Delivery Envelope`.
 - **Webhook Sink**: A destination target definition with identifier, name, address details (for example URL for HTTP), and subscription filters.
-- **Webhook Event Filter**: A sink subscription rule containing event type, optional payload filter set, and payload matching mode (AND/OR).
-- **Payload Filter**: A structured field comparison condition used to determine sink eligibility for an event, evaluated through the configured field selector and comparison strategies.
+- **Subscription Criteria**: A sink subscription rule containing event type, optional payload predicate set, and payload matching mode (AND/OR).
+- **Payload Predicate**: A structured field comparison condition used to determine sink eligibility for an event, evaluated through the configured field selector and comparison strategies.
 - **Webhook Dispatcher**: A pluggable terminal delivery component that performs sink dispatch for matched webhook events.
 - **Dispatcher Invocation Coordinator**: A service that receives the resolved dispatcher set and invokes dispatchers for terminal delivery according to configured policy/order.
 - **Broadcast Middleware Component**: A middleware unit executed once per broadcast operation for cross-cutting behavior.
-- **Delivery Middleware Component**: A middleware unit executed per matched sink delivery attempt for per-delivery cross-cutting behavior.
-- **Delivery Orchestration Policy (Broadcaster-owned)**: The selected scheduling behavior for per-sink dispatcher invocations (sequential, concurrent, queued).
+- **Delivery Middleware Component**: A middleware unit executed per matched delivery attempt for per-delivery cross-cutting behavior.
+- **Dispatch Mode (Broadcaster-owned)**: The selected scheduling behavior for per-delivery-attempt dispatcher invocations (sequential, concurrent, queued).
 - **Deduplication Policy**: Optional EventId-based policy that determines duplicate handling behavior and retention scope.
-- **Delivery Outcome Record**: Structured result for observability that captures delivery status, attempt count, retry progression, final failure reason (when failed), and EventId correlation.
+- **Delivery Result**: Structured result for observability that captures delivery status, attempt count, retry progression, final failure reason (when failed), and EventId correlation.
 
 ### Dependencies
 
@@ -171,7 +193,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 ### Assumptions
 
 - Event type matching is case-sensitive exact matching.
-- Payload filtering uses pluggable field selector and value comparison strategies; baseline defaults are restricted JsonPath field selection and scalar string-equality comparison.
+- Payload predicate evaluation uses pluggable field selector and value comparison strategies; baseline defaults are restricted JsonPath field selection and scalar string-equality comparison.
 - Event identity is represented by EventId for correlation, idempotency hooks, and duplicate-handling policies.
 - Dispatcher retry behavior follows the shared retry contract in this specification to ensure consistent cross-dispatcher semantics.
 - The initial baseline scope covers outbound delivery behavior and configuration-driven routing only.
@@ -184,12 +206,12 @@ As an application owner, I can select or replace the delivery dispatcher and com
 ### Measurable Outcomes
 
 - **SC-001**: 100% of events with at least one valid subscription produce at least one delivery attempt to each matching sink.
-- **SC-002**: 100% of events with no matching subscriptions result in zero sink delivery attempts.
+- **SC-002**: 100% of events with no matching subscriptions result in zero delivery attempts.
 - **SC-002a**: 100% of outbound deliveries include EventId in payload/metadata envelope.
 - **SC-002b**: In tests where EventId is omitted by the host, a single generated EventId is assigned at broadcast API entry and remains consistent across all sink deliveries and retry attempts for that broadcast.
-- **SC-003**: In test runs covering all three Delivery Orchestration Policy modes, each mode exhibits its expected behavior (ordered single-attempt flow, parallel attempt flow, or queued background flow) in 100% of sampled broadcasts.
-- **SC-004**: For transient endpoint failures introduced in controlled tests using the default HTTP dispatcher, the dispatcher performs retry attempts per sink delivery attempt before final failure in 100% of affected deliveries.
-- **SC-008**: In conformance tests across dispatcher implementations, retry behavior follows the shared retry contract (per-sink retry scope, dispatcher-owned retries, middleware per attempt, and host-configurable transient detection) in 100% of sampled failure scenarios.
+- **SC-003**: In test runs covering all three Dispatch Mode variants, each mode exhibits its expected behavior (ordered single-attempt flow, parallel attempt flow, or queued background flow) in 100% of sampled broadcasts.
+- **SC-004**: For transient endpoint failures introduced in controlled tests using the default HTTP dispatcher, the dispatcher performs retry attempts per delivery attempt before final failure in 100% of affected deliveries.
+- **SC-008**: In conformance tests across dispatcher implementations, retry behavior follows the shared retry contract (per-delivery-attempt retry scope, dispatcher-owned retries, middleware per attempt, and host-configurable transient detection) in 100% of sampled failure scenarios.
 - **SC-005**: A single sink failure does not prevent attempted delivery to other matching sinks in 100% of multi-sink failure test runs.
 - **SC-006**: In conformance tests, adding or replacing dispatchers through DI changes terminal transport behavior without requiring changes to broadcaster orchestration logic.
 - **SC-009**: In conformance tests with multiple registered dispatchers, the dispatcher invocation coordinator invokes all enabled dispatchers according to configured policy/order in 100% of sampled broadcasts.

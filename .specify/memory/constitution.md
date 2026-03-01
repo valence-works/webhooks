@@ -47,6 +47,9 @@ retry scope, middleware execution points, and configuration validation rules. Ne
 define defaults and override points, and MUST use deterministic wording (`MUST`/`MUST NOT`/
 `SHOULD`) in specs.
 
+Vocabulary governance: project terminology MUST align with `docs/architecture/vocabulary.md`.
+Feature specs MAY define feature-local terms, but MUST map them to canonical vocabulary.
+
 Rationale: Ambiguous contracts lead to divergent implementations across integrations.
 
 ### IV. Verification Before Merge
@@ -70,6 +73,7 @@ Rationale: This library is consumed by host applications; stability and clarity 
 - Architectural style: DI-first composition with replaceable contracts.
 - Configuration: host-driven options with explicit validation for invalid states.
 - Documentation: architectural decisions MUST be tracked in `docs/adr/`.
+- Vocabulary: canonical terminology MUST be maintained in `docs/architecture/vocabulary.md`.
 
 ## Workflow & Quality Gates
 

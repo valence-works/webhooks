@@ -2,33 +2,35 @@
 
 Purpose: Translate clarified spec requirements into concrete planning inputs for `/speckit.plan`.
 
+Terminology baseline: `docs/architecture/vocabulary.md`.
+
 ## 1) Contracts & Interfaces
 
 - [ ] Define `IWebhookDispatcher` terminal contract (single-sink delivery invocation boundary).
 - [ ] Define broadcast middleware contract (executes once per broadcast operation).
-- [ ] Define delivery middleware contract (executes once per sink attempt, including retries).
+- [ ] Define delivery middleware contract (executes once per delivery attempt, including retries).
 - [ ] Define payload field selector strategy contract (default restricted JsonPath selector).
 - [ ] Define payload value comparison strategy contract (default scalar string-equality comparator).
 - [ ] Define retry classification/transient-detection contract (host-configurable decision point).
-- [ ] Define queue-full policy contract for broadcaster orchestration.
+- [ ] Define overflow policy contract for broadcaster orchestration.
 
 ## 2) Ownership Boundaries
 
 - [ ] Broadcaster owns: sink matching, orchestration mode (sequential/concurrent/queued), middleware pipeline composition.
-- [ ] Dispatcher owns: terminal transport, retry loop per sink attempt, transient classification integration.
+- [ ] Dispatcher owns: terminal transport, retry loop per delivery attempt, transient classification integration.
 - [ ] Ensure dispatcher implementations are not required to implement orchestration policy semantics.
-- [ ] Ensure queued-mode retry semantics stay within worker-owned sink attempt lifecycle (no implicit whole-message requeue retries).
+- [ ] Ensure queued-mode retry semantics stay within worker-owned delivery attempt lifecycle (no implicit whole-message requeue retries).
 
 ## 3) Configuration Model
 
-- [ ] Add options for Delivery Orchestration Policy mode (`sequential|concurrent|queued`).
-- [ ] Add options for queue capacity, worker parallelism, queue-full policy (default fail-fast).
+- [ ] Add options for Dispatch Mode (`sequential|concurrent|queued`).
+- [ ] Add options for queue capacity, worker parallelism, overflow policy (default fail-fast).
 - [ ] Add options for default HTTP dispatcher retry attempts/backoff/transient detection.
 - [ ] Add options for payload field selector strategy + selector defaults (restricted JsonPath).
 - [ ] Add options for payload value comparison strategy + comparator defaults.
 - [ ] Add validation rules for:
   - [ ] Exactly one active dispatcher registration.
-  - [ ] Payload filter with explicit matching mode requirement.
+  - [ ] Payload predicate with explicit matching mode requirement.
   - [ ] Invalid payload field-path expressions fail configuration validation.
 
 ## 4) DI & Extensibility
@@ -41,14 +43,14 @@ Purpose: Translate clarified spec requirements into concrete planning inputs for
 ## 5) Pipeline Semantics
 
 - [ ] Broadcast middleware wraps broadcast operation once.
-- [ ] Delivery middleware wraps each sink attempt and each retry attempt.
+- [ ] Delivery middleware wraps each delivery attempt and each retry attempt.
 - [ ] Terminal call always routes through installed dispatcher after middleware execution.
 - [ ] Error behavior: one sink failure should not block other matching sinks by default.
 
 ## 6) Test Plan Inputs
 
 ### Routing & Filtering
-- [ ] Exact event-type matching tests.
+- [ ] Exact event-type matching tests for `Subscription Criteria`.
 - [ ] AND/OR payload matching mode tests.
 - [ ] Missing payload field-path -> non-match tests.
 - [ ] Invalid payload field-path -> startup/configuration validation failure tests.
@@ -59,14 +61,14 @@ Purpose: Translate clarified spec requirements into concrete planning inputs for
 - [ ] Single active dispatcher validation tests (missing/multiple invalid).
 
 ### Retry Semantics
-- [ ] Per-sink retry scope tests.
+- [ ] Per-delivery-attempt retry scope tests.
 - [ ] Middleware executes per retry attempt tests.
 - [ ] Host-configurable transient detection tests.
 - [ ] Queued-mode retry inside worker lifecycle tests.
 
 ### Orchestration
 - [ ] Sequential/concurrent/queued mode behavior tests.
-- [ ] Queue-full policy default fail-fast and override behavior tests.
+- [ ] Overflow policy default fail-fast and override behavior tests.
 
 ### Observability & Middleware
 - [ ] Deterministic middleware ordering tests (broadcast + delivery).
@@ -75,7 +77,7 @@ Purpose: Translate clarified spec requirements into concrete planning inputs for
 ## 7) Migration / Compatibility Notes
 
 - [ ] Maintain backward-compatible default behavior where feasible.
-- [ ] Document terminology changes (`Delivery Orchestration Policy (Broadcaster-owned)`).
+- [ ] Document terminology changes (`Dispatch Mode (Broadcaster-owned)`).
 - [ ] Add migration notes for strategy-based code paths to orchestration-policy model.
 
 ## 8) Open Decisions to Confirm During Planning

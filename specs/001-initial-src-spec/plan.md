@@ -7,6 +7,8 @@
 
 Implement a contract-driven refinement of the existing webhook core so broadcaster orchestration, middleware boundaries, dispatcher coordination, retry semantics, and observability are explicit and testable. The implementation keeps the current .NET library architecture, introduces/aligns extension contracts (`IWebhookDispatcher`, middleware contracts, selector/comparator strategies), enforces startup validation for invalid configurations, and preserves backward compatibility by defaulting to current HTTP dispatcher behavior while enabling host overrides.
 
+Terminology rule: use canonical terms from `docs/architecture/vocabulary.md`.
+
 ## Technical Context
 
 **Language/Version**: C# with multi-targeted .NET (`net6.0`, `net7.0`, `net8.0`, `net9.0`, `net10.0`)  
@@ -78,13 +80,13 @@ samples/
 - Finalize coordinator vs dispatcher boundary to remove single-dispatcher ambiguity.
 - Confirm default retry transient-detection heuristics for HTTP dispatcher.
 - Confirm restricted JsonPath subset and validation behavior.
-- Confirm minimum observability payload for per-sink attempts.
+- Confirm minimum observability payload for per-delivery-attempt execution.
 
 See: `/specs/001-initial-src-spec/research.md`
 
 ## Phase 1: Design Output
 
-- Define data model for `Broadcast Event`, `Sink Delivery Attempt`, `Delivery Outcome Record`, and related policy entities.
+- Define data model for `Delivery Envelope`, `Delivery Attempt`, `Delivery Result`, and related policy entities.
 - Specify contracts for dispatcher invocation, middleware scopes, and configuration validation.
 - Document implementation quickstart with build/test validation steps.
 
