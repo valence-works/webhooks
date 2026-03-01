@@ -12,4 +12,6 @@
 
 ## Failure model
 - Invalid configuration fails startup/configuration validation.
-- Runtime delivery failures are captured in delivery results.
+- Runtime delivery failures are captured in delivery results sourced from Endpoint Invoker outcomes.
+- Dispatcher handoff statuses are captured as secondary telemetry and are not final delivery outcomes.
+- Queued dispatchers may emit `Pending` delivery status until invoke-plane completion.

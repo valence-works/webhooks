@@ -8,10 +8,13 @@ Purpose: Provide a single repository-level source of truth for domain terminolog
 - **Delivery Envelope**: Normalized outbound message used by orchestration after input normalization.
 - **Subscription Criteria**: Subscription-side matching rule (event type + optional payload predicates + matching mode).
 - **Payload Predicate**: Field comparison condition used during subscription matching.
-- **Delivery Attempt**: One delivery execution for one `(Delivery Envelope, Sink)` pair.
-- **Delivery Result**: Structured outcome for a delivery attempt, including status and observability fields.
-- **Dispatch Mode**: Broadcaster-owned scheduling mode (`sequential`, `concurrent`, `queued`).
+- **Coordinator Invocation Policy**: Dispatcher-coordinator policy that determines how exactly one dispatcher is selected per sink delivery attempt (sink override when configured, otherwise application default dispatcher).
+- **Dispatch Handoff Result**: Secondary telemetry indicating dispatcher handoff outcome (accepted/enqueued/rejected).
+- **Delivery Attempt**: One HTTP invoke attempt for one `(Delivery Envelope, Sink)` pair executed by the Endpoint Invoker.
+- **Delivery Result**: Primary outcome derived from Endpoint Invoker execution (success/failure, attempt count, failure reason, correlation).
 - **Overflow Policy**: Configurable behavior when queued mode reaches capacity.
+- **Dispatch Plane**: Components responsible for matching and handoff (`Broadcaster`, `Dispatcher Invocation Coordinator`, dispatchers).
+- **Invoke Plane**: Components responsible for actual endpoint invocation (`Endpoint Invoker` + invoker middleware + HTTP transport).
 
 ## Deprecated Terms
 
@@ -21,6 +24,7 @@ These terms should not be reintroduced in new specs or implementation artifacts:
 - `Webhook Event Filter`, `Subscription Match Rule`, `Payload Filter`
 - `Sink Delivery Attempt`, `Delivery Outcome Record`
 - `Delivery Orchestration Policy`, `queue-full policy`
+- `Dispatch Mode` (when used for dispatcher invocation policy)
 
 ## Usage Rules
 

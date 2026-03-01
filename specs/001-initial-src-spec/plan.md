@@ -5,9 +5,13 @@
 
 ## Summary
 
-Implement a contract-driven refinement of the existing webhook core so broadcaster orchestration, middleware boundaries, dispatcher coordination, retry semantics, and observability are explicit and testable. The implementation keeps the current .NET library architecture, introduces/aligns extension contracts (`IWebhookDispatcher`, middleware contracts, selector/comparator strategies), enforces startup validation for invalid configurations, and preserves backward compatibility by defaulting to current HTTP dispatcher behavior while enabling host overrides.
+Implement a contract-driven refinement of the existing webhook core using a two-plane architecture (dispatch plane + invoke plane) so dispatcher selection policy, dispatcher handoff, endpoint invocation, retry semantics, and observability are explicit and testable. The implementation keeps the current .NET library architecture, introduces/aligns extension contracts (`IWebhookDispatcher`, coordinator selection contracts, invoker middleware contracts, selector/comparator strategies), enforces startup validation for invalid configurations, and preserves backward compatibility by defaulting to direct HTTP dispatch while allowing additional registered dispatchers for sink-level selection.
 
 Terminology rule: use canonical terms from `docs/architecture/vocabulary.md`.
+
+Architecture diagram references:
+- `docs/architecture/system-components.md`
+- `specs/001-initial-src-spec/system-components.md`
 
 ## Technical Context
 
@@ -17,7 +21,7 @@ Terminology rule: use canonical terms from `docs/architecture/vocabulary.md`.
 **Testing**: `dotnet test` (unit/integration/conformance coverage in solution test projects)  
 **Target Platform**: Cross-platform .NET host applications (Linux/macOS/Windows)  
 **Project Type**: Reusable .NET library  
-**Performance Goals**: Deterministic delivery behavior across sequential/concurrent/queued modes with no cross-sink blocking on single-sink failure  
+**Performance Goals**: Deterministic coordinator invocation behavior and reliable endpoint invocation outcomes with no cross-sink blocking on single-sink failure  
 **Constraints**: Preserve backward-compatible defaults, avoid transport-specific orchestration coupling, fail startup on invalid configuration  
 **Scale/Scope**: Webhook broadcast and delivery orchestration in `src/Webhooks.Core` with shared models in `src/WebhooksCore.Shared`
 
@@ -77,17 +81,17 @@ samples/
 
 ## Phase 0: Research Output
 
-- Finalize coordinator vs dispatcher boundary to remove single-dispatcher ambiguity.
-- Confirm default retry transient-detection heuristics for HTTP dispatcher.
+- Finalize dispatch plane vs invoke plane boundary and ownership.
+- Confirm default retry transient-detection heuristics at Endpoint Invoker boundary.
 - Confirm restricted JsonPath subset and validation behavior.
-- Confirm minimum observability payload for per-delivery-attempt execution.
+- Confirm delivery result semantics: Endpoint Invoker outcome is primary, handoff telemetry is secondary.
 
 See: `/specs/001-initial-src-spec/research.md`
 
 ## Phase 1: Design Output
 
 - Define data model for `Delivery Envelope`, `Delivery Attempt`, `Delivery Result`, and related policy entities.
-- Specify contracts for dispatcher invocation, middleware scopes, and configuration validation.
+- Specify contracts for coordinator policy, dispatcher handoff, Endpoint Invoker middleware, and configuration validation.
 - Document implementation quickstart with build/test validation steps.
 
 See:

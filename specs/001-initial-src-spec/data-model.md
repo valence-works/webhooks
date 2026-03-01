@@ -29,43 +29,55 @@
   - Missing matching mode with filters is invalid configuration.
 
 ### 4) Delivery Attempt
-- **Purpose**: One delivery attempt for one `(Delivery Envelope, Sink)` pair.
+- **Purpose**: One endpoint invocation attempt for one `(Delivery Envelope, Sink)` pair.
 - **Core fields**:
   - `SinkId`
   - `EventId`
-  - `DispatcherInvocationSet`
+  - `SelectedDispatcher`
   - `AttemptMetadata`
 
 ### 5) Delivery Result
 - **Purpose**: Observability and conformance result for each delivery attempt.
 - **Core fields**:
-  - `Status`
+  - `Status` (`Pending` | `Succeeded` | `Failed`)
   - `AttemptCount`
   - `FinalFailureReason` (nullable)
   - `EventIdCorrelation`
   - `RetryProgression`
+  - `OutcomeSource` (`EndpointInvoker`)
 
-### 6) Dispatch Mode
-- **Purpose**: Broadcaster-owned scheduling behavior.
+### 6) Coordinator Invocation Policy
+- **Purpose**: Coordinator-owned dispatcher invocation behavior.
 - **Values**:
-  - `Sequential`
-  - `Concurrent`
-  - `Queued`
-- **Related settings**:
-  - `QueueCapacity`
-  - `WorkerParallelism`
-  - `OverflowPolicy` (host-configurable; default fail-fast)
+  - `SinkOverrideThenDefault`
 
-### 7) Deduplication Policy
+### 7) Dispatch Handoff Result
+- **Purpose**: Secondary telemetry for dispatcher handoff status.
+- **Core fields**:
+  - `DispatcherName`
+  - `HandoffStatus` (`Accepted` | `Enqueued` | `Rejected`)
+  - `HandoffReason` (nullable)
+  - `EventIdCorrelation`
+
+### 8) Overflow Policy
+- **Purpose**: Behavior when queued dispatcher or worker capacity is reached.
+
+### 9) Deduplication Policy
 - **Purpose**: Optional EventId duplicate handling.
 - **Defaults**:
   - Disabled when not configured.
 
+## Delivery Planes
+
+- **Dispatch Plane**: Broadcast orchestration, matching, coordinator invocation policy, and dispatcher handoff.
+- **Invoke Plane**: Endpoint Invoker middleware + HTTP invocation + final delivery outcome.
+
 ## Relationships
 - One `Delivery Envelope` can match zero-to-many `Webhook Sinks`.
-- Each matched sink yields one `Delivery Attempt`.
-- One delivery attempt can invoke one-to-many dispatchers through coordinator policy.
-- Each delivery attempt emits one `Delivery Result`.
+- Each matched sink yields one dispatch handoff through exactly one selected dispatcher.
+- Dispatch handoff may be immediate (direct invoke) or queued (worker/consumer).
+- Each endpoint invocation attempt emits one primary `Delivery Result`.
+- Optional `Dispatch Handoff Result` records are correlated but do not define final delivery success.
 
 ## Validation Rules (startup/config)
 - At least one dispatcher must be resolvable.

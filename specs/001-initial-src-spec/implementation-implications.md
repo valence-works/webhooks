@@ -6,45 +6,54 @@ Terminology baseline: `docs/architecture/vocabulary.md`.
 
 ## 1) Contracts & Interfaces
 
-- [ ] Define `IWebhookDispatcher` terminal contract (single-sink delivery invocation boundary).
+- [ ] Define `IWebhookDispatcher` handoff contract (direct invoke or queued handoff boundary).
+- [ ] Define coordinator invocation policy contract (single dispatcher selection per sink delivery attempt).
+- [ ] Define dispatch handoff result contract (accepted/enqueued/rejected telemetry).
 - [ ] Define broadcast middleware contract (executes once per broadcast operation).
-- [ ] Define delivery middleware contract (executes once per delivery attempt, including retries).
+- [ ] Define dispatch-plane delivery middleware contract (executes per handoff attempt).
+- [ ] Define Endpoint Invoker middleware contract (executes per HTTP invoke attempt, including retries).
 - [ ] Define payload field selector strategy contract (default restricted JsonPath selector).
 - [ ] Define payload value comparison strategy contract (default scalar string-equality comparator).
-- [ ] Define retry classification/transient-detection contract (host-configurable decision point).
+- [ ] Define invoke-plane retry classification/transient-detection contract (host-configurable decision point).
 - [ ] Define overflow policy contract for broadcaster orchestration.
 
 ## 2) Ownership Boundaries
 
-- [ ] Broadcaster owns: sink matching, orchestration mode (sequential/concurrent/queued), middleware pipeline composition.
-- [ ] Dispatcher owns: terminal transport, retry loop per delivery attempt, transient classification integration.
-- [ ] Ensure dispatcher implementations are not required to implement orchestration policy semantics.
+- [ ] Broadcaster owns: sink matching, dispatch-plane orchestration, middleware pipeline composition.
+- [ ] Coordinator owns: dispatcher selection precedence and single-dispatcher resolution per sink delivery attempt.
+- [ ] Dispatcher owns: handoff mechanics (direct invoke vs queued enqueue).
+- [ ] Endpoint Invoker owns: HTTP invocation attempts and final delivery success/failure outcome.
+- [ ] Ensure dispatcher implementations are not required to implement broadcast orchestration semantics.
 - [ ] Ensure queued-mode retry semantics stay within worker-owned delivery attempt lifecycle (no implicit whole-message requeue retries).
 
 ## 3) Configuration Model
 
-- [ ] Add options for Dispatch Mode (`sequential|concurrent|queued`).
+- [ ] Add options for sink-level dispatcher selection and application-level default dispatcher selection.
 - [ ] Add options for queue capacity, worker parallelism, overflow policy (default fail-fast).
-- [ ] Add options for default HTTP dispatcher retry attempts/backoff/transient detection.
+- [ ] Add options for Endpoint Invoker retry attempts/backoff/transient detection.
 - [ ] Add options for payload field selector strategy + selector defaults (restricted JsonPath).
 - [ ] Add options for payload value comparison strategy + comparator defaults.
 - [ ] Add validation rules for:
-  - [ ] Exactly one active dispatcher registration.
+  - [ ] One or more dispatcher registrations with valid default dispatcher selection.
+  - [ ] Sink-level dispatcher selections reference registered dispatchers.
   - [ ] Payload predicate with explicit matching mode requirement.
   - [ ] Invalid payload field-path expressions fail configuration validation.
 
 ## 4) DI & Extensibility
 
-- [ ] Register exactly one active `IWebhookDispatcher` by default (HTTP dispatcher).
+- [ ] Register default `DefaultWebhookDispatcher` and support additional named dispatchers.
 - [ ] Provide clear replacement path for extension packages (Wolverine/RabbitMQ/MassTransit).
 - [ ] Support host registration of custom field selector/value comparator/transient detection strategies.
+- [ ] Support host registration of Endpoint Invoker middleware.
 - [ ] Ensure middleware ordering is deterministic and host-configurable.
 
 ## 5) Pipeline Semantics
 
 - [ ] Broadcast middleware wraps broadcast operation once.
-- [ ] Delivery middleware wraps each delivery attempt and each retry attempt.
-- [ ] Terminal call always routes through installed dispatcher after middleware execution.
+- [ ] Dispatch-plane delivery middleware wraps each dispatcher handoff attempt.
+- [ ] Endpoint Invoker middleware wraps each HTTP invoke attempt and each retry attempt.
+- [ ] Terminal handoff always routes through dispatcher invocation coordinator after broadcast middleware execution.
+- [ ] Final delivery result is determined by Endpoint Invoker outcome (not handoff result).
 - [ ] Error behavior: one sink failure should not block other matching sinks by default.
 
 ## 6) Test Plan Inputs
@@ -58,11 +67,11 @@ Terminology baseline: `docs/architecture/vocabulary.md`.
 ### Dispatcher & Extensibility
 - [ ] Default dispatcher conformance tests.
 - [ ] Custom dispatcher substitution via DI tests (no broadcaster replacement required).
-- [ ] Single active dispatcher validation tests (missing/multiple invalid).
+- [ ] Multiple dispatcher selection tests (sink override and application default precedence).
 
 ### Retry Semantics
 - [ ] Per-delivery-attempt retry scope tests.
-- [ ] Middleware executes per retry attempt tests.
+- [ ] Endpoint Invoker middleware executes per retry attempt tests.
 - [ ] Host-configurable transient detection tests.
 - [ ] Queued-mode retry inside worker lifecycle tests.
 
@@ -72,12 +81,14 @@ Terminology baseline: `docs/architecture/vocabulary.md`.
 
 ### Observability & Middleware
 - [ ] Deterministic middleware ordering tests (broadcast + delivery).
+- [ ] Dispatcher handoff telemetry recorded as secondary outcome tests.
+- [ ] Final delivery result sourced from Endpoint Invoker outcome tests.
 - [ ] Middleware short-circuit/error propagation tests.
 
 ## 7) Migration / Compatibility Notes
 
 - [ ] Maintain backward-compatible default behavior where feasible.
-- [ ] Document terminology changes (`Dispatch Mode (Broadcaster-owned)`).
+- [ ] Document terminology changes (`Coordinator Invocation Policy`, `Dispatch Plane`, `Invoke Plane`).
 - [ ] Add migration notes for strategy-based code paths to orchestration-policy model.
 
 ## 8) Open Decisions to Confirm During Planning
