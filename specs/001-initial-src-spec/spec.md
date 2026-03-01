@@ -155,7 +155,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-010a**: Endpoint invocation retries MUST execute against the Endpoint Invoker HTTP attempt boundary.
 - **FR-010b**: Transient-failure detection used for retry decisions MUST be host-configurable.
 - **FR-010c**: Endpoint Invoker middleware MUST execute for each retry attempt.
-- **FR-010d**: For queued dispatchers, retry execution MUST occur within the worker/consumer-owned delivery attempt lifecycle and MUST NOT rely on implicit whole-message requeue as the retry mechanism.
+- **FR-010d**: For queued dispatcher modules/integrations, retry execution MUST occur within the worker/consumer-owned delivery attempt lifecycle and MUST NOT rely on implicit whole-message requeue as the retry mechanism.
 - **FR-011**: System MUST continue processing other sinks when a single sink delivery fails.
 - **FR-011a**: When dispatcher unavailability causes an attempt failure, default behavior MUST record that delivery attempt as failed and continue processing other eligible sinks.
 - **FR-012**: Queued dispatcher modules/integrations MUST support configurable queue capacity and worker parallelism where applicable.
@@ -179,7 +179,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-023**: System MUST route terminal delivery through the dispatcher invocation coordinator after middleware execution.
 - **FR-023a**: Delivery success/failure MUST be determined by Endpoint Invoker outcome, not dispatcher handoff outcome.
 - **FR-023b**: Dispatcher handoff outcomes MUST be recorded as secondary telemetry and MUST NOT be treated as final delivery success.
-- **FR-023c**: For async queued dispatchers, delivery status MAY be `Pending` after handoff and MUST transition to `Succeeded`/`Failed` when Endpoint Invoker outcome is known.
+- **FR-023c**: For async queued dispatcher modules/integrations, delivery status MAY be `Pending` after handoff and MUST transition to `Succeeded`/`Failed` when Endpoint Invoker outcome is known.
 - **FR-024**: System MUST validate dispatcher registration and fail startup/configuration when no dispatchers are configured or coordinator resolution is invalid.
 - **FR-025**: System MUST support a Coordinator Invocation Policy (Coordinator-owned) that governs single-dispatcher selection precedence (sink-selected dispatcher when configured, otherwise application default dispatcher).
 - **FR-026**: Dispatcher implementations MUST NOT be required to implement coordinator invocation policy semantics.
@@ -235,4 +235,4 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **SC-009**: In conformance tests with multiple registered dispatchers, the dispatcher invocation coordinator selects exactly one dispatcher per sink delivery attempt according to configured selection precedence in 100% of sampled broadcasts.
 - **SC-007**: In pipeline conformance tests, configured broadcast middleware and Endpoint Invoker middleware execute in deterministic configured order in 100% of sampled broadcasts.
 - **SC-010**: In conformance tests with deduplication enabled, duplicate EventIds are handled according to configured deduplication policy in 100% of sampled duplicate scenarios.
-- **SC-011**: In conformance tests across direct and queued dispatchers, final delivery status is sourced from Endpoint Invoker outcomes in 100% of sampled scenarios, while dispatcher handoff is recorded only as secondary telemetry.
+- **SC-011**: In conformance tests across direct and queued dispatcher modules/integrations, final delivery status is sourced from Endpoint Invoker outcomes in 100% of sampled scenarios, while dispatcher handoff is recorded only as secondary telemetry.

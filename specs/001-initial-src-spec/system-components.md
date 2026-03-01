@@ -40,8 +40,8 @@ flowchart LR
     M[Webhook Sink Endpoints]
   end
 
-  K1 -->|direct invoke or enqueue delivery envelope| Q1[Invoke Path / Queue]
-  Q1 --> W1[Worker / Consumer (when queued)]
+  K1 -->|direct invoke or enqueue delivery envelope| Q1[Extension Module Async Path]
+  Q1 --> W1[Module-Owned Worker / Consumer]
   Q1 --> Y
   W1 --> Y
   Y --> Z --> M
@@ -72,3 +72,5 @@ flowchart LR
   T --> U
   T --> V
 ```
+
+Queue and worker/consumer components shown in the async path are optional and provided by dispatcher extension modules, not by Webhooks Core runtime components.

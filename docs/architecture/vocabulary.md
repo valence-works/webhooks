@@ -12,7 +12,7 @@ Purpose: Provide a single repository-level source of truth for domain terminolog
 - **Dispatch Handoff Result**: Secondary telemetry indicating dispatcher handoff outcome (accepted/enqueued/rejected).
 - **Delivery Attempt**: One HTTP invoke attempt for one `(Delivery Envelope, Sink)` pair executed by the Endpoint Invoker.
 - **Delivery Result**: Primary outcome derived from Endpoint Invoker execution (success/failure, attempt count, failure reason, correlation).
-- **Overflow Policy**: Configurable behavior when queued mode reaches capacity.
+- **Overflow Policy**: Configurable behavior when extension-provided queued dispatcher modules reach capacity.
 - **Dispatch Plane**: Components responsible for matching and handoff (`Broadcaster`, `Dispatcher Invocation Coordinator`, dispatchers).
 - **Invoke Plane**: Components responsible for actual endpoint invocation (`Endpoint Invoker` + invoker middleware + HTTP transport).
 

@@ -24,9 +24,9 @@
 - **Core fields**:
   - `EventType`
   - `PayloadPredicates[]`
-  - `PayloadMatchingMode` (`AND` or `OR`, required when filters exist)
+  - `PayloadMatchingMode` (`AND` or `OR`, required when payload predicates exist)
 - **Constraints**:
-  - Missing matching mode with filters is invalid configuration.
+  - Missing matching mode with payload predicates is invalid configuration.
 
 ### 4) Delivery Attempt
 - **Purpose**: One endpoint invocation attempt for one `(Delivery Envelope, Sink)` pair.
@@ -60,7 +60,7 @@
   - `EventIdCorrelation`
 
 ### 8) Overflow Policy
-- **Purpose**: Behavior when queued dispatcher or worker capacity is reached.
+- **Purpose**: Behavior when an extension-provided queued dispatcher module reaches capacity.
 
 ### 9) Deduplication Policy
 - **Purpose**: Optional EventId duplicate handling.
@@ -71,15 +71,16 @@
 
 - **Dispatch Plane**: Broadcast orchestration, matching, coordinator invocation policy, and dispatcher handoff.
 - **Invoke Plane**: Endpoint Invoker middleware + HTTP invocation + final delivery outcome.
+- Queue/worker runtime infrastructure is not a Webhooks Core data-plane component; it is optional and module-owned when queued dispatcher integrations are used.
 
 ## Relationships
 - One `Delivery Envelope` can match zero-to-many `Webhook Sinks`.
 - Each matched sink yields one dispatch handoff through exactly one selected dispatcher.
-- Dispatch handoff may be immediate (direct invoke) or queued (worker/consumer).
+- Dispatch handoff may be immediate (direct invoke) or queued via module-owned worker/consumer infrastructure.
 - Each endpoint invocation attempt emits one primary `Delivery Result`.
 - Optional `Dispatch Handoff Result` records are correlated but do not define final delivery success.
 
 ## Validation Rules (startup/config)
-- At least one dispatcher must be resolvable.
+- At least one `IWebhookDispatcher` implementation must be resolvable.
 - Predicate-based subscriptions require explicit matching mode.
 - Invalid payload field-path expressions fail validation.

@@ -2,9 +2,11 @@
 
 ## IWebhookDispatcher (terminal transport contract)
 - Handles dispatch-plane handoff for a delivery envelope + sink pair.
-- May perform direct invoke (default HTTP dispatcher) or enqueue for later invocation (Wolverine/MassTransit/etc.).
+- May perform direct invoke (default HTTP dispatcher in core) or enqueue for later invocation via extension modules (Wolverine/MassTransit/etc.).
 - Must emit a `Dispatch Handoff Result` (accepted/enqueued/rejected) as secondary telemetry.
 - Must preserve correlation metadata (`EventId`, sink identity) into invoke-plane processing.
+
+Queue/worker infrastructure is module-owned when enqueue paths are used and is not a Webhooks Core runtime component.
 
 ## Dispatcher Invocation Coordinator
 - Resolves one-or-more dispatcher implementations.
@@ -15,7 +17,7 @@
 ## Delivery Outcome Semantics
 - Final business delivery success/failure is determined by Endpoint Invoker outcome in invoke plane.
 - Dispatcher handoff success is not equivalent to delivery success.
-- For async queued dispatchers, final delivery may remain `Pending` until invoke-plane completion.
+- For async queued dispatcher modules, final delivery may remain `Pending` until invoke-plane completion.
 
 ## Invariants
 - Orchestration policy remains broadcaster-owned.

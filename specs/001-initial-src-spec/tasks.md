@@ -7,6 +7,8 @@
 
 **Organization**: Tasks are grouped by user story so each story can be implemented and verified independently.
 
+**Traceability Conventions**: FR traceability tables under each user story are quick reference summaries; task-level FR tags (for example `[FR-012]`) are the authoritative mapping when present.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependency on incomplete tasks)
@@ -47,6 +49,18 @@
 
 **Independent Test**: Configure multiple sinks with different subscriptions and verify only subscribed sinks receive each event type.
 
+**US1 FR Traceability**
+
+| FR | Covered By Tasks |
+|----|------------------|
+| FR-003a, FR-003b | T013 |
+| FR-004 | T011, T014 |
+| FR-006, FR-025 | T015 |
+| FR-007, FR-007a | T064 |
+| FR-011 | T017 |
+| FR-013 | T016 |
+| FR-023, FR-023a, FR-023b | T015, T016 |
+
 ### Tests for User Story 1
 
 - [ ] T011 [P] [US1] Add exact event-type routing tests in `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs`
@@ -70,6 +84,15 @@
 **Goal**: Support payload-based sink routing with explicit AND/OR matching semantics.
 
 **Independent Test**: Publish same event type with different payloads and verify only predicate-matching events are delivered.
+
+**US2 FR Traceability**
+
+| FR | Covered By Tasks |
+|----|------------------|
+| FR-005, FR-005a | T018, T025 |
+| FR-005b, FR-005c, FR-005d | T023, T024, T044 |
+| FR-014 | T020, T026 |
+| FR-014a, FR-014b | T040, T041, T042 |
 
 ### Tests for User Story 2
 
@@ -95,11 +118,20 @@
 
 ---
 
-## Phase 5: User Story 3 - Plug in delivery dispatcher and middleware (Priority: P3)
+## Phase 5: User Story 3 - Plug in delivery dispatchers and middleware (Priority: P3)
 
-**Goal**: Enable pluggable dispatcher/middleware extension points while keeping broadcaster orchestration stable.
+**Goal**: Enable pluggable dispatcher/middleware extension points in Webhooks Core while keeping optional queue/worker execution in dispatcher extension modules.
 
-**Independent Test**: Swap default and custom dispatchers through DI and verify behavior changes only in transport path; verify middleware ordering and invocation semantics.
+**Independent Test**: Swap default and custom dispatchers through DI and verify behavior changes only in transport path; if a queued dispatcher module is installed, verify queue/worker behavior remains module-owned while middleware ordering and invocation semantics remain stable.
+
+**US3 FR Traceability (queue/worker boundary)**
+
+| FR | Covered By Tasks |
+|----|------------------|
+| FR-012 | T045, T053 |
+| FR-012a | T053 |
+| FR-015 | T046, T054 |
+| FR-016 | T046, T054 |
 
 ### Tests for User Story 3
 
@@ -107,8 +139,8 @@
 - [ ] T028 [P] [US3] Add broadcast middleware ordering tests in `tests/Webhooks.Core.Tests/Middleware/BroadcastMiddlewareOrderingTests.cs`
 - [ ] T029 [P] [US3] Add endpoint-invoker middleware per-retry tests in `tests/Webhooks.Core.Tests/Middleware/EndpointInvokerMiddlewareRetryTests.cs`
 - [ ] T030 [P] [US3] Add delivery-result source-of-truth tests (invoker outcome vs handoff telemetry) in `tests/Webhooks.Core.Tests/Dispatch/DeliveryOutcomeSemanticsTests.cs`
-- [ ] T045 [P] [US3] Add queue capacity and worker parallelism behavior tests in `tests/Webhooks.Core.Tests/Dispatch/QueueCapacityAndParallelismTests.cs`
-- [ ] T046 [P] [US3] Add overflow policy default/override tests in `tests/Webhooks.Core.Tests/Dispatch/OverflowPolicyTests.cs`
+- [ ] T045 [P] [US3] [FR-012] Add queued dispatcher module queue-capacity/worker-parallelism integration behavior tests in `tests/Webhooks.Core.Tests/Dispatch/QueueCapacityAndParallelismTests.cs`
+- [ ] T046 [P] [US3] [FR-015][FR-016] Add queued dispatcher module overflow policy default/override integration tests in `tests/Webhooks.Core.Tests/Dispatch/OverflowPolicyTests.cs`
 - [ ] T047 [P] [US3] Add retry configuration default/override tests in `tests/Webhooks.Core.Tests/Dispatch/RetryConfigurationTests.cs`
 - [ ] T048 [P] [US3] Add transient-failure detection configurability tests in `tests/Webhooks.Core.Tests/Dispatch/TransientDetectionStrategyTests.cs`
 - [ ] T049 [P] [US3] Add queued dispatcher pending-to-final status transition tests in `tests/Webhooks.Core.Tests/Dispatch/PendingStatusTransitionTests.cs`
@@ -125,8 +157,8 @@
 - [ ] T034 [US3] Add dispatch handoff telemetry recording in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
 - [ ] T035 [US3] Ensure final delivery status is sourced from invoker outcome in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
 - [ ] T036 [US3] Register host-extensible middleware and strategy services in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
-- [ ] T053 [US3] Implement queue capacity and worker parallelism options wiring in `src/Webhooks.Core/Options/BackgroundTaskProcessorOptions.cs` and `src/Webhooks.Core/Services/ChannelBackgroundTaskProcessor.cs`
-- [ ] T054 [US3] Implement overflow policy default fail-fast and override behavior in `src/Webhooks.Core/Services/BackgroundTaskChannel.cs`
+- [ ] T053 [US3] [FR-012][FR-012a] Implement queued dispatcher module options pass-through contract (queue capacity, worker parallelism) while preserving module-owned queue/worker runtime boundary in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs` and `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
+- [ ] T054 [US3] [FR-015][FR-016] Implement overflow policy default fail-fast and override behavior contract for queued dispatcher integrations in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs` and `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
 - [ ] T055 [US3] Implement host-configurable retry policy defaults/overrides in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
 - [ ] T056 [US3] Implement host-configurable transient detection strategy hooks in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
 - [ ] T057 [US3] Implement queued dispatcher `Pending` -> final status transition handling in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
@@ -161,15 +193,15 @@
 
 ### User Story Dependencies
 
-- **US1 (P1)**: No dependency on other stories.
-- **US2 (P2)**: No dependency on other stories (integrates with shared matching components only).
-- **US3 (P3)**: No dependency on other stories (integrates with shared dispatch/invocation components only).
+- **US1 (P1)**: No dependencies on other stories.
+- **US2 (P2)**: No dependencies on other stories (integrates with shared matching components only).
+- **US3 (P3)**: No dependencies on other stories (integrates with shared dispatch/invocation components and optional dispatcher extension modules).
 
 ### Within Each User Story
 
 - Tests are written before implementation tasks.
 - Model/contract updates precede service logic updates.
-- Service logic updates precede DI/final integration updates.
+- Service logic updates precede DI and final integration updates.
 
 ### Parallel Opportunities
 

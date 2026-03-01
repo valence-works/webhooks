@@ -38,8 +38,8 @@ flowchart LR
     M[Webhook Sink Endpoints]
   end
 
-  K1 -->|direct invoke or enqueue delivery envelope| Q1[Invoke Path / Queue]
-  Q1 --> W1[Worker / Consumer (when queued)]
+  K1 -->|direct invoke or enqueue delivery envelope| Q1[Extension Module Async Path]
+  Q1 --> W1[Module-Owned Worker / Consumer]
   Q1 --> Y
   W1 --> Y
   Y --> Z --> M
@@ -77,3 +77,4 @@ flowchart LR
 - Delivery success/failure is determined by Endpoint Invoker outcome and captured as primary `Delivery Result`.
 - Dispatcher handoff status is secondary telemetry (`Dispatch Handoff Result`) and does not define business delivery success.
 - Coordinator owns dispatcher selection precedence (sink override, then app default), with one dispatcher selected per sink delivery attempt.
+- Queue and worker/consumer components shown in the async path are optional and provided by dispatcher extension modules, not by Webhooks Core runtime components.

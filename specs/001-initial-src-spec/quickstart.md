@@ -30,7 +30,7 @@ Generate executable implementation work items:
 
 ## Expected verification outcomes
 - Build succeeds for solution.
-- Tests covering routing, middleware, retry semantics, and queue policy pass.
+- Tests covering routing, middleware, retry semantics, and (when using queued dispatcher modules) queue policy pass.
 - Tests confirm exactly one dispatcher is selected per sink delivery attempt.
 - Tests confirm sink-level dispatcher override takes precedence over application default dispatcher selection.
 - Dispatcher registration and payload-filter validation failures surface at startup.

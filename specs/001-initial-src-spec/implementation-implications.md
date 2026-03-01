@@ -15,7 +15,7 @@ Terminology baseline: `docs/architecture/vocabulary.md`.
 - [ ] Define payload field selector strategy contract (default restricted JsonPath selector).
 - [ ] Define payload value comparison strategy contract (default scalar string-equality comparator).
 - [ ] Define invoke-plane retry classification/transient-detection contract (host-configurable decision point).
-- [ ] Define overflow policy contract for broadcaster orchestration.
+- [ ] Define overflow policy abstraction contract for queued dispatcher module integrations.
 
 ## 2) Ownership Boundaries
 
@@ -24,12 +24,12 @@ Terminology baseline: `docs/architecture/vocabulary.md`.
 - [ ] Dispatcher owns: handoff mechanics (direct invoke vs queued enqueue).
 - [ ] Endpoint Invoker owns: HTTP invocation attempts and final delivery success/failure outcome.
 - [ ] Ensure dispatcher implementations are not required to implement broadcast orchestration semantics.
-- [ ] Ensure queued-mode retry semantics stay within worker-owned delivery attempt lifecycle (no implicit whole-message requeue retries).
+- [ ] Ensure queued-mode retry semantics stay within extension module worker-owned delivery attempt lifecycle (no implicit whole-message requeue retries).
 
 ## 3) Configuration Model
 
 - [ ] Add options for sink-level dispatcher selection and application-level default dispatcher selection.
-- [ ] Add options for queue capacity, worker parallelism, overflow policy (default fail-fast).
+- [ ] Add abstraction/contract options for queued dispatcher modules to expose queue capacity, worker parallelism, and overflow policy (default fail-fast).
 - [ ] Add options for Endpoint Invoker retry attempts/backoff/transient detection.
 - [ ] Add options for payload field selector strategy + selector defaults (restricted JsonPath).
 - [ ] Add options for payload value comparison strategy + comparator defaults.
@@ -73,10 +73,10 @@ Terminology baseline: `docs/architecture/vocabulary.md`.
 - [ ] Per-delivery-attempt retry scope tests.
 - [ ] Endpoint Invoker middleware executes per retry attempt tests.
 - [ ] Host-configurable transient detection tests.
-- [ ] Queued-mode retry inside worker lifecycle tests.
+- [ ] Queued-mode retry inside extension module worker lifecycle tests.
 
 ### Orchestration
-- [ ] Sequential/concurrent/queued mode behavior tests.
+- [ ] Direct-dispatch and extension-provided queued-dispatch behavior tests.
 - [ ] Overflow policy default fail-fast and override behavior tests.
 
 ### Observability & Middleware
