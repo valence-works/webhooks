@@ -158,7 +158,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-010d**: For queued dispatcher modules/integrations, retry execution MUST occur within the worker/consumer-owned delivery attempt lifecycle and MUST NOT rely on implicit whole-message requeue as the retry mechanism.
 - **FR-011**: System MUST continue processing other sinks when a single sink delivery fails.
 - **FR-011a**: When dispatcher unavailability causes an attempt failure, default behavior MUST record that delivery attempt as failed and continue processing other eligible sinks.
-- **FR-012**: Queued dispatcher modules/integrations MUST support configurable queue capacity and worker parallelism where applicable.
+- **FR-012**: Queued dispatcher modules/integrations that expose bounded-capacity execution MUST support configurable queue capacity and worker parallelism.
 - **FR-012a**: Webhooks Core MUST NOT require or embed queue/worker runtime infrastructure; queue/worker capabilities MAY be provided by dispatcher extension modules.
 - **FR-013**: System MUST provide a default dispatcher implementation in core that performs direct HTTP endpoint invocation through `IWebhookEndpointInvoker`.
 - **FR-014**: System MUST reject subscription configurations that define payload predicates without an explicit payload matching mode.
@@ -189,7 +189,7 @@ As an application owner, I can select or replace the delivery dispatcher and com
 
 - **Delivery Envelope**: The normalized outbound message used by orchestration, containing EventId, event type, optional payload, and dispatch timestamp.
 - **Publish Request**: The host-provided input submitted for broadcasting before normalization into a `Delivery Envelope`.
-- **Webhook Sink**: A destination target definition with identifier, name, address details (for example URL for HTTP), and subscription filters.
+- **Webhook Sink**: A destination target definition with identifier, name, address details (for example URL for HTTP), and subscription criteria.
 - **Subscription Criteria**: A sink subscription rule containing event type, optional payload predicate set, and payload matching mode (AND/OR).
 - **Payload Predicate**: A structured field comparison condition used to determine sink eligibility for an event, evaluated through the configured field selector and comparison strategies.
 - **Webhook Dispatcher**: A pluggable terminal delivery component that performs sink dispatch for matched webhook events.

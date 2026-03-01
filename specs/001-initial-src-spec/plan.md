@@ -5,13 +5,7 @@
 
 ## Summary
 
-Implement a contract-driven refinement of the existing webhook core using a two-plane architecture (dispatch plane + invoke plane) so dispatcher selection policy, dispatcher handoff, endpoint invocation, retry semantics, and observability are explicit and testable. The implementation keeps the current .NET library architecture, introduces/aligns extension contracts (`IWebhookDispatcher`, coordinator selection contracts, invoker middleware contracts, selector/comparator strategies), enforces startup validation for invalid configurations, and preserves backward compatibility by defaulting to direct HTTP dispatch while allowing additional registered dispatchers for sink-level selection.
-
-Terminology rule: use canonical terms from `docs/architecture/vocabulary.md`.
-
-Architecture diagram references:
-- `docs/architecture/system-components.md`
-- `specs/001-initial-src-spec/system-components.md`
+Implement a contract-driven refinement of Webhooks Core using a two-plane architecture (dispatch plane + invoke plane) so dispatcher selection policy, dispatcher handoff, endpoint invocation, retry semantics, and observability are explicit and testable. The implementation preserves direct HTTP behavior by default, adds pluggable dispatcher/middleware/strategy contracts, and keeps queued queue/worker execution in extension modules rather than Webhooks Core runtime.
 
 ## Technical Context
 
@@ -19,7 +13,7 @@ Architecture diagram references:
 **Primary Dependencies**: `Microsoft.Extensions.Hosting.Abstractions`, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Http.Polly`, `Microsoft.Extensions.Logging`, `Polly`/`Polly.Extensions.Http`  
 **Storage**: In-memory runtime configuration/state in core; queue/outbox infrastructure only when provided by dispatcher extension modules  
 **Testing**: `dotnet test` (unit/integration/conformance coverage in solution test projects)  
-**Target Platform**: Cross-platform .NET host applications (Linux/macOS/Windows)  
+**Target Platform**: Cross-platform .NET host applications (Linux/macOS/Windows)
 **Project Type**: Reusable .NET library  
 **Performance Goals**: Deterministic coordinator invocation behavior and reliable endpoint invocation outcomes with no cross-sink blocking on single-sink failure  
 **Constraints**: Preserve backward-compatible defaults, avoid transport-specific orchestration coupling, fail startup on invalid configuration  
@@ -30,11 +24,11 @@ Architecture diagram references:
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 - Spec-first gate: `spec.md` includes clarified requirements, edge cases, and measurable outcomes.
-- Contract boundary gate: ownership and extension points are explicit (e.g., orchestration vs transport).
+- Contract boundary gate: ownership and extension points are explicit (orchestration vs transport/invocation).
 - Simplicity/compatibility gate: defaults and backward-compatibility impact are documented.
-- Verification gate: plan lists project-level build and relevant test validation steps.
+- Verification gate: plan, quickstart, and tasks include project-level build/test validation steps.
 
-Status: PASS (re-check after design artifacts in this plan).
+Status before Phase 0: PASS
 
 ## Project Structure
 
@@ -53,10 +47,11 @@ specs/001-initial-src-spec/
 ├── implementation-implications.md
 ├── checklists/
 │   └── requirements.md
-└── tasks.md             # Generated and tracked for implementation
+└── tasks.md
 ```
 
 ### Source Code (repository root)
+
 ```text
 src/
 ├── Webhooks.Core/
@@ -77,37 +72,47 @@ samples/
 └── WebhooksEvents.Receiver.Web/
 ```
 
-**Structure Decision**: Keep the existing single-library architecture and implement changes primarily in `src/Webhooks.Core` contracts/options/services/strategies, with shared model adjustments only when required in `src/WebhooksCore.Shared`.
+**Structure Decision**: Keep the existing single-library architecture and implement refinements primarily in `src/Webhooks.Core` contracts/options/services/strategies, with shared model adjustments only when required in `src/WebhooksCore.Shared`.
 
 ## Phase 0: Research Output
 
-- Finalize dispatch plane vs invoke plane boundary and ownership.
-- Confirm default retry transient-detection heuristics at Endpoint Invoker boundary.
-- Confirm restricted JsonPath subset and validation behavior.
-- Confirm delivery result semantics: Endpoint Invoker outcome is primary, handoff telemetry is secondary.
+- Dispatch plane vs invoke plane boundaries finalized.
+- Invoker-outcome-first delivery semantics confirmed.
+- Retry scope confirmed at invoke boundary with host-configurable transient detection.
+- Overflow policy defaults/overrides and deduplication default-disabled behavior confirmed.
+- Single-dispatcher-per-sink selection policy confirmed.
 
 See: `/specs/001-initial-src-spec/research.md`
 
 ## Phase 1: Design Output
 
-- Define data model for `Delivery Envelope`, `Delivery Attempt`, `Delivery Result`, and related policy entities.
-- Specify contracts for coordinator policy, dispatcher handoff, Endpoint Invoker middleware, and configuration validation.
-- Document implementation quickstart with build/test validation steps.
+- Data model defined for `Delivery Envelope`, `Delivery Attempt`, `Delivery Result`, and policy entities.
+- Contracts defined for dispatcher/coordinator behavior, middleware boundaries, and configuration validation.
+- Quickstart captures build/test and verification outcomes for implementation handoff.
 
 See:
 - `/specs/001-initial-src-spec/data-model.md`
 - `/specs/001-initial-src-spec/contracts/`
 - `/specs/001-initial-src-spec/quickstart.md`
 
+## Post-Design Constitution Check
+
+- Spec-first gate: PASS (`spec.md` + clarifications + measurable outcomes present).
+- Contract boundary gate: PASS (coordinator/dispatcher/invoker ownership and module queue boundaries explicit).
+- Simplicity/compatibility gate: PASS (default behaviors explicit; no forced breaking runtime model).
+- Verification gate: PASS (`quickstart.md` and `tasks.md` provide build/test/conformance path).
+
+Status after Phase 1: PASS
+
 ## Phase 2: Task Planning Approach
 
-Task generation (`/speckit.tasks`) should be grouped by:
+Task generation (`/speckit.tasks`) is grouped by:
 
-1. Contract and interface changes
-2. Options + startup validation
-3. Orchestration + pipeline behavior
-4. Retry + observability behavior
-5. Conformance and regression tests
+1. Setup + foundational contracts/options/DI
+2. US1 event subscription routing
+3. US2 payload predicate routing
+4. US3 dispatcher/middleware pluggability and queue-boundary integrations
+5. Polish/cross-cutting validation and scope guard
 
 ## Complexity Tracking
 
