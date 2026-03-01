@@ -6,7 +6,6 @@ using Webhooks.Core.Options;
 using Webhooks.Core.Serialization.Converters;
 using Webhooks.Core.Services;
 using Webhooks.Core.SinkProviders;
-using Webhooks.Core.SourceProviders;
 
 namespace Webhooks.Core;
 
@@ -17,7 +16,6 @@ public static class ServiceCollectionExtensions
         TypeDescriptor.AddAttributes(typeof(Type), new TypeConverterAttribute(typeof(TypeTypeConverter)));
         
         services.AddOptions<WebhookSinksOptions>();
-        services.AddOptions<WebhookSourcesOptions>();
         services.AddOptions<BackgroundTaskProcessorOptions>();
         services.AddOptions<WebhookBroadcasterOptions>();
 
@@ -26,7 +24,6 @@ public static class ServiceCollectionExtensions
         
         return services.AddSingleton<IWebhookEventBroadcaster, DefaultWebhookEventBroadcaster>()
             .AddSingleton<IWebhookSinkProvider, OptionsWebhookSinkProvider>()
-            .AddSingleton<IWebhookSourceProvider, OptionsWebhookSourceProvider>()
             .AddSingleton<IWebhookEndpointInvoker, HttpWebhookEndpointInvoker>()
             .AddSingleton<IBackgroundTaskProcessor, ChannelBackgroundTaskProcessor>()
             .AddSingleton<IBackgroundTaskScheduler, ChannelBackgroundTaskScheduler>()

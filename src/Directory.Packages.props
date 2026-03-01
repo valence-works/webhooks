@@ -6,7 +6,6 @@
     <ItemGroup>
         <PackageVersion Include="JetBrains.Annotations" Version="2023.3.0"/>
         <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0"/>
-        <PackageVersion Include="Polly" Version="8.6.5"/>
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0"/>
