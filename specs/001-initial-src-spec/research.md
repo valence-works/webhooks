@@ -45,3 +45,8 @@
 - Exact middleware context object shape.
 - Concrete exception taxonomy naming.
 - Any dead-letter/re-drive extension package behavior.
+
+## Planning traceability for deferred items
+- Middleware context shape is tracked in tasks `T059` and `T051` in `specs/001-initial-src-spec/tasks.md`.
+- Exception taxonomy definition is tracked in tasks `T060` and `T052` in `specs/001-initial-src-spec/tasks.md`.
+- Dead-letter/re-drive behavior remains extension-package scope and is intentionally out of baseline implementation tasks.
