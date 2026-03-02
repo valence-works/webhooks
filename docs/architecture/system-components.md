@@ -78,3 +78,6 @@ flowchart LR
 - Dispatcher handoff status is secondary telemetry (`Dispatch Handoff Result`) and does not define business delivery success.
 - Coordinator owns dispatcher selection precedence (sink override, then app default), with one dispatcher selected per sink delivery attempt.
 - Queue and worker/consumer components shown in the async path are optional and provided by dispatcher extension modules, not by Webhooks Core runtime components.
+- Broadcast middleware executes once per broadcast operation in deterministic registration order.
+- Endpoint-invoker middleware executes per retry attempt and can host signing/authentication extensions.
+- Retry attempts and transient failure detection are host-configurable through broadcaster options and injected strategies.

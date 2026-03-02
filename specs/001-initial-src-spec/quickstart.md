@@ -35,3 +35,6 @@ Generate executable implementation work items:
 - Tests confirm sink-level dispatcher override takes precedence over application default dispatcher selection.
 - Dispatcher registration and payload predicate validation failures surface at startup.
 - Validation confirms non-webhook stream/workflow features remain out of baseline scope for this feature.
+- Broadcast middleware ordering and endpoint-invoker middleware per-retry execution are validated.
+- Overflow policy behavior (fail-fast default with override options) is validated at coordinator handoff.
+- EventId-based deduplication remains opt-in and disabled by default when unspecified.

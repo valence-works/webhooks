@@ -21,9 +21,9 @@
 
 **Purpose**: Project initialization and test scaffolding.
 
-- [ ] T001 Create test project file in `tests/Webhooks.Core.Tests/Webhooks.Core.Tests.csproj`
-- [ ] T002 Add test project to solution in `Webhooks.sln`
-- [ ] T003 [P] Create baseline test bootstrap in `tests/Webhooks.Core.Tests/Usings.cs`
+- [x] T001 Create test project file in `tests/Webhooks.Core.Tests/Webhooks.Core.Tests.csproj`
+- [x] T002 Add test project to solution in `Webhooks.sln`
+- [x] T003 [P] Create baseline test bootstrap in `tests/Webhooks.Core.Tests/Usings.cs`
 
 ---
 
@@ -33,15 +33,15 @@
 
 **⚠️ CRITICAL**: No user story implementation starts before this phase is complete.
 
-- [ ] T004 Create dispatcher contracts in `src/Webhooks.Core/Contracts/IWebhookDispatcher.cs` and `src/Webhooks.Core/Contracts/IDispatcherInvocationCoordinator.cs`
-- [ ] T005 Create middleware contracts in `src/Webhooks.Core/Contracts/IBroadcastMiddleware.cs` and `src/Webhooks.Core/Contracts/IWebhookEndpointInvokerMiddleware.cs`
-- [ ] T006 Create core delivery models in `src/Webhooks.Core/Models/DeliveryEnvelope.cs`, `src/Webhooks.Core/Models/DeliveryAttempt.cs`, and `src/Webhooks.Core/Models/DeliveryResult.cs`
-- [ ] T007 Create handoff telemetry model in `src/Webhooks.Core/Models/DispatchHandoffResult.cs`
-- [ ] T008 Extend broadcaster options for dispatcher selection and defaults in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
-- [ ] T009 Add startup validation framework in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
-- [ ] T010 Wire coordinator and middleware registrations in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
-- [ ] T011 [P] Add dispatcher registration validation tests in `tests/Webhooks.Core.Tests/Validation/DispatcherRegistrationValidationTests.cs`
-- [ ] T012 [P] Add coordinator registration/resolve tests in `tests/Webhooks.Core.Tests/Validation/CoordinatorResolutionValidationTests.cs`
+- [x] T004 Create dispatcher contracts in `src/Webhooks.Core/Contracts/IWebhookDispatcher.cs` and `src/Webhooks.Core/Contracts/IDispatcherInvocationCoordinator.cs`
+- [x] T005 Create middleware contracts in `src/Webhooks.Core/Contracts/IBroadcastMiddleware.cs` and `src/Webhooks.Core/Contracts/IWebhookEndpointInvokerMiddleware.cs`
+- [x] T006 Create core delivery models in `src/Webhooks.Core/Models/DeliveryEnvelope.cs`, `src/Webhooks.Core/Models/DeliveryAttempt.cs`, and `src/Webhooks.Core/Models/DeliveryResult.cs`
+- [x] T007 Create handoff telemetry model in `src/Webhooks.Core/Models/DispatchHandoffResult.cs`
+- [x] T008 Extend broadcaster options for dispatcher selection and defaults in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
+- [x] T009 Add startup validation framework in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
+- [x] T010 Wire coordinator and middleware registrations in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
+- [x] T011 [P] Add dispatcher registration validation tests in `tests/Webhooks.Core.Tests/Validation/DispatcherRegistrationValidationTests.cs`
+- [x] T012 [P] Add coordinator registration/resolve tests in `tests/Webhooks.Core.Tests/Validation/CoordinatorResolutionValidationTests.cs`
 
 **Checkpoint**: Foundational contracts/options/DI are ready for story implementation.
 
@@ -69,19 +69,19 @@
 
 ### Tests for User Story 1
 
-- [ ] T013 [P] [US1] Add exact event-type routing tests in `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs`
-- [ ] T014 [P] [US1] Add no-subscriber/no-delivery tests in `tests/Webhooks.Core.Tests/Routing/NoMatchingSinksTests.cs`
-- [ ] T015 [P] [US1] Add sink registration validation tests (unique SinkId, required destination, required subscriptions) in `tests/Webhooks.Core.Tests/Validation/SinkRegistrationValidationTests.cs`
+- [x] T013 [P] [US1] Add exact event-type routing tests in `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs`
+- [x] T014 [P] [US1] Add no-subscriber/no-delivery tests in `tests/Webhooks.Core.Tests/Routing/NoMatchingSinksTests.cs`
+- [x] T015 [P] [US1] Add sink registration validation tests (unique SinkId, required destination, required subscriptions) in `tests/Webhooks.Core.Tests/Validation/SinkRegistrationValidationTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Implement publish-request normalization and EventId assignment at API entry in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
-- [ ] T017 [US1] Implement sink registration validation rules (unique SinkId, destination required, subscriptions required) in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
-- [ ] T018 [US1] Implement event-type sink matching using subscription criteria in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
-- [ ] T019 [US1] Implement coordinator selection flow (exactly one dispatcher per sink attempt) in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
-- [ ] T020 [US1] Add default dispatcher implementation path in `src/Webhooks.Core/Services/DefaultWebhookDispatcher.cs`
-- [ ] T021 [US1] Ensure outgoing delivery metadata includes dispatch timestamp and EventId in `src/Webhooks.Core/Services/DefaultWebhookDispatcher.cs` and `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
-- [ ] T022 [US1] Ensure one-sink failure does not block other sinks in `src/Webhooks.Core/Strategies/SequentialBroadcasterStrategy.cs` and `src/Webhooks.Core/Strategies/ParallelTaskBroadcasterStrategy.cs`
+- [x] T016 [US1] Implement publish-request normalization and EventId assignment at API entry in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T017 [US1] Implement sink registration validation rules (unique SinkId, destination required, subscriptions required) in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
+- [x] T018 [US1] Implement event-type sink matching using subscription criteria in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T019 [US1] Implement coordinator selection flow (exactly one dispatcher per sink attempt) in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T020 [US1] Add default dispatcher implementation path in `src/Webhooks.Core/Services/DefaultWebhookDispatcher.cs`
+- [x] T021 [US1] Ensure outgoing delivery metadata includes dispatch timestamp and EventId in `src/Webhooks.Core/Services/DefaultWebhookDispatcher.cs` and `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
+- [x] T022 [US1] Ensure one-sink failure does not block other sinks in `src/Webhooks.Core/Strategies/SequentialBroadcasterStrategy.cs` and `src/Webhooks.Core/Strategies/ParallelTaskBroadcasterStrategy.cs`
 
 **Checkpoint**: US1 is independently functional and testable.
 
@@ -104,23 +104,23 @@
 
 ### Tests for User Story 2
 
-- [ ] T023 [P] [US2] Add AND/OR payload matching tests in `tests/Webhooks.Core.Tests/Routing/PayloadMatchingModeTests.cs`
-- [ ] T024 [P] [US2] Add missing payload field non-match tests in `tests/Webhooks.Core.Tests/Routing/MissingPayloadFieldTests.cs`
-- [ ] T025 [P] [US2] Add invalid payload selector startup-failure tests in `tests/Webhooks.Core.Tests/Validation/PayloadSelectorValidationTests.cs`
-- [ ] T026 [P] [US2] Add deduplication policy conformance tests in `tests/Webhooks.Core.Tests/Dispatch/DeduplicationPolicyTests.cs`
-- [ ] T027 [P] [US2] Add restricted JsonPath conformance tests in `tests/Webhooks.Core.Tests/Validation/JsonPathSubsetValidationTests.cs`
+- [x] T023 [P] [US2] Add AND/OR payload matching tests in `tests/Webhooks.Core.Tests/Routing/PayloadMatchingModeTests.cs`
+- [x] T024 [P] [US2] Add missing payload field non-match tests in `tests/Webhooks.Core.Tests/Routing/MissingPayloadFieldTests.cs`
+- [x] T025 [P] [US2] Add invalid payload selector startup-failure tests in `tests/Webhooks.Core.Tests/Validation/PayloadSelectorValidationTests.cs`
+- [x] T026 [P] [US2] Add deduplication policy conformance tests in `tests/Webhooks.Core.Tests/Dispatch/DeduplicationPolicyTests.cs`
+- [x] T027 [P] [US2] Add restricted JsonPath conformance tests in `tests/Webhooks.Core.Tests/Validation/JsonPathSubsetValidationTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T028 [US2] Migrate legacy event-filter model naming to canonical subscription criteria terminology in `src/Webhooks.Core/Models/WebhookEventFilter.cs`
-- [ ] T029 [US2] Migrate legacy payload-filter naming (including existing PayloadFilter file/type names) to canonical payload predicate terminology in `src/Webhooks.Core/Models/PayloadFilter.cs`
-- [ ] T030 [US2] Add selector/comparator contracts in `src/Webhooks.Core/Contracts/IPayloadFieldSelectorStrategy.cs` and `src/Webhooks.Core/Contracts/IPayloadValueComparisonStrategy.cs`
-- [ ] T031 [US2] Implement restricted JsonPath selector and default scalar comparator in `src/Webhooks.Core/Strategies/JsonPathPayloadFieldSelectorStrategy.cs` and `src/Webhooks.Core/Strategies/ScalarStringEqualityComparisonStrategy.cs`
-- [ ] T032 [US2] Integrate payload predicate evaluation into matching pipeline in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
-- [ ] T033 [US2] Enforce payload predicate configuration validation rules in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
-- [ ] T034 [US2] Add optional deduplication policy options with default-disabled behavior in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
-- [ ] T035 [US2] Implement EventId-based deduplication checks in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
-- [ ] T036 [US2] Define selector syntax constraints for restricted JsonPath subset in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
+- [x] T028 [US2] Migrate legacy event-filter model naming to canonical subscription criteria terminology in `src/Webhooks.Core/Models/WebhookEventFilter.cs`
+- [x] T029 [US2] Migrate legacy payload-filter naming (including existing PayloadFilter file/type names) to canonical payload predicate terminology in `src/Webhooks.Core/Models/PayloadFilter.cs`
+- [x] T030 [US2] Add selector/comparator contracts in `src/Webhooks.Core/Contracts/IPayloadFieldSelectorStrategy.cs` and `src/Webhooks.Core/Contracts/IPayloadValueComparisonStrategy.cs`
+- [x] T031 [US2] Implement restricted JsonPath selector and default scalar comparator in `src/Webhooks.Core/Strategies/JsonPathPayloadFieldSelectorStrategy.cs` and `src/Webhooks.Core/Strategies/ScalarStringEqualityComparisonStrategy.cs`
+- [x] T032 [US2] Integrate payload predicate evaluation into matching pipeline in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T033 [US2] Enforce payload predicate configuration validation rules in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
+- [x] T034 [US2] Add optional deduplication policy options with default-disabled behavior in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
+- [x] T035 [US2] Implement EventId-based deduplication checks in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T036 [US2] Define selector syntax constraints for restricted JsonPath subset in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
 
 **Checkpoint**: US2 is independently functional and testable.
 
@@ -152,40 +152,40 @@
 
 ### Tests for User Story 3
 
-- [ ] T037 [P] [US3] Add dispatcher replacement and selection precedence tests in `tests/Webhooks.Core.Tests/Dispatch/DispatcherSelectionPrecedenceTests.cs`
-- [ ] T038 [P] [US3] Add broadcast middleware ordering tests in `tests/Webhooks.Core.Tests/Middleware/BroadcastMiddlewareOrderingTests.cs`
-- [ ] T039 [P] [US3] Add endpoint-invoker middleware per-retry tests in `tests/Webhooks.Core.Tests/Middleware/EndpointInvokerMiddlewareRetryTests.cs`
-- [ ] T040 [P] [US3] Add delivery-result source-of-truth tests (invoker outcome vs handoff telemetry) in `tests/Webhooks.Core.Tests/Dispatch/DeliveryOutcomeSemanticsTests.cs`
-- [ ] T041 [P] [US3] Add queued dispatcher module queue-capacity/worker-parallelism integration behavior tests in `tests/Webhooks.Core.Tests/Dispatch/QueueCapacityAndParallelismTests.cs`
-- [ ] T042 [P] [US3] Add queued dispatcher module overflow policy default/override integration tests in `tests/Webhooks.Core.Tests/Dispatch/OverflowPolicyTests.cs`
-- [ ] T043 [P] [US3] Add retry configuration default/override tests in `tests/Webhooks.Core.Tests/Dispatch/RetryConfigurationTests.cs`
-- [ ] T044 [P] [US3] Add transient-failure detection configurability tests in `tests/Webhooks.Core.Tests/Dispatch/TransientDetectionStrategyTests.cs`
-- [ ] T045 [P] [US3] Add queued dispatcher pending-to-final status transition tests in `tests/Webhooks.Core.Tests/Dispatch/PendingStatusTransitionTests.cs`
-- [ ] T046 [P] [US3] Add signing/authentication middleware extension tests in `tests/Webhooks.Core.Tests/Middleware/SigningAuthenticationMiddlewareTests.cs`
-- [ ] T047 [P] [US3] Add middleware context shape conformance tests in `tests/Webhooks.Core.Tests/Middleware/MiddlewareContextShapeTests.cs`
-- [ ] T048 [P] [US3] Add runtime exception taxonomy conformance tests in `tests/Webhooks.Core.Tests/Dispatch/DispatchExceptionTaxonomyTests.cs`
-- [ ] T049 [P] [US3] Add minimum observability field-set conformance tests (status, attempt count, failure reason, EventId correlation) in `tests/Webhooks.Core.Tests/Dispatch/DeliveryObservabilityFieldsTests.cs`
-- [ ] T050 [P] [US3] Add dispatcher-unavailable default behavior tests (mark failed, continue other sinks) in `tests/Webhooks.Core.Tests/Dispatch/DispatcherUnavailableBehaviorTests.cs`
-- [ ] T051 [P] [US3] Add coordinator-policy ownership conformance tests (dispatcher transport-only, policy in coordinator) in `tests/Webhooks.Core.Tests/Dispatch/CoordinatorPolicyOwnershipTests.cs`
+- [x] T037 [P] [US3] Add dispatcher replacement and selection precedence tests in `tests/Webhooks.Core.Tests/Dispatch/DispatcherSelectionPrecedenceTests.cs`
+- [x] T038 [P] [US3] Add broadcast middleware ordering tests in `tests/Webhooks.Core.Tests/Middleware/BroadcastMiddlewareOrderingTests.cs`
+- [x] T039 [P] [US3] Add endpoint-invoker middleware per-retry tests in `tests/Webhooks.Core.Tests/Middleware/EndpointInvokerMiddlewareRetryTests.cs`
+- [x] T040 [P] [US3] Add delivery-result source-of-truth tests (invoker outcome vs handoff telemetry) in `tests/Webhooks.Core.Tests/Dispatch/DeliveryOutcomeSemanticsTests.cs`
+- [x] T041 [P] [US3] Add queued dispatcher module queue-capacity/worker-parallelism integration behavior tests in `tests/Webhooks.Core.Tests/Dispatch/QueueCapacityAndParallelismTests.cs`
+- [x] T042 [P] [US3] Add queued dispatcher module overflow policy default/override integration tests in `tests/Webhooks.Core.Tests/Dispatch/OverflowPolicyTests.cs`
+- [x] T043 [P] [US3] Add retry configuration default/override tests in `tests/Webhooks.Core.Tests/Dispatch/RetryConfigurationTests.cs`
+- [x] T044 [P] [US3] Add transient-failure detection configurability tests in `tests/Webhooks.Core.Tests/Dispatch/TransientDetectionStrategyTests.cs`
+- [x] T045 [P] [US3] Add queued dispatcher pending-to-final status transition tests in `tests/Webhooks.Core.Tests/Dispatch/PendingStatusTransitionTests.cs`
+- [x] T046 [P] [US3] Add signing/authentication middleware extension tests in `tests/Webhooks.Core.Tests/Middleware/SigningAuthenticationMiddlewareTests.cs`
+- [x] T047 [P] [US3] Add middleware context shape conformance tests in `tests/Webhooks.Core.Tests/Middleware/MiddlewareContextShapeTests.cs`
+- [x] T048 [P] [US3] Add runtime exception taxonomy conformance tests in `tests/Webhooks.Core.Tests/Dispatch/DispatchExceptionTaxonomyTests.cs`
+- [x] T049 [P] [US3] Add minimum observability field-set conformance tests (status, attempt count, failure reason, EventId correlation) in `tests/Webhooks.Core.Tests/Dispatch/DeliveryObservabilityFieldsTests.cs`
+- [x] T050 [P] [US3] Add dispatcher-unavailable default behavior tests (mark failed, continue other sinks) in `tests/Webhooks.Core.Tests/Dispatch/DispatcherUnavailableBehaviorTests.cs`
+- [x] T051 [P] [US3] Add coordinator-policy ownership conformance tests (dispatcher transport-only, policy in coordinator) in `tests/Webhooks.Core.Tests/Dispatch/CoordinatorPolicyOwnershipTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T052 [US3] Implement broadcast middleware pipeline execution in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
-- [ ] T053 [US3] Implement endpoint invoker middleware pipeline in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
-- [ ] T054 [US3] Add sink-level dispatcher override and app default selection resolution in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
-- [ ] T055 [US3] Add dispatch handoff telemetry recording in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
-- [ ] T056 [US3] Ensure final delivery status is sourced from invoker outcome in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
-- [ ] T057 [US3] Register host-extensible middleware and strategy services in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
-- [ ] T058 [US3] Implement queued dispatcher module options pass-through contract (queue capacity, worker parallelism) while preserving module-owned queue/worker runtime boundary in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs` and `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
-- [ ] T059 [US3] Implement overflow policy default fail-fast and override behavior contract for queued dispatcher integrations in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs` and `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
-- [ ] T060 [US3] Implement host-configurable retry policy defaults/overrides in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
-- [ ] T061 [US3] Implement host-configurable transient detection strategy hooks in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
-- [ ] T062 [US3] Implement queued dispatcher pending-to-final status transition handling in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
-- [ ] T063 [US3] Implement signing/authentication middleware extension point in `src/Webhooks.Core/Contracts/IWebhookEndpointInvokerMiddleware.cs` and `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
-- [ ] T064 [US3] Define middleware context shape contract in `src/Webhooks.Core/Contracts/IWebhookEndpointInvokerMiddleware.cs`
-- [ ] T065 [US3] Define runtime dispatch exception taxonomy in `src/Webhooks.Core/Models/DispatchException.cs`
-- [ ] T066 [US3] Implement coordinator handling for dispatcher-unavailable attempts (record failed, continue eligible sinks) in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
-- [ ] T067 [US3] Enforce coordinator-owned selection policy boundary in dispatcher contracts/docs and coordinator flow in `src/Webhooks.Core/Contracts/IWebhookDispatcher.cs` and `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T052 [US3] Implement broadcast middleware pipeline execution in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T053 [US3] Implement endpoint invoker middleware pipeline in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
+- [x] T054 [US3] Add sink-level dispatcher override and app default selection resolution in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T055 [US3] Add dispatch handoff telemetry recording in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T056 [US3] Ensure final delivery status is sourced from invoker outcome in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
+- [x] T057 [US3] Register host-extensible middleware and strategy services in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
+- [x] T058 [US3] Implement queued dispatcher module options pass-through contract (queue capacity, worker parallelism) while preserving module-owned queue/worker runtime boundary in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs` and `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
+- [x] T059 [US3] Implement overflow policy default fail-fast and override behavior contract for queued dispatcher integrations in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs` and `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T060 [US3] Implement host-configurable retry policy defaults/overrides in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
+- [x] T061 [US3] Implement host-configurable transient detection strategy hooks in `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
+- [x] T062 [US3] Implement queued dispatcher pending-to-final status transition handling in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T063 [US3] Implement signing/authentication middleware extension point in `src/Webhooks.Core/Contracts/IWebhookEndpointInvokerMiddleware.cs` and `src/Webhooks.Core/Services/HttpWebhookEndpointInvoker.cs`
+- [x] T064 [US3] Define middleware context shape contract in `src/Webhooks.Core/Contracts/IWebhookEndpointInvokerMiddleware.cs`
+- [x] T065 [US3] Define runtime dispatch exception taxonomy in `src/Webhooks.Core/Models/DispatchException.cs`
+- [x] T066 [US3] Implement coordinator handling for dispatcher-unavailable attempts (record failed, continue eligible sinks) in `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
+- [x] T067 [US3] Enforce coordinator-owned selection policy boundary in dispatcher contracts/docs and coordinator flow in `src/Webhooks.Core/Contracts/IWebhookDispatcher.cs` and `src/Webhooks.Core/Services/DispatcherInvocationCoordinator.cs`
 
 **Checkpoint**: US3 is independently functional and testable.
 
@@ -195,10 +195,10 @@
 
 **Purpose**: Final consistency, docs, and end-to-end validation.
 
-- [ ] T068 [P] [US3] Update architecture notes for final implementation behavior in `docs/architecture/system-components.md`
-- [ ] T069 [P] [US3] Update feature quickstart verification checklist in `specs/001-initial-src-spec/quickstart.md`
-- [ ] T070 [US3] Add scope-guard documentation/conformance check to ensure non-webhook stream/workflow features remain out of baseline scope in `specs/001-initial-src-spec/quickstart.md`
-- [ ] T071 [US3] Run end-to-end build and tests per quickstart in `specs/001-initial-src-spec/quickstart.md`
+- [x] T068 [P] [US3] Update architecture notes for final implementation behavior in `docs/architecture/system-components.md`
+- [x] T069 [P] [US3] Update feature quickstart verification checklist in `specs/001-initial-src-spec/quickstart.md`
+- [x] T070 [US3] Add scope-guard documentation/conformance check to ensure non-webhook stream/workflow features remain out of baseline scope in `specs/001-initial-src-spec/quickstart.md`
+- [x] T071 [US3] Run end-to-end build and tests per quickstart in `specs/001-initial-src-spec/quickstart.md`
 
 ---
 
