@@ -11,4 +11,5 @@ public interface IWebhookEndpointInvokerMiddleware
 public sealed record WebhookEndpointInvocationContext(
     WebhookSink WebhookSink,
     DeliveryEnvelope DeliveryEnvelope,
-    int Attempt);
+    int Attempt,
+    HttpRequestMessage? Request = null);

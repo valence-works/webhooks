@@ -12,6 +12,13 @@ public class WebhookBroadcasterOptions
     public OverflowPolicy OverflowPolicy { get; set; } = OverflowPolicy.FailFast;
     public bool DeduplicationEnabled { get; set; }
     public int RetryAttempts { get; set; } = 3;
+
+    /// <summary>
+    /// Maximum number of event IDs to retain in the in-memory deduplication store.
+    /// When the limit is reached, the oldest entry is evicted (FIFO) to make room for new ones.
+    /// Set to 0 to disable eviction (unbounded store). Defaults to 1,000.
+    /// </summary>
+    public int MaxDeduplicationEntries { get; set; } = 1_000;
 }
 
 public enum OverflowPolicy
@@ -34,8 +41,8 @@ public class ConfigureWebhookEventBroadcasterOptions : IValidateOptions<WebhookB
         if (options.WorkerParallelism is <= 0)
             return ValidateOptionsResult.Fail("WorkerParallelism must be greater than zero when configured.");
 
-        if (options.DefaultDispatcher is { Length: 0 })
-            return ValidateOptionsResult.Fail("DefaultDispatcher cannot be empty.");
+        if (options.DefaultDispatcher is not null && string.IsNullOrWhiteSpace(options.DefaultDispatcher))
+            return ValidateOptionsResult.Fail("DefaultDispatcher cannot be empty or whitespace.");
 
         if (options.RetryAttempts <= 0)
             return ValidateOptionsResult.Fail("RetryAttempts must be greater than zero.");
