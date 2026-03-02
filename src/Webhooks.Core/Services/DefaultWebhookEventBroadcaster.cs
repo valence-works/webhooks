@@ -21,6 +21,7 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
     private readonly IReadOnlyList<IBroadcastMiddleware> _broadcastMiddlewares;
     private readonly IOptions<WebhookBroadcasterOptions> _broadcasterOptions;
     private readonly HashSet<string> _seenEventIds = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Queue<string> _seenEventIdOrder = new();
     private readonly object _eventIdGate = new();
 
     public DefaultWebhookEventBroadcaster(
@@ -41,8 +42,8 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         _broadcasterOptions = broadcasterOptions;
         _logger = logger;
         _broadcastMiddlewares = broadcastMiddlewares.ToList();
-        _selector = payloadFieldSelectorStrategies.FirstOrDefault() ?? new JsonPathPayloadFieldSelectorStrategy();
-        _comparator = payloadValueComparisonStrategies.FirstOrDefault() ?? new ScalarStringEqualityComparisonStrategy();
+        _selector = payloadFieldSelectorStrategies.LastOrDefault() ?? new JsonPathPayloadFieldSelectorStrategy();
+        _comparator = payloadValueComparisonStrategies.LastOrDefault() ?? new ScalarStringEqualityComparisonStrategy();
     }
 
     public async Task BroadcastAsync(NewWebhookEvent webhookEvent, CancellationToken cancellationToken = default)
@@ -137,7 +138,15 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
                 return true;
             }
 
+            var maxEntries = _broadcasterOptions.Value.MaxDeduplicationEntries;
+            if (maxEntries > 0 && _seenEventIds.Count >= maxEntries)
+            {
+                var oldest = _seenEventIdOrder.Dequeue();
+                _seenEventIds.Remove(oldest);
+            }
+
             _seenEventIds.Add(eventId);
+            _seenEventIdOrder.Enqueue(eventId);
             return false;
         }
     }

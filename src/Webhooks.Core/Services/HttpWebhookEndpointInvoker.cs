@@ -24,11 +24,19 @@ public class HttpWebhookEndpointInvoker(
             : JsonSerializer.SerializeToElement(newWebhookEvent.Payload);
         var deliveryEnvelope = new DeliveryEnvelope(eventId!, newWebhookEvent.EventType, payload, dispatchTimestamp);
 
-        var maxAttempts = options.Value.RetryAttempts;
+        var maxAttempts = Math.Max(1, options.Value.RetryAttempts);
+        var webhookEvent = new WebhookEvent(deliveryEnvelope.EventType, deliveryEnvelope.Payload, deliveryEnvelope.DispatchTimestamp);
 
         for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            var context = new WebhookEndpointInvocationContext(webhookSink, deliveryEnvelope, attempt);
+            using var request = new HttpRequestMessage(HttpMethod.Post, webhookSink.Url)
+            {
+                Content = JsonContent.Create(webhookEvent)
+            };
+            request.Headers.TryAddWithoutValidation("X-Webhook-EventId", deliveryEnvelope.EventId);
+            request.Headers.TryAddWithoutValidation("X-Webhook-DispatchTimestamp", deliveryEnvelope.DispatchTimestamp.ToString("O"));
+
+            var context = new WebhookEndpointInvocationContext(webhookSink, deliveryEnvelope, attempt, request);
             var pipeline = BuildPipeline(SendAsync);
             var result = await pipeline(context, cancellationToken);
 
@@ -40,7 +48,10 @@ public class HttpWebhookEndpointInvoker(
             var responseException = result.FinalFailureReason is null
                 ? null
                 : new HttpRequestException(result.FinalFailureReason);
-            var isTransient = transientFailureDetectionStrategy.IsTransient(null, responseException);
+            using var probeResponse = result.ResponseStatusCode.HasValue
+                ? new HttpResponseMessage(result.ResponseStatusCode.Value)
+                : null;
+            var isTransient = transientFailureDetectionStrategy.IsTransient(probeResponse, responseException);
             var canRetry = attempt < maxAttempts;
 
             if (!isTransient || !canRetry)
@@ -65,20 +76,7 @@ public class HttpWebhookEndpointInvoker(
 
     private async Task<DeliveryResult> SendAsync(WebhookEndpointInvocationContext context, CancellationToken cancellationToken)
     {
-        var webhookEvent = new WebhookEvent(
-            context.DeliveryEnvelope.EventType,
-            context.DeliveryEnvelope.Payload,
-            context.DeliveryEnvelope.DispatchTimestamp);
-
-        using var request = new HttpRequestMessage(HttpMethod.Post, context.WebhookSink.Url)
-        {
-            Content = JsonContent.Create(webhookEvent)
-        };
-
-        request.Headers.TryAddWithoutValidation("X-Webhook-EventId", context.DeliveryEnvelope.EventId);
-        request.Headers.TryAddWithoutValidation("X-Webhook-DispatchTimestamp", context.DeliveryEnvelope.DispatchTimestamp.ToString("O"));
-
-        var response = await httpClient.SendAsync(request, cancellationToken);
+        using var response = await httpClient.SendAsync(context.Request!, cancellationToken);
         if (response.IsSuccessStatusCode)
         {
             return new DeliveryResult(
@@ -95,6 +93,7 @@ public class HttpWebhookEndpointInvoker(
             context.Attempt,
             failureReason,
             context.DeliveryEnvelope.EventId,
-            "EndpointInvoker");
+            "EndpointInvoker",
+            response.StatusCode);
     }
 }

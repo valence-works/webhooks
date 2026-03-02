@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace Webhooks.Core;
 
 public enum DeliveryStatus
@@ -12,4 +14,5 @@ public sealed record DeliveryResult(
     int AttemptCount,
     string? FinalFailureReason,
     string EventIdCorrelation,
-    string OutcomeSource = "EndpointInvoker");
+    string OutcomeSource = "EndpointInvoker",
+    HttpStatusCode? ResponseStatusCode = null);

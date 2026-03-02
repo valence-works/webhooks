@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
         
         return services.AddSingleton<IWebhookEventBroadcaster, DefaultWebhookEventBroadcaster>()
             .AddSingleton<IWebhookSinkProvider, OptionsWebhookSinkProvider>()
-            .AddSingleton<IWebhookEndpointInvoker, HttpWebhookEndpointInvoker>()
+            .AddSingleton<IWebhookEndpointInvoker>(sp => sp.GetRequiredService<HttpWebhookEndpointInvoker>())
             .AddSingleton<IDispatcherInvocationCoordinator, DispatcherInvocationCoordinator>()
             .AddSingleton<IWebhookDispatcher, DefaultWebhookDispatcher>()
             .AddSingleton<IPayloadFieldSelectorStrategy, JsonPathPayloadFieldSelectorStrategy>()
