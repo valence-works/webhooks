@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-initial-src-spec`  
 **Created**: 2026-02-28  
-**Status**: Draft  
+**Status**: Ready for Review  
 **Input**: User description: "Create an initial specification based on the existing source code in src. FYI: the plan is to then enhance that spec and update the current source code, accordingly."
 
 ## Clarifications
