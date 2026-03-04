@@ -1,0 +1,69 @@
+name: ComplianceSummary
+version: 1.0.0
+purpose: Contract for final conventions-review summary used by maintainers/reviewers.
+
+fields:
+  summaryId:
+    type: string
+    required: true
+  scope:
+    type: object
+    required: true
+    properties:
+      includePaths:
+        type: array
+        items: string
+        required: true
+      excludePaths:
+        type: array
+        items: string
+        required: true
+  counts:
+    type: object
+    required: true
+    properties:
+      totalFindings: { type: integer, min: 0, required: true }
+      compliant: { type: integer, min: 0, required: true }
+      nonCompliant: { type: integer, min: 0, required: true }
+      resolved: { type: integer, min: 0, required: true }
+      deferred: { type: integer, min: 0, required: true }
+      waived: { type: integer, min: 0, required: true }
+      notApplicable: { type: integer, min: 0, required: true }
+      highPriorityApplicable: { type: integer, min: 0, required: true }
+      highPriorityResolved: { type: integer, min: 0, required: true }
+  validationGate:
+    type: object
+    required: true
+    properties:
+      buildPassed: { type: boolean, required: true }
+      impactedTestsPassed: { type: boolean, required: true }
+  decisions:
+    type: array
+    required: true
+    items:
+      type: object
+      required:
+        - findingId
+        - disposition
+        - rationale
+      properties:
+        findingId: { type: string }
+        disposition:
+          type: enum
+          values: [resolved, deferred, waived, not_applicable]
+        rationale: { type: string }
+        owner:
+          type: string
+          requiredWhen:
+            disposition: [deferred, waived]
+        targetRelease:
+          type: string
+          requiredWhen:
+            disposition: [deferred, waived]
+
+completionRules:
+  - allFindingsDispositioned == true
+  - highPriorityApplicable == highPriorityResolved
+  - validationGate.buildPassed == true
+  - validationGate.impactedTestsPassed == true
+  - allDeferredOrWaivedHaveOwnerAndTargetRelease == true
