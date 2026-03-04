@@ -1,5 +1,3 @@
-using System.Net.Http;
-
 namespace Webhooks.Core;
 
 public interface ITransientFailureDetectionStrategy

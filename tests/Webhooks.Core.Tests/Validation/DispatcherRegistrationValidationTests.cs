@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
 
 namespace Webhooks.Core.Tests.Validation;

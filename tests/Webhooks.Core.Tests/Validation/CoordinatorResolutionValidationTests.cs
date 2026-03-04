@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Webhooks.Core;
 
 namespace Webhooks.Core.Tests.Validation;
 

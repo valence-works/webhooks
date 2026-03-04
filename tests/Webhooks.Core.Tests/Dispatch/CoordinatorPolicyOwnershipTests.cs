@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 
