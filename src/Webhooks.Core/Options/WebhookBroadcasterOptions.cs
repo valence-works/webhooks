@@ -46,6 +46,9 @@ public class ConfigureWebhookEventBroadcasterOptions : IValidateOptions<WebhookB
 
         if (options.RetryAttempts <= 0)
             return ValidateOptionsResult.Fail("RetryAttempts must be greater than zero.");
+
+        if (options.MaxDeduplicationEntries < 0)
+            return ValidateOptionsResult.Fail("MaxDeduplicationEntries must not be negative.");
         
         return ValidateOptionsResult.Success;
     }

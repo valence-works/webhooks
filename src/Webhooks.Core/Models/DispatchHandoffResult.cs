@@ -11,4 +11,5 @@ public sealed record DispatchHandoffResult(
     string DispatcherName,
     DispatchHandoffStatus HandoffStatus,
     string EventIdCorrelation,
-    string? HandoffReason = null);
+    string? HandoffReason = null,
+    bool IsOverflow = false);

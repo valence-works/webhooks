@@ -26,6 +26,6 @@ public class OverflowPolicyTests
         public string Name => "default";
 
         public Task<DispatchHandoffResult> DispatchAsync(DeliveryEnvelope deliveryEnvelope, WebhookSink webhookSink, CancellationToken cancellationToken = default)
-            => Task.FromResult(new DispatchHandoffResult(Name, DispatchHandoffStatus.Rejected, deliveryEnvelope.EventId, "capacity reached"));
+            => Task.FromResult(new DispatchHandoffResult(Name, DispatchHandoffStatus.Rejected, deliveryEnvelope.EventId, "capacity reached", IsOverflow: true));
     }
 }

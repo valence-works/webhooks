@@ -26,6 +26,7 @@ public class HttpWebhookEndpointInvoker(
 
         var maxAttempts = Math.Max(1, options.Value.RetryAttempts);
         var webhookEvent = new WebhookEvent(deliveryEnvelope.EventType, deliveryEnvelope.Payload, deliveryEnvelope.DispatchTimestamp);
+        var pipeline = BuildPipeline(SendAsync);
 
         for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
@@ -37,7 +38,6 @@ public class HttpWebhookEndpointInvoker(
             request.Headers.TryAddWithoutValidation("X-Webhook-DispatchTimestamp", deliveryEnvelope.DispatchTimestamp.ToString("O"));
 
             var context = new WebhookEndpointInvocationContext(webhookSink, deliveryEnvelope, attempt, request);
-            var pipeline = BuildPipeline(SendAsync);
             var result = await pipeline(context, cancellationToken);
 
             if (result.Status == DeliveryStatus.Succeeded)
@@ -76,24 +76,45 @@ public class HttpWebhookEndpointInvoker(
 
     private async Task<DeliveryResult> SendAsync(WebhookEndpointInvocationContext context, CancellationToken cancellationToken)
     {
-        using var response = await httpClient.SendAsync(context.Request!, cancellationToken);
-        if (response.IsSuccessStatusCode)
+        try
+        {
+            using var response = await httpClient.SendAsync(context.Request!, cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                return new DeliveryResult(
+                    DeliveryStatus.Succeeded,
+                    context.Attempt,
+                    null,
+                    context.DeliveryEnvelope.EventId,
+                    "EndpointInvoker");
+            }
+
+            var failureReason = $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}";
+            return new DeliveryResult(
+                DeliveryStatus.Failed,
+                context.Attempt,
+                failureReason,
+                context.DeliveryEnvelope.EventId,
+                "EndpointInvoker",
+                response.StatusCode);
+        }
+        catch (HttpRequestException ex)
         {
             return new DeliveryResult(
-                DeliveryStatus.Succeeded,
+                DeliveryStatus.Failed,
                 context.Attempt,
-                null,
+                ex.Message,
                 context.DeliveryEnvelope.EventId,
                 "EndpointInvoker");
         }
-
-        var failureReason = $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}";
-        return new DeliveryResult(
-            DeliveryStatus.Failed,
-            context.Attempt,
-            failureReason,
-            context.DeliveryEnvelope.EventId,
-            "EndpointInvoker",
-            response.StatusCode);
+        catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            return new DeliveryResult(
+                DeliveryStatus.Failed,
+                context.Attempt,
+                $"Request timed out: {ex.Message}",
+                context.DeliveryEnvelope.EventId,
+                "EndpointInvoker");
+        }
     }
 }

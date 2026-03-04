@@ -10,7 +10,7 @@ Implement a contract-driven refinement of Webhooks Core using a two-plane archit
 ## Technical Context
 
 **Language/Version**: C# with multi-targeted .NET (`net6.0`, `net7.0`, `net8.0`, `net9.0`, `net10.0`)  
-**Primary Dependencies**: `Microsoft.Extensions.Hosting.Abstractions`, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Http.Polly`, `Microsoft.Extensions.Logging`, `Polly`/`Polly.Extensions.Http`  
+**Primary Dependencies**: `Microsoft.Extensions.Hosting.Abstractions`, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Logging`  
 **Storage**: In-memory runtime configuration/state in core; queue/outbox infrastructure only when provided by dispatcher extension modules  
 **Testing**: `dotnet test` (unit/integration/conformance coverage in solution test projects)  
 **Target Platform**: Cross-platform .NET host applications (Linux/macOS/Windows)
