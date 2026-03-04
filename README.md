@@ -1,5 +1,5 @@
-# Webhooks Core
-Webhooks Core is a .NET library that allows your applications to easily broadcast events via Webhooks. This is especially useful when you need to inform external applications of specific events occurring in your system.
+# Webhooks
+Webhooks is a .NET library that allows your applications to easily broadcast events via Webhooks. This is especially useful when you need to inform external applications of specific events occurring in your system.
 
 ## Features
 
