@@ -17,10 +17,10 @@
 
 **Purpose**: Establish review artifacts and scope controls used by all stories
 
-- [ ] T001 Create feature artifact folder index in `specs/001-apply-coding-conventions/artifacts/README.md`
-- [ ] T002 Create rule catalog extracted from conventions in `specs/001-apply-coding-conventions/artifacts/convention-rules.md`
-- [ ] T003 [P] Create scope include/exclude manifest in `specs/001-apply-coding-conventions/artifacts/scope-manifest.md`
-- [ ] T004 [P] Create exception decision log template in `specs/001-apply-coding-conventions/artifacts/exception-log.md`
+- [x] T001 Create feature artifact folder index in `specs/001-apply-coding-conventions/artifacts/README.md`
+- [x] T002 Create rule catalog extracted from conventions in `specs/001-apply-coding-conventions/artifacts/convention-rules.md`
+- [x] T003 [P] Create scope include/exclude manifest in `specs/001-apply-coding-conventions/artifacts/scope-manifest.md`
+- [x] T004 [P] Create exception decision log template in `specs/001-apply-coding-conventions/artifacts/exception-log.md`
 
 ---
 
@@ -30,11 +30,11 @@
 
 **⚠️ CRITICAL**: No user story work begins until this phase is complete
 
-- [ ] T005 Define `ComplianceFinding` capture schema in `specs/001-apply-coding-conventions/artifacts/finding-schema.md`
-- [ ] T006 [P] Define `RemediationDecision` capture schema in `specs/001-apply-coding-conventions/artifacts/decision-schema.md`
-- [ ] T007 [P] Define build+tests validation gate checklist in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
-- [ ] T008 Define finding-to-change traceability matrix template in `specs/001-apply-coding-conventions/artifacts/traceability-matrix.md`
-- [ ] T009 Define summary assembly template aligned to contract in `specs/001-apply-coding-conventions/artifacts/compliance-summary.md`
+- [x] T005 Define `ComplianceFinding` capture schema in `specs/001-apply-coding-conventions/artifacts/finding-schema.md`
+- [x] T006 [P] Define `RemediationDecision` capture schema in `specs/001-apply-coding-conventions/artifacts/decision-schema.md`
+- [x] T007 [P] Define build+tests validation gate checklist in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
+- [x] T008 Define finding-to-change traceability matrix template in `specs/001-apply-coding-conventions/artifacts/traceability-matrix.md`
+- [x] T009 Define summary assembly template aligned to contract in `specs/001-apply-coding-conventions/artifacts/compliance-summary.md`
 
 **Checkpoint**: Foundation complete — user stories can proceed
 
@@ -46,12 +46,12 @@
 
 **Independent Test**: Confirm all in-scope areas (`src/`, `tests/`, authored C# in `samples/`) have findings recorded with status, applicability, priority, and rationale
 
-- [ ] T010 [P] [US1] Review `src/` conventions compliance and record findings in `specs/001-apply-coding-conventions/artifacts/findings-src.md`
-- [ ] T011 [P] [US1] Review `tests/` conventions compliance and record findings in `specs/001-apply-coding-conventions/artifacts/findings-tests.md`
-- [ ] T012 [P] [US1] Review authored C# in `samples/` and record findings in `specs/001-apply-coding-conventions/artifacts/findings-samples.md`
-- [ ] T013 [US1] Consolidate all findings into master register in `specs/001-apply-coding-conventions/artifacts/finding-register.md`
-- [ ] T014 [US1] Assign applicability, priority, and impact for each finding in `specs/001-apply-coding-conventions/artifacts/finding-register.md`
-- [ ] T015 [US1] Link each finding to source rule IDs in `specs/001-apply-coding-conventions/artifacts/traceability-matrix.md`
+- [x] T010 [P] [US1] Review `src/` conventions compliance and record findings in `specs/001-apply-coding-conventions/artifacts/findings-src.md`
+- [x] T011 [P] [US1] Review `tests/` conventions compliance and record findings in `specs/001-apply-coding-conventions/artifacts/findings-tests.md`
+- [x] T012 [P] [US1] Review authored C# in `samples/` and record findings in `specs/001-apply-coding-conventions/artifacts/findings-samples.md`
+- [x] T013 [US1] Consolidate all findings into master register in `specs/001-apply-coding-conventions/artifacts/finding-register.md`
+- [x] T014 [US1] Assign applicability, priority, and impact for each finding in `specs/001-apply-coding-conventions/artifacts/finding-register.md`
+- [x] T015 [US1] Link each finding to source rule IDs in `specs/001-apply-coding-conventions/artifacts/traceability-matrix.md`
 
 **Checkpoint**: User Story 1 is independently testable and provides MVP value
 
