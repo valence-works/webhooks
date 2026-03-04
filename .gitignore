@@ -1,5 +1,12 @@
-.idea
+.idea/
+.vscode/
 .DS_Store
-App_Data
-bin
-obj
+Thumbs.db
+*.tmp
+*.swp
+App_Data/
+bin/
+obj/
+*.user
+*.suo
+packages/

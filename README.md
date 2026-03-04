@@ -102,6 +102,8 @@ Architecture decisions are documented in [docs/adr](docs/adr).
 
 Looking to contribute? We'd love your help, and there are plenty of ways to get involved.
 
+Project governance and workflow rules are defined in [.specify/memory/constitution.md](.specify/memory/constitution.md).
+
 ## License
 
 This project is licensed under the [MIT License](https://github.com/sfmskywalker/webhooks-core/blob/main/LICENSE).

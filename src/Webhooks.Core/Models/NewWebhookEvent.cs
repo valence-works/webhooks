@@ -1,3 +1,7 @@
 namespace Webhooks.Core;
 
-public record NewWebhookEvent(string EventType, object? Payload = null);
+public record NewWebhookEvent(
+	string EventType,
+	object? Payload = null,
+	string? EventId = null,
+	DateTimeOffset? DispatchTimestamp = null);

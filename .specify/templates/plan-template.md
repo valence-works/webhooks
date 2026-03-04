@@ -31,7 +31,10 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Spec-first gate: `spec.md` includes clarified requirements, edge cases, and measurable outcomes.
+- Contract boundary gate: ownership and extension points are explicit (e.g., orchestration vs transport).
+- Simplicity/compatibility gate: defaults and backward-compatibility impact are documented.
+- Verification gate: plan lists project-level build and relevant test validation steps.
 
 ## Project Structure
 

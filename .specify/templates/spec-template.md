@@ -100,6 +100,14 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+### Contract Boundaries *(mandatory for extensible features)*
+
+- **Orchestration Owner**: [Which component coordinates workflow and sequencing]
+- **Terminal Executor**: [Which component performs final transport/persistence action]
+- **Extension Points**: [DI/plugin contracts host apps can replace]
+- **Retry/Failure Ownership**: [Where retries happen, how transient failures are determined]
+- **Default vs Override Behavior**: [Baseline defaults and host override rules]
+
 ## Success Criteria *(mandatory)*
 
 <!--

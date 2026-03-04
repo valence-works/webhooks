@@ -246,6 +246,8 @@ With multiple developers:
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
 - Verify tests fail before implementing
+- Include explicit tasks for extension-point wiring and configuration validation when applicable
+- Include build/test verification tasks before declaring a story complete
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
