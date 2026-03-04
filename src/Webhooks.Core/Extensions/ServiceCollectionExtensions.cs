@@ -37,7 +37,8 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IBackgroundTaskScheduler, ChannelBackgroundTaskScheduler>()
             .AddSingleton<IBackgroundTaskChannel, BackgroundTaskChannel>()
             .AddSingleton<ISystemClock, DefaultSystemClock>()
-            .AddSingleton(CreateBroadcasterStrategy);
+            .AddSingleton(CreateBroadcasterStrategy)
+            .AddHostedService<ValidateOptionsOnStart>();
     }
 
     public static IServiceCollection AddWebhooksBackgroundProcessor(this IServiceCollection services)

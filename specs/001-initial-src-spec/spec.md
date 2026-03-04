@@ -166,8 +166,8 @@ As an application owner, I can select or replace the delivery dispatcher and com
 - **FR-014b**: EventId-based deduplication MUST be disabled by default when no host policy is configured.
 - **FR-015**: Queued dispatcher modules/integrations MUST allow host applications to configure overflow policy for queued processing.
 - **FR-016**: Queued dispatcher modules/integrations MUST default overflow policy to immediate failure when the host application does not override it.
-- **FR-017**: The default HTTP dispatcher MUST allow host applications to configure outbound HTTP retry attempts and backoff strategy.
-- **FR-018**: The default HTTP dispatcher MUST provide default outbound retry attempts and backoff strategy when host applications do not override retry settings.
+- **FR-017**: The default HTTP dispatcher MUST allow host applications to configure outbound HTTP retry attempts.
+- **FR-018**: The default HTTP dispatcher MUST provide default outbound retry attempts when host applications do not override retry settings.
 - **FR-019**: System MUST allow external modules to add or replace dispatcher implementations (for example Wolverine, RabbitMQ, or MassTransit-based dispatchers).
 - **FR-020**: System MUST support a broadcast middleware pipeline that executes once per broadcast operation in the dispatch plane.
 - **FR-020a**: Broadcast middleware MUST wrap the full dispatch operation boundary, including matched-sink iteration and dispatcher handoff.

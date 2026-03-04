@@ -59,11 +59,7 @@ public class DispatcherInvocationCoordinator(
             return handoffResult;
         }
 
-        var reason = handoffResult.HandoffReason ?? string.Empty;
-        var overflowRejected = reason.Contains("capacity", StringComparison.OrdinalIgnoreCase)
-                               || reason.Contains("overflow", StringComparison.OrdinalIgnoreCase);
-
-        if (!overflowRejected)
+        if (!handoffResult.IsOverflow)
         {
             return handoffResult;
         }

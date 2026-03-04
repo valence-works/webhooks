@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Options;
-using System.Text.RegularExpressions;
 using Webhooks.Core.Options;
 using Webhooks.Core.Strategies;
 
@@ -77,8 +76,6 @@ public static class WebhookEventBroadcasterOptionsExtensions
 
 public class ValidateWebhookSinksOptions : IValidateOptions<WebhookSinksOptions>
 {
-    private static readonly Regex JsonPathSubsetRegex = new("^\\$([.][A-Za-z_][A-Za-z0-9_]*)+$", RegexOptions.Compiled);
-
     public ValidateOptionsResult Validate(string? name, WebhookSinksOptions options)
     {
         var sinks = options.Sinks.ToList();
@@ -127,7 +124,7 @@ public class ValidateWebhookSinksOptions : IValidateOptions<WebhookSinksOptions>
 
                 foreach (var payloadFilter in subscription.PayloadFilters)
                 {
-                    if (!JsonPathSubsetRegex.IsMatch(payloadFilter.Selector))
+                    if (!JsonPathPayloadFieldSelectorStrategy.SelectorRegex.IsMatch(payloadFilter.Selector))
                     {
                         return ValidateOptionsResult.Fail(
                             $"Sink '{sink.SinkId}' has invalid payload selector '{payloadFilter.Selector}'. Only restricted JsonPath subset is supported.");
