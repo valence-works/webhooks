@@ -10,18 +10,19 @@
 | Metric | Value |
 |--------|-------|
 | Total Findings | 72 |
-| Resolved | 53 (73.6%) |
-| Deferred | 8 — breaking API changes, targeted for next major version |
-| Waived | 11 — multi-type files, targeted for next housekeeping pass |
+| Resolved | 71 (98.6%) |
+| Deferred | 0 |
+| Waived | 1 — `WebhookEvent`/`WebhookEvent<T>` co-location (intentional) |
 | Build | ✅ 0 warnings, 0 errors |
 | Tests | ✅ 32/32 passing |
 
 ### Key Changes Applied
 
-- **sealed modifier**: ~39 classes/records across src/, 25 test classes, 1 sample class
+- **sealed modifier**: ~39 classes/records across src/, 24 test classes, sample classes
 - **Field renames**: 17 underscore-prefixed fields renamed to camelCase
 - **XML documentation**: 17 malformed docs fixed, ~100 missing docs added
-- **No breaking changes**: All API-breaking items deferred with documented rationale
+- **Breaking changes applied**: Async naming (`EnqueueWorkAsync`, `WaitAsync`), `CancellationToken` parameters added to `IBackgroundTaskProcessor`, propagated through hosted services and strategies
+- **Multi-type file splits**: 10 of 11 multi-type files split into individual files (1 waived — `WebhookEvent`/`WebhookEvent<T>`)
 
 ## Artifact Index
 
@@ -56,7 +57,7 @@
 
 | Artifact | Description | Status |
 |----------|-------------|--------|
-| [remediation-plan.md](remediation-plan.md) | 5 safe batches + 4 deferred | ✅ |
+| [remediation-plan.md](remediation-plan.md) | 9 batches (5 safe + 4 previously deferred, all applied) | ✅ |
 | [decision-register.md](decision-register.md) | All 72 findings dispositioned | ✅ |
 
 ### Phase 5 — US3: Validate & Sign Off
@@ -64,7 +65,7 @@
 | Artifact | Description | Status |
 |----------|-------------|--------|
 | [compliance-summary.instance.yaml](compliance-summary.instance.yaml) | Contract-aligned YAML instance | ✅ |
-| [open-items.md](open-items.md) | 19 open items with owner + target release | ✅ |
+| [open-items.md](open-items.md) | 1 remaining waived item (F-064 — intentional) | ✅ |
 | [sign-off.md](sign-off.md) | Reviewer sign-off record — pending | ⏳ |
 
 ## Conventions Baseline
@@ -76,5 +77,4 @@
 ## Next Steps
 
 1. **Reviewer sign-off**: Review [sign-off.md](sign-off.md) and approve/reject
-2. **Next major version**: Address 8 deferred high-priority items (async naming, CancellationToken) — see [open-items.md](open-items.md)
-3. **Housekeeping pass**: Consider 11 waived multi-type file splits
+2. **Intentional waiver**: `WebhookEvent`/`WebhookEvent<T>` co-location (F-064) is intentional — no action required
