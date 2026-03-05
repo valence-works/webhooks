@@ -1,6 +1,6 @@
 # Finding Register: Master Consolidated List
 
-**Feature**: `001-apply-coding-conventions`  
+**Feature**: `002-apply-coding-conventions`  
 **Created**: 2026-03-04  
 **Sources**: [findings-src.md](findings-src.md), [findings-tests.md](findings-tests.md), [findings-samples.md](findings-samples.md)
 

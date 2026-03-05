@@ -1,6 +1,6 @@
 # Exception Decision Log
 
-**Feature**: `001-apply-coding-conventions`  
+**Feature**: `002-apply-coding-conventions`  
 **Created**: 2026-03-04  
 **Rationale**: FR-005, FR-011, Research Decision 3
 

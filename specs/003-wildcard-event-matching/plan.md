@@ -1,7 +1,7 @@
 # Implementation Plan: Wildcard Event-Type Matching
 
-**Branch**: `001-wildcard-event-matching` | **Date**: 2026-03-05 | **Spec**: `/specs/001-wildcard-event-matching/spec.md`
-**Input**: Feature specification from `/specs/001-wildcard-event-matching/spec.md`
+**Branch**: `003-wildcard-event-matching` | **Date**: 2026-03-05 | **Spec**: `/specs/003-wildcard-event-matching/spec.md`
+**Input**: Feature specification from `/specs/003-wildcard-event-matching/spec.md`
 
 ## Summary
 
@@ -35,7 +35,7 @@ Status before Phase 0: PASS
 ### Documentation (this feature)
 
 ```text
-specs/001-wildcard-event-matching/
+specs/003-wildcard-event-matching/
 ├── plan.md
 ├── research.md
 ├── data-model.md
@@ -78,7 +78,7 @@ samples/
 - Confirmed pluggability boundary: event-type matching policy is host-replaceable and owned by broadcaster orchestration.
 - Confirmed compatibility: literal matching remains case-sensitive exact; payload criteria behavior unchanged.
 
-See: `/specs/001-wildcard-event-matching/research.md`
+See: `/specs/003-wildcard-event-matching/research.md`
 
 ## Phase 1: Design Output
 
@@ -87,9 +87,9 @@ See: `/specs/001-wildcard-event-matching/research.md`
 - Quickstart defines focused verification workflow for routing behavior and docs alignment.
 
 See:
-- `/specs/001-wildcard-event-matching/data-model.md`
-- `/specs/001-wildcard-event-matching/contracts/`
-- `/specs/001-wildcard-event-matching/quickstart.md`
+- `/specs/003-wildcard-event-matching/data-model.md`
+- `/specs/003-wildcard-event-matching/contracts/`
+- `/specs/003-wildcard-event-matching/quickstart.md`
 
 ## Post-Design Constitution Check
 

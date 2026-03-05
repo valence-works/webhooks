@@ -1,6 +1,6 @@
 # Artifacts: Codebase Coding Conventions Review
 
-**Feature**: `001-apply-coding-conventions`  
+**Feature**: `002-apply-coding-conventions`  
 **Created**: 2026-03-04  
 **Status**: Implementation complete — pending reviewer sign-off  
 **Spec**: [../spec.md](../spec.md) | **Plan**: [../plan.md](../plan.md) | **Tasks**: [../tasks.md](../tasks.md)

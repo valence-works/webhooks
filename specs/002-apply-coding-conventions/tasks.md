@@ -1,6 +1,6 @@
 # Tasks: Codebase Coding Conventions Review
 
-**Input**: Design documents from `/specs/001-apply-coding-conventions/`
+**Input**: Design documents from `/specs/002-apply-coding-conventions/`
 **Prerequisites**: plan.md (required), spec.md (required), research.md, data-model.md, contracts/, quickstart.md
 
 **Tests**: No new test-authoring tasks are included; this feature requires running existing impacted automated tests as validation gates.
@@ -17,10 +17,10 @@
 
 **Purpose**: Establish review artifacts and scope controls used by all stories
 
-- [x] T001 Create feature artifact folder index in `specs/001-apply-coding-conventions/artifacts/README.md`
-- [x] T002 Create rule catalog extracted from conventions in `specs/001-apply-coding-conventions/artifacts/convention-rules.md`
-- [x] T003 [P] Create scope include/exclude manifest in `specs/001-apply-coding-conventions/artifacts/scope-manifest.md`
-- [x] T004 [P] Create exception decision log template in `specs/001-apply-coding-conventions/artifacts/exception-log.md`
+- [x] T001 Create feature artifact folder index in `specs/002-apply-coding-conventions/artifacts/README.md`
+- [x] T002 Create rule catalog extracted from conventions in `specs/002-apply-coding-conventions/artifacts/convention-rules.md`
+- [x] T003 [P] Create scope include/exclude manifest in `specs/002-apply-coding-conventions/artifacts/scope-manifest.md`
+- [x] T004 [P] Create exception decision log template in `specs/002-apply-coding-conventions/artifacts/exception-log.md`
 
 ---
 
@@ -30,11 +30,11 @@
 
 **⚠️ CRITICAL**: No user story work begins until this phase is complete
 
-- [x] T005 Define `ComplianceFinding` capture schema in `specs/001-apply-coding-conventions/artifacts/finding-schema.md`
-- [x] T006 [P] Define `RemediationDecision` capture schema in `specs/001-apply-coding-conventions/artifacts/decision-schema.md`
-- [x] T007 [P] Define build+tests validation gate checklist in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
-- [x] T008 Define finding-to-change traceability matrix template in `specs/001-apply-coding-conventions/artifacts/traceability-matrix.md`
-- [x] T009 Define summary assembly template aligned to contract in `specs/001-apply-coding-conventions/artifacts/compliance-summary.md`
+- [x] T005 Define `ComplianceFinding` capture schema in `specs/002-apply-coding-conventions/artifacts/finding-schema.md`
+- [x] T006 [P] Define `RemediationDecision` capture schema in `specs/002-apply-coding-conventions/artifacts/decision-schema.md`
+- [x] T007 [P] Define build+tests validation gate checklist in `specs/002-apply-coding-conventions/artifacts/validation-gate.md`
+- [x] T008 Define finding-to-change traceability matrix template in `specs/002-apply-coding-conventions/artifacts/traceability-matrix.md`
+- [x] T009 Define summary assembly template aligned to contract in `specs/002-apply-coding-conventions/artifacts/compliance-summary.md`
 
 **Checkpoint**: Foundation complete — user stories can proceed
 
@@ -46,12 +46,12 @@
 
 **Independent Test**: Confirm all in-scope areas (`src/`, `tests/`, authored C# in `samples/`) have findings recorded with status, applicability, priority, and rationale
 
-- [x] T010 [P] [US1] Review `src/` conventions compliance and record findings in `specs/001-apply-coding-conventions/artifacts/findings-src.md`
-- [x] T011 [P] [US1] Review `tests/` conventions compliance and record findings in `specs/001-apply-coding-conventions/artifacts/findings-tests.md`
-- [x] T012 [P] [US1] Review authored C# in `samples/` and record findings in `specs/001-apply-coding-conventions/artifacts/findings-samples.md`
-- [x] T013 [US1] Consolidate all findings into master register in `specs/001-apply-coding-conventions/artifacts/finding-register.md`
-- [x] T014 [US1] Assign applicability, priority, and impact for each finding in `specs/001-apply-coding-conventions/artifacts/finding-register.md`
-- [x] T015 [US1] Link each finding to source rule IDs in `specs/001-apply-coding-conventions/artifacts/traceability-matrix.md`
+- [x] T010 [P] [US1] Review `src/` conventions compliance and record findings in `specs/002-apply-coding-conventions/artifacts/findings-src.md`
+- [x] T011 [P] [US1] Review `tests/` conventions compliance and record findings in `specs/002-apply-coding-conventions/artifacts/findings-tests.md`
+- [x] T012 [P] [US1] Review authored C# in `samples/` and record findings in `specs/002-apply-coding-conventions/artifacts/findings-samples.md`
+- [x] T013 [US1] Consolidate all findings into master register in `specs/002-apply-coding-conventions/artifacts/finding-register.md`
+- [x] T014 [US1] Assign applicability, priority, and impact for each finding in `specs/002-apply-coding-conventions/artifacts/finding-register.md`
+- [x] T015 [US1] Link each finding to source rule IDs in `specs/002-apply-coding-conventions/artifacts/traceability-matrix.md`
 
 **Checkpoint**: User Story 1 is independently testable and provides MVP value
 
@@ -63,14 +63,14 @@
 
 **Independent Test**: Verify applicable high-priority findings are remediated, exceptions are justified, and validation gates pass
 
-- [x] T016 [US2] Create prioritized remediation plan from finding register in `specs/001-apply-coding-conventions/artifacts/remediation-plan.md`
-- [x] T017 [P] [US2] Apply conventions remediations in `src/Webhooks.Core/**/*.cs` and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-src.md`
-- [x] T018 [P] [US2] Apply conventions remediations in `tests/Webhooks.Core.Tests/**/*.cs` and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-tests.md`
-- [x] T019 [P] [US2] Apply conventions remediations in `samples/**/*.cs` (authored files only) and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-samples.md`
-- [x] T020 [US2] Record ADR/architecture precedence exceptions with rationale/approval in `specs/001-apply-coding-conventions/artifacts/exception-log.md`
-- [x] T021 [US2] Update final per-finding dispositions and ownership targets in `specs/001-apply-coding-conventions/artifacts/decision-register.md`
-- [x] T022 [US2] Capture build validation outcome in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
-- [x] T023 [US2] Capture impacted automated test results in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
+- [x] T016 [US2] Create prioritized remediation plan from finding register in `specs/002-apply-coding-conventions/artifacts/remediation-plan.md`
+- [x] T017 [P] [US2] Apply conventions remediations in `src/Webhooks.Core/**/*.cs` and log results in `specs/002-apply-coding-conventions/artifacts/remediation-log-src.md`
+- [x] T018 [P] [US2] Apply conventions remediations in `tests/Webhooks.Core.Tests/**/*.cs` and log results in `specs/002-apply-coding-conventions/artifacts/remediation-log-tests.md`
+- [x] T019 [P] [US2] Apply conventions remediations in `samples/**/*.cs` (authored files only) and log results in `specs/002-apply-coding-conventions/artifacts/remediation-log-samples.md`
+- [x] T020 [US2] Record ADR/architecture precedence exceptions with rationale/approval in `specs/002-apply-coding-conventions/artifacts/exception-log.md`
+- [x] T021 [US2] Update final per-finding dispositions and ownership targets in `specs/002-apply-coding-conventions/artifacts/decision-register.md`
+- [x] T022 [US2] Capture build validation outcome in `specs/002-apply-coding-conventions/artifacts/validation-gate.md`
+- [x] T023 [US2] Capture impacted automated test results in `specs/002-apply-coding-conventions/artifacts/validation-gate.md`
 
 **Checkpoint**: User Story 2 remediations are complete and behavior-safety gate is satisfied
 
@@ -82,11 +82,11 @@
 
 **Independent Test**: Verify summary includes all findings/dispositions, validation gate status, unresolved owner/target-release details, and reviewer sign-off
 
-- [x] T024 [P] [US3] Assemble final compliance summary narrative in `specs/001-apply-coding-conventions/artifacts/compliance-summary.md`
-- [x] T025 [US3] Produce contract-aligned summary instance in `specs/001-apply-coding-conventions/artifacts/compliance-summary.instance.yaml`
-- [x] T026 [US3] Validate completion rules against decision register in `specs/001-apply-coding-conventions/artifacts/decision-register.md`
-- [x] T027 [P] [US3] Record unresolved deferred/waived ownership and target release in `specs/001-apply-coding-conventions/artifacts/open-items.md`
-- [x] T028 [US3] Record reviewer sign-off outcome in `specs/001-apply-coding-conventions/artifacts/sign-off.md`
+- [x] T024 [P] [US3] Assemble final compliance summary narrative in `specs/002-apply-coding-conventions/artifacts/compliance-summary.md`
+- [x] T025 [US3] Produce contract-aligned summary instance in `specs/002-apply-coding-conventions/artifacts/compliance-summary.instance.yaml`
+- [x] T026 [US3] Validate completion rules against decision register in `specs/002-apply-coding-conventions/artifacts/decision-register.md`
+- [x] T027 [P] [US3] Record unresolved deferred/waived ownership and target release in `specs/002-apply-coding-conventions/artifacts/open-items.md`
+- [x] T028 [US3] Record reviewer sign-off outcome in `specs/002-apply-coding-conventions/artifacts/sign-off.md`
 
 **Checkpoint**: User Story 3 completes auditable closure of the feature
 
@@ -96,9 +96,9 @@
 
 **Purpose**: Final consistency, docs alignment, and handoff readiness
 
-- [x] T029 [P] Cross-check `quickstart.md` steps against executed workflow in `specs/001-apply-coding-conventions/quickstart.md`
-- [x] T030 [P] Verify contract/summary alignment in `specs/001-apply-coding-conventions/contracts/compliance-summary.contract.yaml`
-- [x] T031 Finalize implementation handoff notes in `specs/001-apply-coding-conventions/artifacts/README.md`
+- [x] T029 [P] Cross-check `quickstart.md` steps against executed workflow in `specs/002-apply-coding-conventions/quickstart.md`
+- [x] T030 [P] Verify contract/summary alignment in `specs/002-apply-coding-conventions/contracts/compliance-summary.contract.yaml`
+- [x] T031 Finalize implementation handoff notes in `specs/002-apply-coding-conventions/artifacts/README.md`
 
 ---
 
@@ -139,9 +139,9 @@
 
 ```bash
 # Parallel review streams
-T010 [US1] -> specs/001-apply-coding-conventions/artifacts/findings-src.md
-T011 [US1] -> specs/001-apply-coding-conventions/artifacts/findings-tests.md
-T012 [US1] -> specs/001-apply-coding-conventions/artifacts/findings-samples.md
+T010 [US1] -> specs/002-apply-coding-conventions/artifacts/findings-src.md
+T011 [US1] -> specs/002-apply-coding-conventions/artifacts/findings-tests.md
+T012 [US1] -> specs/002-apply-coding-conventions/artifacts/findings-samples.md
 ```
 
 ## Parallel Example: User Story 2

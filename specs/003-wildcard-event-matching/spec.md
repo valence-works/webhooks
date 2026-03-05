@@ -1,6 +1,6 @@
 # Feature Specification: Wildcard Event-Type Matching
 
-**Feature Branch**: `001-wildcard-event-matching`  
+**Feature Branch**: `003-wildcard-event-matching`  
 **Created**: 2026-03-05  
 **Status**: Draft  
 **Input**: User description: "Handover: Wildcard Event-Type Matching & Pluggable Subscription Predicate"

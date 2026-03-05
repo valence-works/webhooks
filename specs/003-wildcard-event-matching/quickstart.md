@@ -21,11 +21,11 @@ dotnet test Webhooks.sln
 ```
 
 ## 4) Validate planning artifacts
-- Spec: `specs/001-wildcard-event-matching/spec.md`
-- Plan: `specs/001-wildcard-event-matching/plan.md`
-- Research: `specs/001-wildcard-event-matching/research.md`
-- Data model: `specs/001-wildcard-event-matching/data-model.md`
-- Contracts: `specs/001-wildcard-event-matching/contracts/`
+- Spec: `specs/003-wildcard-event-matching/spec.md`
+- Plan: `specs/003-wildcard-event-matching/plan.md`
+- Research: `specs/003-wildcard-event-matching/research.md`
+- Data model: `specs/003-wildcard-event-matching/data-model.md`
+- Contracts: `specs/003-wildcard-event-matching/contracts/`
 
 ## 5) Optional sample smoke test
 ```bash
