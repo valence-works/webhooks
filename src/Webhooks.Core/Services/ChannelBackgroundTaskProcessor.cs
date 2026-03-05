@@ -35,7 +35,7 @@ public sealed class ChannelBackgroundTaskProcessor(IBackgroundTaskChannel channe
         cts.Cancel();
         await Task.CompletedTask; // Ensure async signature is satisfied.
 #endif
-        await Task.WhenAll(tasks); // Wait for all tasks to finish.
+        await Task.WhenAll(tasks).WaitAsync(cancellationToken); // Wait for all tasks to finish, respecting the shutdown deadline.
         tasks.Clear();
 
         isStarted = false;
