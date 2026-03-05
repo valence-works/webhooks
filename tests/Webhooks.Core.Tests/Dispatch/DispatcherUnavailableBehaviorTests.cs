@@ -1,11 +1,10 @@
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class DispatcherUnavailableBehaviorTests
+public sealed class DispatcherUnavailableBehaviorTests
 {
     [Fact]
     public async Task DispatchAsync_Returns_Rejected_When_No_Dispatcher_Is_Available()

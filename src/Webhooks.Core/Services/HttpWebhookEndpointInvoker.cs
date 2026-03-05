@@ -6,7 +6,10 @@ using WebhooksCore;
 
 namespace Webhooks.Core.Services;
 
-public class HttpWebhookEndpointInvoker(
+/// <summary>
+/// Invokes webhook endpoints over HTTP, applying retry and middleware pipelines.
+/// </summary>
+public sealed class HttpWebhookEndpointInvoker(
     HttpClient httpClient,
     ISystemClock systemClock,
     IEnumerable<IWebhookEndpointInvokerMiddleware> middlewares,

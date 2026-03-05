@@ -2,16 +2,19 @@ using Microsoft.Extensions.Hosting;
 
 namespace Webhooks.Core.HostedServices;
 
-public class StartBackgroundProcessor(IBackgroundTaskProcessor backgroundTaskProcessor, IBackgroundTaskChannel backgroundTaskChannel) : IHostedService
+/// <summary>
+/// Hosted service that starts and stops the background task processor.
+/// </summary>
+public sealed class StartBackgroundProcessor(IBackgroundTaskProcessor backgroundTaskProcessor, IBackgroundTaskChannel backgroundTaskChannel) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await backgroundTaskProcessor.StartAsync();
+        await backgroundTaskProcessor.StartAsync(cancellationToken);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         backgroundTaskChannel.Writer.Complete();
-        await backgroundTaskProcessor.StopAsync();
+        await backgroundTaskProcessor.StopAsync(cancellationToken);
     }
 }

@@ -1,12 +1,11 @@
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Routing;
 
-public class MissingPayloadFieldTests
+public sealed class MissingPayloadFieldTests
 {
     [Fact]
     public async Task BroadcastAsync_Does_Not_Match_When_Required_Payload_Field_Is_Missing()

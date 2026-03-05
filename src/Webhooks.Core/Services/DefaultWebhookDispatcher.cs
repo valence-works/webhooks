@@ -2,7 +2,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Webhooks.Core.Services;
 
-public class DefaultWebhookDispatcher(
+/// <summary>
+/// Default dispatcher that delivers webhook events via the endpoint invoker.
+/// </summary>
+public sealed class DefaultWebhookDispatcher(
     IWebhookEndpointInvoker endpointInvoker,
     ILogger<DefaultWebhookDispatcher> logger) : IWebhookDispatcher
 {

@@ -4,7 +4,10 @@ using Webhooks.Core.Options;
 
 namespace Webhooks.Core.HostedServices;
 
-public class ValidateOptionsOnStart(
+/// <summary>
+/// Hosted service that eagerly validates options on application startup.
+/// </summary>
+public sealed class ValidateOptionsOnStart(
     IOptions<WebhookSinksOptions> sinksOptions,
     IOptions<WebhookBroadcasterOptions> broadcasterOptions) : IHostedService
 {

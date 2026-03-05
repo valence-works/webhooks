@@ -60,7 +60,7 @@ Deprecated terms that should not be reintroduced:
 
 ## Component Diagram
 
-- Spec-local diagram: `specs/001-initial-src-spec/system-components.md`
+- Spec-local diagram: `specs/002-initial-src-spec/system-components.md`
 - Canonical docs diagram: `docs/architecture/system-components.md`
 
 ## User Scenarios & Testing *(mandatory)*

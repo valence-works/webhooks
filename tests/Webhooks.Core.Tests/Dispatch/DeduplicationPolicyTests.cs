@@ -1,12 +1,11 @@
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class DeduplicationPolicyTests
+public sealed class DeduplicationPolicyTests
 {
     [Fact]
     public async Task BroadcastAsync_Skips_Duplicate_EventId_When_Deduplication_Enabled()

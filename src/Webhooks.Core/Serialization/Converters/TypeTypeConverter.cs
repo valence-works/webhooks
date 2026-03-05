@@ -4,8 +4,11 @@ using JetBrains.Annotations;
 
 namespace Webhooks.Core.Serialization.Converters;
 
+/// <summary>
+/// A <see cref="TypeConverter"/> that converts between <see cref="string"/> and <see cref="Type"/>.
+/// </summary>
 [PublicAPI]
-public class TypeTypeConverter : TypeConverter
+public sealed class TypeTypeConverter : TypeConverter
 {
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
     {

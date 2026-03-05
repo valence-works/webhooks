@@ -1,7 +1,7 @@
 # Implementation Plan: Baseline Webhook Broadcasting Behavior
 
-**Branch**: `001-initial-src-spec` | **Date**: 2026-03-01 | **Spec**: `/specs/001-initial-src-spec/spec.md`
-**Input**: Feature specification from `/specs/001-initial-src-spec/spec.md`
+**Branch**: `001-initial-src-spec` | **Date**: 2026-03-01 | **Spec**: `/specs/002-initial-src-spec/spec.md`
+**Input**: Feature specification from `/specs/002-initial-src-spec/spec.md`
 
 ## Summary
 
@@ -35,7 +35,7 @@ Status before Phase 0: PASS
 ### Documentation (this feature)
 
 ```text
-specs/001-initial-src-spec/
+specs/002-initial-src-spec/
 ├── plan.md
 ├── research.md
 ├── data-model.md
@@ -82,7 +82,7 @@ samples/
 - Overflow policy defaults/overrides and deduplication default-disabled behavior confirmed.
 - Single-dispatcher-per-sink selection policy confirmed.
 
-See: `/specs/001-initial-src-spec/research.md`
+See: `/specs/002-initial-src-spec/research.md`
 
 ## Phase 1: Design Output
 
@@ -91,9 +91,9 @@ See: `/specs/001-initial-src-spec/research.md`
 - Quickstart captures build/test and verification outcomes for implementation handoff.
 
 See:
-- `/specs/001-initial-src-spec/data-model.md`
-- `/specs/001-initial-src-spec/contracts/`
-- `/specs/001-initial-src-spec/quickstart.md`
+- `/specs/002-initial-src-spec/data-model.md`
+- `/specs/002-initial-src-spec/contracts/`
+- `/specs/002-initial-src-spec/quickstart.md`
 
 ## Post-Design Constitution Check
 

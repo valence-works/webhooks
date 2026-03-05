@@ -2,13 +2,9 @@ using System.Net;
 
 namespace Webhooks.Core;
 
-public enum DeliveryStatus
-{
-    Pending,
-    Succeeded,
-    Failed
-}
-
+/// <summary>
+/// Contains the result of delivering a webhook event to a single sink.
+/// </summary>
 public sealed record DeliveryResult(
     DeliveryStatus Status,
     int AttemptCount,

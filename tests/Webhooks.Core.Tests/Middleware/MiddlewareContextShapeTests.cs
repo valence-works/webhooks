@@ -1,6 +1,6 @@
 namespace Webhooks.Core.Tests.Middleware;
 
-public class MiddlewareContextShapeTests
+public sealed class MiddlewareContextShapeTests
 {
     [Fact]
     public void WebhookEndpointInvocationContext_Contains_Sink_Envelope_And_Attempt()

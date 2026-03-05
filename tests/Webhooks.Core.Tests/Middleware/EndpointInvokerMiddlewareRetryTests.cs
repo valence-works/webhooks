@@ -1,12 +1,11 @@
 using System.Net;
-using System.Net.Http;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Middleware;
 
-public class EndpointInvokerMiddlewareRetryTests
+public sealed class EndpointInvokerMiddlewareRetryTests
 {
     [Fact]
     public async Task InvokeAsync_Executes_Endpoint_Middleware_Per_Retry_Attempt()

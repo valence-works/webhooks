@@ -2,7 +2,7 @@ using Webhooks.Core.Options;
 
 namespace Webhooks.Core.Tests.Validation;
 
-public class PayloadSelectorValidationTests
+public sealed class PayloadSelectorValidationTests
 {
     [Fact]
     public void Validate_Fails_For_Invalid_Payload_Selector_Syntax()

@@ -5,6 +5,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-01
 ## Active Technologies
 - C# with multi-targeted .NET (`net6.0`, `net7.0`, `net8.0`, `net9.0`, `net10.0`) + `Microsoft.Extensions.Hosting.Abstractions`, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Http.Polly`, `Microsoft.Extensions.Logging`, `Polly`/`Polly.Extensions.Http` (001-initial-src-spec)
 - In-memory runtime configuration/state in core; queue/outbox infrastructure only when provided by dispatcher extension modules (001-initial-src-spec)
+- C# on .NET (`src` multi-targets `net6.0;net7.0;net8.0;net9.0;net10.0`; tests on `net8.0`; samples on `net10.0`) + `Microsoft.Extensions.*` hosting/http/logging, Polly integration via `Microsoft.Extensions.Http.Polly`, `JetBrains.Annotations`, xUnit test stack (001-apply-coding-conventions)
+- N/A (file-based planning and reporting artifacts only) (001-apply-coding-conventions)
 
 - (001-initial-src-spec)
 
@@ -24,6 +26,7 @@ tests/
 : Follow standard conventions
 
 ## Recent Changes
+- 001-apply-coding-conventions: Added C# on .NET (`src` multi-targets `net6.0;net7.0;net8.0;net9.0;net10.0`; tests on `net8.0`; samples on `net10.0`) + `Microsoft.Extensions.*` hosting/http/logging, Polly integration via `Microsoft.Extensions.Http.Polly`, `JetBrains.Annotations`, xUnit test stack
 - 001-initial-src-spec: Added C# with multi-targeted .NET (`net6.0`, `net7.0`, `net8.0`, `net9.0`, `net10.0`) + `Microsoft.Extensions.Hosting.Abstractions`, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Http.Polly`, `Microsoft.Extensions.Logging`, `Polly`/`Polly.Extensions.Http`
 
 - 001-initial-src-spec: Added

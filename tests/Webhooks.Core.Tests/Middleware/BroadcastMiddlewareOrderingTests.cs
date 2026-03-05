@@ -5,7 +5,7 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Middleware;
 
-public class BroadcastMiddlewareOrderingTests
+public sealed class BroadcastMiddlewareOrderingTests
 {
     [Fact]
     public async Task BroadcastAsync_Executes_Middleware_In_Configured_Order()

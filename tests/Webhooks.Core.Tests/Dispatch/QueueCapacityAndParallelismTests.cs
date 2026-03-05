@@ -2,7 +2,7 @@ using Webhooks.Core.Options;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class QueueCapacityAndParallelismTests
+public sealed class QueueCapacityAndParallelismTests
 {
     [Fact]
     public void Validate_Fails_When_QueueCapacity_Is_Negative()

@@ -1,6 +1,6 @@
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class DeliveryOutcomeSemanticsTests
+public sealed class DeliveryOutcomeSemanticsTests
 {
     [Fact]
     public void DeliveryResult_Defaults_OutcomeSource_To_EndpointInvoker()

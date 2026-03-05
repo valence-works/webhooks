@@ -1,11 +1,10 @@
 using System.Net;
-using System.Net.Http;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class TransientDetectionStrategyTests
+public sealed class TransientDetectionStrategyTests
 {
     [Fact]
     public async Task InvokeAsync_Stops_Retrying_When_Transient_Strategy_Rejects_Failure()

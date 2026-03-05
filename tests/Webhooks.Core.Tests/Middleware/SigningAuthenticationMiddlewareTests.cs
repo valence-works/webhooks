@@ -1,12 +1,11 @@
 using System.Net;
-using System.Net.Http;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Middleware;
 
-public class SigningAuthenticationMiddlewareTests
+public sealed class SigningAuthenticationMiddlewareTests
 {
     [Fact]
     public async Task InvokeAsync_Uses_Custom_Endpoint_Middleware_Extension_Point()

@@ -1,16 +1,45 @@
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Options;
 
-public class WebhookBroadcasterOptions
+/// <summary>
+/// Configuration options for the webhook event broadcaster.
+/// </summary>
+public sealed class WebhookBroadcasterOptions
 {
+    /// <summary>
+    /// Gets or sets the broadcaster strategy type. Defaults to <see cref="SequentialBroadcasterStrategy"/>.
+    /// </summary>
     public Type BroadcasterStrategy { get; set; } = typeof(SequentialBroadcasterStrategy);
+
+    /// <summary>
+    /// Gets or sets the default dispatcher name. When <c>null</c>, resolved by convention.
+    /// </summary>
     public string? DefaultDispatcher { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum queue capacity for background processing.
+    /// </summary>
     public int? QueueCapacity { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of parallel background worker tasks.
+    /// </summary>
     public int? WorkerParallelism { get; set; }
+
+    /// <summary>
+    /// Gets or sets the policy applied when the background queue is full.
+    /// </summary>
     public OverflowPolicy OverflowPolicy { get; set; } = OverflowPolicy.FailFast;
+
+    /// <summary>
+    /// Gets or sets whether event deduplication is enabled.
+    /// </summary>
     public bool DeduplicationEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of retry attempts for failed deliveries. Defaults to 3.
+    /// </summary>
     public int RetryAttempts { get; set; } = 3;
 
     /// <summary>
@@ -19,37 +48,4 @@ public class WebhookBroadcasterOptions
     /// Set to 0 to disable eviction (unbounded store). Defaults to 1,000.
     /// </summary>
     public int MaxDeduplicationEntries { get; set; } = 1_000;
-}
-
-public enum OverflowPolicy
-{
-    FailFast,
-    DropOldest,
-    Block
-}
-
-public class ConfigureWebhookEventBroadcasterOptions : IValidateOptions<WebhookBroadcasterOptions>
-{
-    public ValidateOptionsResult Validate(string? name, WebhookBroadcasterOptions options)
-    {
-        if (!options.BroadcasterStrategy.IsAssignableTo(typeof(IBroadcasterStrategy)))
-            return ValidateOptionsResult.Fail($"BroadcasterStrategy type is not assignable to IBroadcasterStrategy");
-
-        if (options.QueueCapacity is <= 0)
-            return ValidateOptionsResult.Fail("QueueCapacity must be greater than zero when configured.");
-
-        if (options.WorkerParallelism is <= 0)
-            return ValidateOptionsResult.Fail("WorkerParallelism must be greater than zero when configured.");
-
-        if (options.DefaultDispatcher is not null && string.IsNullOrWhiteSpace(options.DefaultDispatcher))
-            return ValidateOptionsResult.Fail("DefaultDispatcher cannot be empty or whitespace.");
-
-        if (options.RetryAttempts <= 0)
-            return ValidateOptionsResult.Fail("RetryAttempts must be greater than zero.");
-
-        if (options.MaxDeduplicationEntries < 0)
-            return ValidateOptionsResult.Fail("MaxDeduplicationEntries must not be negative.");
-        
-        return ValidateOptionsResult.Success;
-    }
 }

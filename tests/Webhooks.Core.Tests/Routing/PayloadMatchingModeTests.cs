@@ -1,12 +1,11 @@
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
 using Webhooks.Core.Services;
 using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Routing;
 
-public class PayloadMatchingModeTests
+public sealed class PayloadMatchingModeTests
 {
     [Fact]
     public async Task BroadcastAsync_WithAndMode_Requires_All_Predicates()

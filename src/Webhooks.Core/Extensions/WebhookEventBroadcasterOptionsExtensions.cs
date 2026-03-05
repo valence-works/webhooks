@@ -4,14 +4,23 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core;
 
+/// <summary>
+/// Fluent configuration methods for <see cref="WebhookBroadcasterOptions"/>.
+/// </summary>
 public static class WebhookEventBroadcasterOptionsExtensions
 {
+    /// <summary>
+    /// Sets the broadcaster strategy to the specified type.
+    /// </summary>
     public static WebhookBroadcasterOptions UseStrategy<T>(this WebhookBroadcasterOptions options) where T : IBroadcasterStrategy
     {
         options.BroadcasterStrategy = typeof(T);
         return options;
     }
     
+    /// <summary>
+    /// Sets the broadcaster strategy to the specified type.
+    /// </summary>
     public static WebhookBroadcasterOptions UseStrategy(this WebhookBroadcasterOptions options, Type strategyType)
     {
         if (!strategyType.IsAssignableTo(typeof(IBroadcasterStrategy)))
@@ -21,6 +30,9 @@ public static class WebhookEventBroadcasterOptionsExtensions
         return options;
     }
 
+    /// <summary>
+    /// Sets the default dispatcher name used when a sink does not specify one.
+    /// </summary>
     public static WebhookBroadcasterOptions UseDefaultDispatcher(this WebhookBroadcasterOptions options, string dispatcherName)
     {
         if (string.IsNullOrWhiteSpace(dispatcherName))
@@ -30,6 +42,9 @@ public static class WebhookEventBroadcasterOptionsExtensions
         return options;
     }
 
+    /// <summary>
+    /// Sets the maximum queue capacity for the background task channel.
+    /// </summary>
     public static WebhookBroadcasterOptions UseQueueCapacity(this WebhookBroadcasterOptions options, int queueCapacity)
     {
         if (queueCapacity <= 0)
@@ -39,6 +54,9 @@ public static class WebhookEventBroadcasterOptionsExtensions
         return options;
     }
 
+    /// <summary>
+    /// Sets the number of parallel worker tasks for background processing.
+    /// </summary>
     public static WebhookBroadcasterOptions UseWorkerParallelism(this WebhookBroadcasterOptions options, int workerParallelism)
     {
         if (workerParallelism <= 0)
@@ -48,18 +66,27 @@ public static class WebhookEventBroadcasterOptionsExtensions
         return options;
     }
 
+    /// <summary>
+    /// Sets the overflow policy when the background queue is full.
+    /// </summary>
     public static WebhookBroadcasterOptions UseOverflowPolicy(this WebhookBroadcasterOptions options, OverflowPolicy overflowPolicy)
     {
         options.OverflowPolicy = overflowPolicy;
         return options;
     }
 
+    /// <summary>
+    /// Enables or disables event deduplication.
+    /// </summary>
     public static WebhookBroadcasterOptions UseDeduplication(this WebhookBroadcasterOptions options, bool enabled = true)
     {
         options.DeduplicationEnabled = enabled;
         return options;
     }
 
+    /// <summary>
+    /// Sets the number of retry attempts for failed deliveries.
+    /// </summary>
     public static WebhookBroadcasterOptions UseRetryAttempts(this WebhookBroadcasterOptions options, int retryAttempts)
     {
         if (retryAttempts <= 0)
@@ -69,70 +96,10 @@ public static class WebhookEventBroadcasterOptionsExtensions
         return options;
     }
 
+    /// <summary>Configures sequential broadcasting.</summary>
     public static WebhookBroadcasterOptions UseSequentialBroadcasterStrategy(this WebhookBroadcasterOptions options) => options.UseStrategy<SequentialBroadcasterStrategy>();
+    /// <summary>Configures parallel broadcasting via concurrent task execution.</summary>
     public static WebhookBroadcasterOptions UseParallelTaskBroadcasterStrategy(this WebhookBroadcasterOptions options) => options.UseStrategy<ParallelTaskBroadcasterStrategy>();
+    /// <summary>Configures broadcasting via the background task processor.</summary>
     public static WebhookBroadcasterOptions UseBackgroundProcessorBroadcasterStrategy(this WebhookBroadcasterOptions options) => options.UseStrategy<BackgroundProcessorBroadcasterStrategy>();
-}
-
-public class ValidateWebhookSinksOptions : IValidateOptions<WebhookSinksOptions>
-{
-    public ValidateOptionsResult Validate(string? name, WebhookSinksOptions options)
-    {
-        var sinks = options.Sinks.ToList();
-
-        if (sinks.Count == 0)
-        {
-            return ValidateOptionsResult.Success;
-        }
-
-        var duplicateSinkIds = sinks
-            .Where(s => !string.IsNullOrWhiteSpace(s.SinkId))
-            .GroupBy(s => s.SinkId, StringComparer.OrdinalIgnoreCase)
-            .Where(g => g.Count() > 1)
-            .Select(g => g.Key)
-            .ToArray();
-
-        if (duplicateSinkIds.Length > 0)
-        {
-            return ValidateOptionsResult.Fail($"Duplicate sink identifiers: {string.Join(", ", duplicateSinkIds)}");
-        }
-
-        foreach (var sink in sinks)
-        {
-            if (string.IsNullOrWhiteSpace(sink.SinkId))
-            {
-                return ValidateOptionsResult.Fail("SinkId is required for each sink.");
-            }
-
-            if (sink.Destination is null || !sink.Destination.IsAbsoluteUri)
-            {
-                return ValidateOptionsResult.Fail($"Sink '{sink.SinkId}' must declare an absolute destination URL.");
-            }
-
-            if (sink.Subscriptions.Count == 0)
-            {
-                return ValidateOptionsResult.Fail($"Sink '{sink.SinkId}' must declare at least one subscription.");
-            }
-
-            foreach (var subscription in sink.Subscriptions)
-            {
-                if (subscription.PayloadFilters.Count > 0 && subscription.PayloadMatchingMode is null)
-                {
-                    return ValidateOptionsResult.Fail(
-                        $"Sink '{sink.SinkId}' subscription '{subscription.EventType}' must declare payload matching mode when payload predicates are present.");
-                }
-
-                foreach (var payloadFilter in subscription.PayloadFilters)
-                {
-                    if (!JsonPathPayloadFieldSelectorStrategy.SelectorRegex.IsMatch(payloadFilter.Selector))
-                    {
-                        return ValidateOptionsResult.Fail(
-                            $"Sink '{sink.SinkId}' has invalid payload selector '{payloadFilter.Selector}'. Only restricted JsonPath subset is supported.");
-                    }
-                }
-            }
-        }
-
-        return ValidateOptionsResult.Success;
-    }
 }

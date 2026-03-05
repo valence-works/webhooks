@@ -1,12 +1,8 @@
 namespace Webhooks.Core;
 
-public enum DispatchHandoffStatus
-{
-    Accepted,
-    Enqueued,
-    Rejected
-}
-
+/// <summary>
+/// Contains the result of dispatching a delivery envelope to a dispatcher.
+/// </summary>
 public sealed record DispatchHandoffResult(
     string DispatcherName,
     DispatchHandoffStatus HandoffStatus,
