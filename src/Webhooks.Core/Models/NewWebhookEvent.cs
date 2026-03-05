@@ -1,6 +1,9 @@
 namespace Webhooks.Core;
 
-public record NewWebhookEvent(
+/// <summary>
+/// Represents a new webhook event to be broadcast to registered sinks.
+/// </summary>
+public sealed record NewWebhookEvent(
 	string EventType,
 	object? Payload = null,
 	string? EventId = null,

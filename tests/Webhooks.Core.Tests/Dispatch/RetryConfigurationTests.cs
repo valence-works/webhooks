@@ -5,7 +5,7 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class RetryConfigurationTests
+public sealed class RetryConfigurationTests
 {
     [Fact]
     public async Task InvokeAsync_Uses_Configured_Retry_Attempts()

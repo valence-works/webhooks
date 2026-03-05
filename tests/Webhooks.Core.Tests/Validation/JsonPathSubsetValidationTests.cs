@@ -3,7 +3,7 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Validation;
 
-public class JsonPathSubsetValidationTests
+public sealed class JsonPathSubsetValidationTests
 {
     [Fact]
     public void TrySelect_Returns_True_For_Restricted_JsonPath_Subset()

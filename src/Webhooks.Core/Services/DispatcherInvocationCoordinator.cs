@@ -4,7 +4,10 @@ using Webhooks.Core.Options;
 
 namespace Webhooks.Core.Services;
 
-public class DispatcherInvocationCoordinator(
+/// <summary>
+/// Selects and invokes the appropriate dispatcher for a webhook delivery.
+/// </summary>
+public sealed class DispatcherInvocationCoordinator(
     IEnumerable<IWebhookDispatcher> dispatchers,
     IOptions<WebhookBroadcasterOptions> options,
     ILogger<DispatcherInvocationCoordinator> logger) : IDispatcherInvocationCoordinator

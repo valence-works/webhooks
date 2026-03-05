@@ -1,6 +1,6 @@
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class DispatchExceptionTaxonomyTests
+public sealed class DispatchExceptionTaxonomyTests
 {
     [Fact]
     public void DispatchException_Exposes_Exception_Kind()

@@ -1,9 +1,13 @@
 namespace Webhooks.Core.Strategies;
 
-public class ParallelTaskBroadcasterStrategy : IBroadcasterStrategy
+/// <summary>
+/// Broadcasts to all matching sinks concurrently using parallel task execution.
+/// </summary>
+public sealed class ParallelTaskBroadcasterStrategy : IBroadcasterStrategy
 {
     public async Task BroadcastAsync(IEnumerable<WebhookSink> webhookEndpoints, Func<WebhookSink, Task> invocation, CancellationToken cancellationToken = default)
     {
-        await Task.WhenAll(webhookEndpoints.Select(invocation));
+        var tasks = webhookEndpoints.Select(invocation).ToList();
+        await Task.WhenAll(tasks).WaitAsync(cancellationToken);
     }
 }

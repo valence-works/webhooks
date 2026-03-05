@@ -2,7 +2,7 @@ using Webhooks.Core.Options;
 
 namespace Webhooks.Core.Tests.Validation;
 
-public class DispatcherRegistrationValidationTests
+public sealed class DispatcherRegistrationValidationTests
 {
     [Fact]
     public void Validate_Fails_When_DefaultDispatcher_Is_Empty()

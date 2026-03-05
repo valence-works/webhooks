@@ -3,7 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Webhooks.Core.Strategies;
 
-public class JsonPathPayloadFieldSelectorStrategy : IPayloadFieldSelectorStrategy
+/// <summary>
+/// Selects payload fields using a restricted JsonPath subset (dot-notation only).
+/// </summary>
+public sealed class JsonPathPayloadFieldSelectorStrategy : IPayloadFieldSelectorStrategy
 {
     /// <summary>
     /// Restricted JsonPath subset pattern shared with sink validation.

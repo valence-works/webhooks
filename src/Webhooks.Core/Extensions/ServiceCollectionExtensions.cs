@@ -10,8 +10,16 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core;
 
+/// <summary>
+/// Extension methods for registering webhook core services with dependency injection.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Registers all webhook core services, options, and the default broadcaster.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configureHttpClient">Optional callback to configure the outbound HTTP client.</param>
     public static IServiceCollection AddWebhooksCore(this IServiceCollection services, Action<IHttpClientBuilder>? configureHttpClient = null)
     {
         TypeDescriptor.AddAttributes(typeof(Type), new TypeConverterAttribute(typeof(TypeTypeConverter)));
@@ -41,6 +49,9 @@ public static class ServiceCollectionExtensions
             .AddHostedService<ValidateOptionsOnStart>();
     }
 
+    /// <summary>
+    /// Registers the background processor hosted service for deferred webhook delivery.
+    /// </summary>
     public static IServiceCollection AddWebhooksBackgroundProcessor(this IServiceCollection services)
     {
         return services.AddHostedService<StartBackgroundProcessor>();

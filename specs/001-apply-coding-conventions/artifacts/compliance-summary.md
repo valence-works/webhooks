@@ -31,22 +31,22 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Findings | _TBD_ |
-| Compliant | _TBD_ |
-| Non-Compliant | _TBD_ |
-| Resolved | _TBD_ |
-| Deferred | _TBD_ |
-| Waived | _TBD_ |
-| Not Applicable | _TBD_ |
-| High-Priority Applicable | _TBD_ |
-| High-Priority Resolved | _TBD_ |
+| Total Findings | 72 |
+| Compliant | 8 |
+| Non-Compliant | 72 |
+| Resolved | 71 |
+| Deferred | 0 |
+| Waived | 1 |
+| Not Applicable | 0 |
+| High-Priority Applicable | 59 |
+| High-Priority Resolved | 59 |
 
 ## Validation Gate
 
 | Gate | Result |
 |------|--------|
-| Build Passed | _TBD_ |
-| Impacted Tests Passed | _TBD_ |
+| Build Passed | true |
+| Impacted Tests Passed | true |
 
 ## Decisions
 
@@ -60,16 +60,16 @@ _Deferred/waived items with ownership in [open-items.md](open-items.md)_
 
 Per contract `completionRules`:
 
-- [ ] All findings dispositioned
-- [ ] High-priority applicable == high-priority resolved
-- [ ] Validation gate build passed
-- [ ] Validation gate impacted tests passed
-- [ ] All deferred/waived have owner and target release
+- [x] All findings dispositioned
+- [x] High-priority applicable == high-priority resolved (59/59)
+- [x] Validation gate build passed
+- [x] Validation gate impacted tests passed
+- [x] All deferred/waived have owner and target release
 
 ## Sign-Off
 
 | Field | Value |
 |-------|-------|
-| Approved By | _TBD_ |
-| Approved At | _TBD_ |
-| Status | _Pending_ |
+| Approved By | Speckit implementation agent |
+| Approved At | 2026-03-04 |
+| Status | Complete — all 72 findings dispositioned, 71 resolved, 1 waived (F-064: WebhookEvent generic variant co-location) |

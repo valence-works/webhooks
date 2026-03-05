@@ -5,7 +5,7 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Routing;
 
-public class EventTypeRoutingTests
+public sealed class EventTypeRoutingTests
 {
     [Fact]
     public async Task BroadcastAsync_Delivers_Only_To_Subscribed_EventType_Sinks()

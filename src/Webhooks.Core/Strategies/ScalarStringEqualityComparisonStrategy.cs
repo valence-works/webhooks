@@ -1,6 +1,9 @@
 namespace Webhooks.Core.Strategies;
 
-public class ScalarStringEqualityComparisonStrategy : IPayloadValueComparisonStrategy
+/// <summary>
+/// Compares payload values using ordinal string equality.
+/// </summary>
+public sealed class ScalarStringEqualityComparisonStrategy : IPayloadValueComparisonStrategy
 {
     public bool IsMatch(string? actualValue, string expectedValue)
     {

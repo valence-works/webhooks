@@ -4,7 +4,7 @@ using Webhooks.Core.Services;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class CoordinatorPolicyOwnershipTests
+public sealed class CoordinatorPolicyOwnershipTests
 {
     [Fact]
     public async Task DispatchAsync_Invokes_Exactly_One_Dispatcher_Per_Attempt()

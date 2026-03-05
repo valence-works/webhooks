@@ -1,0 +1,266 @@
+summaryId: CS-001-apply-coding-conventions
+scope:
+  includePaths:
+    - src/Webhooks.Core/**/*.cs
+    - src/WebhooksCore.Shared/**/*.cs
+    - tests/Webhooks.Core.Tests/**/*.cs
+    - samples/WebhookEvents.Generator.Web/**/*.cs
+    - samples/WebhooksEvents.Receiver.Web/**/*.cs
+    - samples/WebhookEvents.Shared/**/*.cs
+  excludePaths:
+    - "**/bin/**"
+    - "**/obj/**"
+    - "**/*.Designer.cs"
+    - "**/*.g.cs"
+    - "**/*.AssemblyInfo.cs"
+counts:
+  totalFindings: 72
+  compliant: 8
+  nonCompliant: 72
+  resolved: 71
+  deferred: 0
+  waived: 1
+  notApplicable: 0
+  highPriorityApplicable: 59
+  highPriorityResolved: 59
+validationGate:
+  buildPassed: true
+  impactedTestsPassed: true
+decisions:
+  # Batch 1 — Sealed modifier (CS-005) — 23 resolved
+  - findingId: F-002
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-005
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-010
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-012
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-014
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-017
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-019
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-021
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-028
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-031
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class
+  - findingId: F-033
+    disposition: resolved
+    rationale: Applied sealed modifier to leaf class (WebhookEventFilter only; SubscriptionCriteria excluded as base class)
+  - findingId: F-036
+    disposition: resolved
+    rationale: Applied sealed modifier to all 6 strategy leaf classes
+  - findingId: F-042
+    disposition: resolved
+    rationale: Applied sealed modifier to OptionsWebhookSinkProvider
+  - findingId: F-043
+    disposition: resolved
+    rationale: Applied sealed modifier to ValidateWebhookSinksOptions and PayloadFilter
+  - findingId: F-044
+    disposition: resolved
+    rationale: Applied sealed modifier to DispatchException
+  - findingId: F-050
+    disposition: resolved
+    rationale: Applied sealed modifier to all strategy classes
+  - findingId: F-053
+    disposition: resolved
+    rationale: Applied sealed modifier to hosted service classes
+  - findingId: F-055
+    disposition: resolved
+    rationale: Applied sealed modifier to option/configure classes
+  - findingId: F-060
+    disposition: resolved
+    rationale: Applied sealed modifier to TypeTypeConverter
+  - findingId: F-062
+    disposition: resolved
+    rationale: Applied sealed modifier to WebhookEvent records
+  - findingId: F-065
+    disposition: resolved
+    rationale: Applied sealed modifier to all 25 test classes
+  - findingId: F-068
+    disposition: resolved
+    rationale: Applied sealed modifier to EventGenerator sample class
+  - findingId: F-071
+    disposition: resolved
+    rationale: Applied sealed modifier to Heartbeat sample record
+
+  # Batch 2 — Field name renames (NC-007) — 4 resolved
+  - findingId: F-001
+    disposition: resolved
+    rationale: Renamed 12 underscore-prefixed fields in DefaultWebhookEventBroadcaster
+  - findingId: F-004
+    disposition: resolved
+    rationale: Renamed 3 underscore-prefixed fields in ChannelBackgroundTaskProcessor
+  - findingId: F-066
+    disposition: resolved
+    rationale: No underscore-prefixed fields found in tests (already compliant)
+  - findingId: F-067
+    disposition: resolved
+    rationale: Renamed 2 underscore-prefixed fields in EventGenerator sample
+
+  # Batch 3 — Readonly modifier (CS-006) — 2 resolved
+  - findingId: F-003
+    disposition: resolved
+    rationale: Fields already readonly; no changes needed
+  - findingId: F-009
+    disposition: resolved
+    rationale: Fields already readonly; no changes needed
+
+  # Batch 4 — Fix malformed XML docs (XD-005) — 6 resolved
+  - findingId: F-024
+    disposition: resolved
+    rationale: Fixed bare triple-slash comments with proper summary tags
+  - findingId: F-035
+    disposition: resolved
+    rationale: Fixed bare triple-slash comments with proper summary tags
+  - findingId: F-046
+    disposition: resolved
+    rationale: Fixed bare triple-slash comments and see ref typo
+  - findingId: F-054
+    disposition: resolved
+    rationale: Fixed bare triple-slash comments with proper summary tags
+  - findingId: F-056
+    disposition: resolved
+    rationale: Fixed bare triple-slash comments with proper summary tags
+  - findingId: F-063
+    disposition: resolved
+    rationale: Fixed bare triple-slash comments with proper summary tags
+
+  # Batch 5 — Add missing XML docs (XD-001) — 18 resolved
+  - findingId: F-007
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-011
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-013
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-016
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-018
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-020
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-022
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-023
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-025
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-026
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-029
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-032
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-034
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-045
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-051
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-061
+    disposition: resolved
+    rationale: Added XML documentation to public API members
+  - findingId: F-069
+    disposition: resolved
+    rationale: Added XML documentation to sample class
+  - findingId: F-072
+    disposition: resolved
+    rationale: Added XML documentation to sample class
+
+  # Resolved — Previously Deferred: Async method naming (NC-012)
+  - findingId: F-006
+    disposition: resolved
+    rationale: Renamed EnqueueWork to EnqueueWorkAsync (breaking change authorized)
+  - findingId: F-015
+    disposition: resolved
+    rationale: Renamed EnqueueWork to EnqueueWorkAsync (breaking change authorized)
+  - findingId: F-047
+    disposition: resolved
+    rationale: Updated call site to EnqueueWorkAsync (breaking change authorized)
+
+  # Resolved — Previously Deferred: CancellationToken on interface methods (CT-001)
+  - findingId: F-008
+    disposition: resolved
+    rationale: Added CancellationToken to IBackgroundTaskProcessor.StartAsync/StopAsync (breaking change authorized)
+  - findingId: F-048
+    disposition: resolved
+    rationale: Added CancellationToken support, renamed Wait to WaitAsync (breaking change authorized)
+
+  # Resolved — Previously Deferred: CancellationToken propagation (CT-002)
+  - findingId: F-030
+    disposition: resolved
+    rationale: Propagated CancellationToken through StartBackgroundProcessor
+  - findingId: F-052
+    disposition: resolved
+    rationale: Added .WaitAsync(cancellationToken) to ParallelTaskBroadcasterStrategy
+  - findingId: F-070
+    disposition: resolved
+    rationale: Captured and propagated stoppingToken in sample EventGenerator
+
+  # Resolved — Previously Waived: Multi-type file splits (FO-001)
+  - findingId: F-027
+    disposition: resolved
+    rationale: Extracted ValidateWebhookSinksOptions to own file
+  - findingId: F-037
+    disposition: resolved
+    rationale: Extracted PayloadMatchingMode and SubscriptionCriteria to own files
+  - findingId: F-038
+    disposition: resolved
+    rationale: Extracted DispatchExceptionKind to own file
+  - findingId: F-039
+    disposition: resolved
+    rationale: Extracted PayloadPredicate to own file
+  - findingId: F-040
+    disposition: resolved
+    rationale: Extracted DeliveryStatus to own file
+  - findingId: F-041
+    disposition: resolved
+    rationale: Extracted DispatchHandoffStatus to own file
+  - findingId: F-049
+    disposition: resolved
+    rationale: Extracted WebhookEndpointInvocationContext to own file
+  - findingId: F-057
+    disposition: resolved
+    rationale: Extracted ConfigureBackgroundTaskProcessorOptions to own file
+  - findingId: F-058
+    disposition: resolved
+    rationale: Extracted ConfigureWebhookSinksOptions to own file
+  - findingId: F-059
+    disposition: resolved
+    rationale: Extracted OverflowPolicy and ConfigureWebhookEventBroadcasterOptions to own files
+
+  # Waived — WebhookEvent generic variants co-located (FO-001)
+  - findingId: F-064
+    disposition: waived
+    rationale: WebhookEvent and WebhookEvent<T> are generic/non-generic variants; co-location follows C# convention
+    owner: Core team
+    targetRelease: N/A

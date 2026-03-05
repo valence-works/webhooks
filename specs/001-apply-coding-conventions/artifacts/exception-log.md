@@ -27,22 +27,40 @@ This log records findings that conflict with accepted ADR/architecture decisions
 
 ## Exceptions
 
-_Populated during Phase 4 (US2) — T020_
-
-<!-- 
-Template:
-
-### EX-001: [Short description]
+### EX-001: SubscriptionCriteria cannot be sealed (base class)
 
 | Field | Value |
 |-------|-------|
-| Finding ID | F-NNN |
-| Rule ID | XX-NNN |
-| Precedence Source | docs/adr/NNNN-xxx.md |
-| Rationale | [Why this exception is justified] |
-| Disposition | waived / not_applicable |
-| Owner | [Who owns] |
-| Target Release | [When to revisit] |
-| Approved By | [Reviewer] |
-| Date | YYYY-MM-DD |
--->
+| Finding ID | F-042 |
+| Rule ID | CS-005 |
+| Precedence Source | OOP inheritance — `WebhookEventFilter` derives from `SubscriptionCriteria` |
+| Rationale | `SubscriptionCriteria` is a base class with a derived type (`WebhookEventFilter`). Sealing it would break compilation. |
+| Disposition | not_applicable |
+| Approved By | Speckit implementation agent |
+| Date | 2026-03-04 |
+
+### EX-002: ~~Multi-type files retained~~ → Resolved
+
+| Field | Value |
+|-------|-------|
+| Finding ID | F-027, F-037–F-041, F-049, F-057–F-059 |
+| Rule ID | FO-001 |
+| Precedence Source | ~~Deferred per remediation plan~~ — Now resolved, all types split into separate files |
+| Rationale | All tightly-coupled multi-type files have been split into one-type-per-file. |
+| Disposition | resolved |
+| Approved By | Speckit implementation agent |
+| Date | 2026-03-04 |
+
+### EX-003: WebhookEvent generic variants co-located (intentional)
+
+| Field | Value |
+|-------|-------|
+| Finding ID | F-064 |
+| Rule ID | FO-001 |
+| Precedence Source | C# generic variant convention (`Task`/`Task<T>`, `ILogger`/`ILogger<T>`) |
+| Rationale | `WebhookEvent` and `WebhookEvent<T>` are generic/non-generic variants of the same concept. Co-locating them follows established C# ecosystem conventions. |
+| Disposition | waived |
+| Owner | Core team |
+| Target Release | N/A — intentional co-location |
+| Approved By | Speckit implementation agent |
+| Date | 2026-03-04 |

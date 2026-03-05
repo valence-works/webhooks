@@ -1,6 +1,6 @@
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class DeliveryObservabilityFieldsTests
+public sealed class DeliveryObservabilityFieldsTests
 {
     [Fact]
     public void DeliveryResult_Contains_Minimum_Observability_Field_Set()

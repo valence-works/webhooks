@@ -1,6 +1,9 @@
 namespace Webhooks.Core.Strategies;
 
-public class SequentialBroadcasterStrategy : IBroadcasterStrategy
+/// <summary>
+/// Broadcasts to matching sinks one at a time in sequence.
+/// </summary>
+public sealed class SequentialBroadcasterStrategy : IBroadcasterStrategy
 {
     public async Task BroadcastAsync(IEnumerable<WebhookSink> webhookEndpoints, Func<WebhookSink, Task> invocation, CancellationToken cancellationToken = default)
     {

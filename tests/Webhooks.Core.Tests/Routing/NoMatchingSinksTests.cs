@@ -5,7 +5,7 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Routing;
 
-public class NoMatchingSinksTests
+public sealed class NoMatchingSinksTests
 {
     [Fact]
     public async Task BroadcastAsync_Does_Not_Dispatch_When_No_Sinks_Match()

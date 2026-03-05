@@ -2,7 +2,10 @@ using System.Net;
 
 namespace Webhooks.Core.Strategies;
 
-public class DefaultTransientFailureDetectionStrategy : ITransientFailureDetectionStrategy
+/// <summary>
+/// Default strategy that classifies HTTP 5xx, 408, and 429 responses as transient failures.
+/// </summary>
+public sealed class DefaultTransientFailureDetectionStrategy : ITransientFailureDetectionStrategy
 {
     public bool IsTransient(HttpResponseMessage? response, Exception? exception)
     {

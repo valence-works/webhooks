@@ -2,7 +2,7 @@ using Webhooks.Core.Options;
 
 namespace Webhooks.Core.Tests.Validation;
 
-public class SinkRegistrationValidationTests
+public sealed class SinkRegistrationValidationTests
 {
     [Fact]
     public void Validate_Fails_When_SinkId_Is_Duplicate()

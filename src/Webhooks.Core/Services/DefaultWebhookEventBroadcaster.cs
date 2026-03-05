@@ -9,20 +9,20 @@ namespace Webhooks.Core.Services;
 /// <summary>
 /// A webhook event broadcaster that sends HTTP requests one by one.
 /// </summary>
-public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
+public sealed class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
 {
-    private readonly IWebhookSinkProvider _webhookSinkProvider;
-    private readonly IDispatcherInvocationCoordinator _dispatcherInvocationCoordinator;
-    private readonly ISystemClock _systemClock;
-    private readonly IBroadcasterStrategy _strategy;
-    private readonly ILogger<DefaultWebhookEventBroadcaster> _logger;
-    private readonly IPayloadFieldSelectorStrategy _selector;
-    private readonly IPayloadValueComparisonStrategy _comparator;
-    private readonly IReadOnlyList<IBroadcastMiddleware> _broadcastMiddlewares;
-    private readonly IOptions<WebhookBroadcasterOptions> _broadcasterOptions;
-    private readonly HashSet<string> _seenEventIds = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Queue<string> _seenEventIdOrder = new();
-    private readonly object _eventIdGate = new();
+    private readonly IWebhookSinkProvider webhookSinkProvider;
+    private readonly IDispatcherInvocationCoordinator dispatcherInvocationCoordinator;
+    private readonly ISystemClock systemClock;
+    private readonly IBroadcasterStrategy strategy;
+    private readonly ILogger<DefaultWebhookEventBroadcaster> logger;
+    private readonly IPayloadFieldSelectorStrategy selector;
+    private readonly IPayloadValueComparisonStrategy comparator;
+    private readonly IReadOnlyList<IBroadcastMiddleware> broadcastMiddlewares;
+    private readonly IOptions<WebhookBroadcasterOptions> broadcasterOptions;
+    private readonly HashSet<string> seenEventIds = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Queue<string> seenEventIdOrder = new();
+    private readonly object eventIdGate = new();
 
     public DefaultWebhookEventBroadcaster(
         IWebhookSinkProvider webhookSinkProvider,
@@ -35,24 +35,24 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         IOptions<WebhookBroadcasterOptions> broadcasterOptions,
         ILogger<DefaultWebhookEventBroadcaster> logger)
     {
-        _webhookSinkProvider = webhookSinkProvider;
-        _dispatcherInvocationCoordinator = dispatcherInvocationCoordinator;
-        _systemClock = systemClock;
-        _strategy = strategy;
-        _broadcasterOptions = broadcasterOptions;
-        _logger = logger;
-        _broadcastMiddlewares = broadcastMiddlewares.ToList();
-        _selector = payloadFieldSelectorStrategies.LastOrDefault() ?? new JsonPathPayloadFieldSelectorStrategy();
-        _comparator = payloadValueComparisonStrategies.LastOrDefault() ?? new ScalarStringEqualityComparisonStrategy();
+        this.webhookSinkProvider = webhookSinkProvider;
+        this.dispatcherInvocationCoordinator = dispatcherInvocationCoordinator;
+        this.systemClock = systemClock;
+        this.strategy = strategy;
+        this.broadcasterOptions = broadcasterOptions;
+        this.logger = logger;
+        this.broadcastMiddlewares = broadcastMiddlewares.ToList();
+        this.selector = payloadFieldSelectorStrategies.LastOrDefault() ?? new JsonPathPayloadFieldSelectorStrategy();
+        this.comparator = payloadValueComparisonStrategies.LastOrDefault() ?? new ScalarStringEqualityComparisonStrategy();
     }
 
     public async Task BroadcastAsync(NewWebhookEvent webhookEvent, CancellationToken cancellationToken = default)
     {
-        var webhookSinks = (await _webhookSinkProvider.ListAsync(cancellationToken)).ToList();
+        var webhookSinks = (await webhookSinkProvider.ListAsync(cancellationToken)).ToList();
         var normalizedEventId = string.IsNullOrWhiteSpace(webhookEvent.EventId)
             ? Guid.NewGuid().ToString("N")
             : webhookEvent.EventId;
-        var dispatchTimestamp = webhookEvent.DispatchTimestamp ?? _systemClock.UtcNow;
+        var dispatchTimestamp = webhookEvent.DispatchTimestamp ?? systemClock.UtcNow;
 
         if (ShouldSkipDuplicate(normalizedEventId!))
         {
@@ -75,7 +75,7 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
                 select webhookSink;
 
             var matchingWebhookSinks = query.ToList();
-            return _strategy.BroadcastAsync(matchingWebhookSinks, InvokeEndpointAsync, token);
+            return strategy.BroadcastAsync(matchingWebhookSinks, InvokeEndpointAsync, token);
 
             async Task InvokeEndpointAsync(WebhookSink endpoint) => await SendWebhookEventAsync(envelope, endpoint, token);
         }
@@ -89,11 +89,11 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
     {
         try
         {
-            await _dispatcherInvocationCoordinator.DispatchAsync(deliveryEnvelope, sink, cancellationToken);
+            await dispatcherInvocationCoordinator.DispatchAsync(deliveryEnvelope, sink, cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error while dispatching webhook event {EventType} to {Url}.", deliveryEnvelope.EventType, sink.Url);
+            logger.LogError(e, "Error while dispatching webhook event {EventType} to {Url}.", deliveryEnvelope.EventType, sink.Url);
         }
     }
 
@@ -112,8 +112,8 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         var predicateResults = eventFilter.PayloadFilters
             .Select(payloadFilter =>
             {
-                var matched = _selector.TrySelect(serializedPayload.Value, payloadFilter.Selector, out var selectedValue)
-                              && _comparator.IsMatch(selectedValue, payloadFilter.ExpectedValue);
+                var matched = selector.TrySelect(serializedPayload.Value, payloadFilter.Selector, out var selectedValue)
+                              && comparator.IsMatch(selectedValue, payloadFilter.ExpectedValue);
                 return matched;
             })
             .ToList();
@@ -126,27 +126,27 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
 
     private bool ShouldSkipDuplicate(string eventId)
     {
-        if (!_broadcasterOptions.Value.DeduplicationEnabled)
+        if (!broadcasterOptions.Value.DeduplicationEnabled)
         {
             return false;
         }
 
-        lock (_eventIdGate)
+        lock (eventIdGate)
         {
-            if (_seenEventIds.Contains(eventId))
+            if (seenEventIds.Contains(eventId))
             {
                 return true;
             }
 
-            var maxEntries = _broadcasterOptions.Value.MaxDeduplicationEntries;
-            if (maxEntries > 0 && _seenEventIds.Count >= maxEntries)
+            var maxEntries = broadcasterOptions.Value.MaxDeduplicationEntries;
+            if (maxEntries > 0 && seenEventIds.Count >= maxEntries)
             {
-                var oldest = _seenEventIdOrder.Dequeue();
-                _seenEventIds.Remove(oldest);
+                var oldest = seenEventIdOrder.Dequeue();
+                seenEventIds.Remove(oldest);
             }
 
-            _seenEventIds.Add(eventId);
-            _seenEventIdOrder.Enqueue(eventId);
+            seenEventIds.Add(eventId);
+            seenEventIdOrder.Enqueue(eventId);
             return false;
         }
     }
@@ -155,7 +155,7 @@ public class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         Func<DeliveryEnvelope, CancellationToken, Task> terminal)
     {
         Func<DeliveryEnvelope, CancellationToken, Task> current = terminal;
-        foreach (var middleware in _broadcastMiddlewares.Reverse())
+        foreach (var middleware in broadcastMiddlewares.Reverse())
         {
             var next = current;
             current = (envelope, token) => middleware.InvokeAsync(envelope, next, token);

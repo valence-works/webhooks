@@ -4,7 +4,7 @@ using Webhooks.Core.Services;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class PendingStatusTransitionTests
+public sealed class PendingStatusTransitionTests
 {
     [Fact]
     public async Task DispatchAsync_Preserves_Enqueued_Status_As_Pending_Transition()

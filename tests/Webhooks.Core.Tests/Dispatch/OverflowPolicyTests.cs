@@ -4,7 +4,7 @@ using Webhooks.Core.Services;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class OverflowPolicyTests
+public sealed class OverflowPolicyTests
 {
     [Fact]
     public async Task DispatchAsync_Converts_Overflow_Rejection_To_Enqueued_For_Block_Policy()

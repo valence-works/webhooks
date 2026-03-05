@@ -1,5 +1,6 @@
 namespace Webhooks.Core;
 
-public record PayloadPredicate(string Selector, string ExpectedValue);
-
-public record PayloadFilter(string Selector, string ExpectedValue);
+/// <summary>
+/// A filter that matches a payload field value against an expected value.
+/// </summary>
+public sealed record PayloadFilter(string Selector, string ExpectedValue);

@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Webhooks.Core.Tests.Validation;
 
-public class CoordinatorResolutionValidationTests
+public sealed class CoordinatorResolutionValidationTests
 {
     [Fact]
     public void AddWebhooksCore_Registers_DispatcherCoordinator_And_DefaultDispatcher()

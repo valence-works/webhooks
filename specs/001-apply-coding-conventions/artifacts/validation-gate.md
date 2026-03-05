@@ -12,8 +12,8 @@ Track build and impacted test validation outcomes. A remediation batch is comple
 
 | Gate | Requirement | Status |
 |------|-------------|--------|
-| Build | Solution builds successfully (`dotnet build Webhooks.sln`) | ⬜ Pending |
-| Impacted Tests | All existing impacted automated tests pass (`dotnet test`) | ⬜ Pending |
+| Build | Solution builds successfully (`dotnet build Webhooks.sln`) | ✅ Passed |
+| Impacted Tests | All existing impacted automated tests pass (`dotnet test`) | ✅ Passed |
 
 ## Validation Protocol
 
@@ -30,13 +30,13 @@ _Populated during Phase 4 (US2) — T022 and T023_
 
 | Run | Date | Command | Result | Notes |
 |-----|------|---------|--------|-------|
-| _TBD_ | | `dotnet build Webhooks.sln` | | |
+| 1 | 2026-03-04 | `dotnet build Webhooks.sln` | ✅ Pass | 0 warnings, 0 errors across all projects (net6.0–net10.0) |
 
 ### Test Validation
 
 | Run | Date | Command | Result | Tests Passed | Tests Failed | Notes |
 |-----|------|---------|--------|--------------|--------------|-------|
-| _TBD_ | | `dotnet test tests/Webhooks.Core.Tests/` | | | | |
+| 1 | 2026-03-04 | `dotnet test Webhooks.sln` | ✅ Pass | 32 | 0 | All existing impacted tests pass |
 
 ## Completion Criteria
 

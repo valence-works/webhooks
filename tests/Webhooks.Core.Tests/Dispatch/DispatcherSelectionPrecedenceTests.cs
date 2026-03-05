@@ -4,7 +4,7 @@ using Webhooks.Core.Services;
 
 namespace Webhooks.Core.Tests.Dispatch;
 
-public class DispatcherSelectionPrecedenceTests
+public sealed class DispatcherSelectionPrecedenceTests
 {
     [Fact]
     public async Task DispatchAsync_Uses_Sink_Dispatcher_Override_Before_Default()

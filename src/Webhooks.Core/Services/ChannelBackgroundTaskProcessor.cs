@@ -2,17 +2,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Webhooks.Core.Services;
 
-public class ChannelBackgroundTaskProcessor(IBackgroundTaskChannel channel, ILogger<ChannelBackgroundTaskProcessor> logger) : IBackgroundTaskProcessor
+/// <summary>
+/// Processes background tasks by spawning workers that read from a channel.
+/// </summary>
+public sealed class ChannelBackgroundTaskProcessor(IBackgroundTaskChannel channel, ILogger<ChannelBackgroundTaskProcessor> logger) : IBackgroundTaskProcessor
 {
     private const int InitialWorkerCount = 5;
-    private readonly List<Task> _tasks = new();
-    private bool _isStarted;
-    private CancellationTokenSource _cts = default!;
+    private readonly List<Task> tasks = new();
+    private bool isStarted;
+    private CancellationTokenSource cts = default!;
 
-    public ValueTask StartAsync()
+    public ValueTask StartAsync(CancellationToken cancellationToken = default)
     {
-        _cts = new CancellationTokenSource();
-        _isStarted = true;
+        cancellationToken.ThrowIfCancellationRequested();
+        cts = new CancellationTokenSource();
+        isStarted = true;
 
         for (var i = 0; i < InitialWorkerCount; i++)
             SpawnWorker();
@@ -20,27 +24,35 @@ public class ChannelBackgroundTaskProcessor(IBackgroundTaskChannel channel, ILog
         return default;
     }
 
-    public async ValueTask StopAsync()
+    public async ValueTask StopAsync(CancellationToken cancellationToken = default)
     {
-        if (!_isStarted)
+        if (!isStarted)
             return;
 
-        _cts.Cancel();
-        await Task.WhenAll(_tasks); // Wait for all tasks to finish.
-        _tasks.Clear();
+#if NET8_0_OR_GREATER
+        await cts.CancelAsync().ConfigureAwait(false);
+#else
+        cts.Cancel();
+        await Task.CompletedTask; // Ensure async signature is satisfied.
+#endif
+        await Task.WhenAll(tasks); // Wait for all tasks to finish.
+        tasks.Clear();
 
-        _isStarted = false;
+        isStarted = false;
     }
 
-    public async Task Wait() => await Task.WhenAll(_tasks);
+    /// <summary>
+    /// Waits for all spawned worker tasks to complete.
+    /// </summary>
+    public async Task WaitAsync() => await Task.WhenAll(tasks);
 
     private void SpawnWorker()
     {
-        _tasks.Add(Task.Run(async () =>
+        tasks.Add(Task.Run(async () =>
         {
             try
             {
-                await foreach (var workItem in channel.Reader.ReadAllAsync(_cts.Token).ConfigureAwait(false))
+                await foreach (var workItem in channel.Reader.ReadAllAsync(cts.Token).ConfigureAwait(false))
                 {
                     await workItem();
                 }

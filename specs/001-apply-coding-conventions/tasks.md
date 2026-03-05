@@ -63,14 +63,14 @@
 
 **Independent Test**: Verify applicable high-priority findings are remediated, exceptions are justified, and validation gates pass
 
-- [ ] T016 [US2] Create prioritized remediation plan from finding register in `specs/001-apply-coding-conventions/artifacts/remediation-plan.md`
-- [ ] T017 [P] [US2] Apply conventions remediations in `src/Webhooks.Core/**/*.cs` and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-src.md`
-- [ ] T018 [P] [US2] Apply conventions remediations in `tests/Webhooks.Core.Tests/**/*.cs` and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-tests.md`
-- [ ] T019 [P] [US2] Apply conventions remediations in `samples/**/*.cs` (authored files only) and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-samples.md`
-- [ ] T020 [US2] Record ADR/architecture precedence exceptions with rationale/approval in `specs/001-apply-coding-conventions/artifacts/exception-log.md`
-- [ ] T021 [US2] Update final per-finding dispositions and ownership targets in `specs/001-apply-coding-conventions/artifacts/decision-register.md`
-- [ ] T022 [US2] Capture build validation outcome in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
-- [ ] T023 [US2] Capture impacted automated test results in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
+- [x] T016 [US2] Create prioritized remediation plan from finding register in `specs/001-apply-coding-conventions/artifacts/remediation-plan.md`
+- [x] T017 [P] [US2] Apply conventions remediations in `src/Webhooks.Core/**/*.cs` and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-src.md`
+- [x] T018 [P] [US2] Apply conventions remediations in `tests/Webhooks.Core.Tests/**/*.cs` and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-tests.md`
+- [x] T019 [P] [US2] Apply conventions remediations in `samples/**/*.cs` (authored files only) and log results in `specs/001-apply-coding-conventions/artifacts/remediation-log-samples.md`
+- [x] T020 [US2] Record ADR/architecture precedence exceptions with rationale/approval in `specs/001-apply-coding-conventions/artifacts/exception-log.md`
+- [x] T021 [US2] Update final per-finding dispositions and ownership targets in `specs/001-apply-coding-conventions/artifacts/decision-register.md`
+- [x] T022 [US2] Capture build validation outcome in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
+- [x] T023 [US2] Capture impacted automated test results in `specs/001-apply-coding-conventions/artifacts/validation-gate.md`
 
 **Checkpoint**: User Story 2 remediations are complete and behavior-safety gate is satisfied
 
@@ -82,11 +82,11 @@
 
 **Independent Test**: Verify summary includes all findings/dispositions, validation gate status, unresolved owner/target-release details, and reviewer sign-off
 
-- [ ] T024 [P] [US3] Assemble final compliance summary narrative in `specs/001-apply-coding-conventions/artifacts/compliance-summary.md`
-- [ ] T025 [US3] Produce contract-aligned summary instance in `specs/001-apply-coding-conventions/artifacts/compliance-summary.instance.yaml`
-- [ ] T026 [US3] Validate completion rules against decision register in `specs/001-apply-coding-conventions/artifacts/decision-register.md`
-- [ ] T027 [P] [US3] Record unresolved deferred/waived ownership and target release in `specs/001-apply-coding-conventions/artifacts/open-items.md`
-- [ ] T028 [US3] Record reviewer sign-off outcome in `specs/001-apply-coding-conventions/artifacts/sign-off.md`
+- [x] T024 [P] [US3] Assemble final compliance summary narrative in `specs/001-apply-coding-conventions/artifacts/compliance-summary.md`
+- [x] T025 [US3] Produce contract-aligned summary instance in `specs/001-apply-coding-conventions/artifacts/compliance-summary.instance.yaml`
+- [x] T026 [US3] Validate completion rules against decision register in `specs/001-apply-coding-conventions/artifacts/decision-register.md`
+- [x] T027 [P] [US3] Record unresolved deferred/waived ownership and target release in `specs/001-apply-coding-conventions/artifacts/open-items.md`
+- [x] T028 [US3] Record reviewer sign-off outcome in `specs/001-apply-coding-conventions/artifacts/sign-off.md`
 
 **Checkpoint**: User Story 3 completes auditable closure of the feature
 
@@ -96,9 +96,9 @@
 
 **Purpose**: Final consistency, docs alignment, and handoff readiness
 
-- [ ] T029 [P] Cross-check `quickstart.md` steps against executed workflow in `specs/001-apply-coding-conventions/quickstart.md`
-- [ ] T030 [P] Verify contract/summary alignment in `specs/001-apply-coding-conventions/contracts/compliance-summary.contract.yaml`
-- [ ] T031 Finalize implementation handoff notes in `specs/001-apply-coding-conventions/artifacts/README.md`
+- [x] T029 [P] Cross-check `quickstart.md` steps against executed workflow in `specs/001-apply-coding-conventions/quickstart.md`
+- [x] T030 [P] Verify contract/summary alignment in `specs/001-apply-coding-conventions/contracts/compliance-summary.contract.yaml`
+- [x] T031 Finalize implementation handoff notes in `specs/001-apply-coding-conventions/artifacts/README.md`
 
 ---
 

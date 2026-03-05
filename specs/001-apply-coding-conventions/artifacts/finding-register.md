@@ -17,8 +17,8 @@
 
 | Priority | Count |
 |----------|-------|
-| High | 52 |
-| Medium | 12 |
+| High | 59 |
+| Medium | 13 |
 | Low | 0 |
 
 ### By Category
