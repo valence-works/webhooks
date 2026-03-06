@@ -17,9 +17,9 @@
 
 **Purpose**: Introduce matcher extension-point scaffolding used by all stories.
 
-- [ ] T001 Create matcher contract `IEventTypeMatcherStrategy` in `src/Webhooks.Core/Contracts/IEventTypeMatcherStrategy.cs`
-- [ ] T002 Create default wildcard-capable matcher strategy in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
-- [ ] T003 [P] Create exact-only matcher strategy for host opt-in behavior in `src/Webhooks.Core/Strategies/ExactEventTypeMatcherStrategy.cs`
+- [x] T001 Create matcher contract `IEventTypeMatcherStrategy` in `src/Webhooks.Core/Contracts/IEventTypeMatcherStrategy.cs`
+- [x] T002 Create matcher strategy scaffold and interface implementation skeleton in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
+- [x] T003 [P] Create exact-only matcher strategy for host opt-in behavior in `src/Webhooks.Core/Strategies/ExactEventTypeMatcherStrategy.cs`
 
 ---
 
@@ -29,11 +29,11 @@
 
 **⚠️ CRITICAL**: User story work depends on this phase.
 
-- [ ] T004 Add `EventTypeMatcherStrategy` option to `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
-- [ ] T005 Validate matcher strategy assignability in `src/Webhooks.Core/Options/ConfigureWebhookEventBroadcasterOptions.cs`
-- [ ] T006 Add fluent matcher configuration extensions in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
-- [ ] T007 Register `IEventTypeMatcherStrategy` factory/default in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
-- [ ] T008 Replace hardcoded event-type equality with matcher invocation in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T004 Add `EventTypeMatcherStrategy` option property (without default assignment) to `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
+- [x] T005 Validate matcher strategy assignability in `src/Webhooks.Core/Options/ConfigureWebhookEventBroadcasterOptions.cs`
+- [x] T006 Add fluent matcher configuration extensions in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
+- [x] T007 Register `IEventTypeMatcherStrategy` factory/default in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
+- [x] T008 Replace hardcoded event-type equality with matcher invocation in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
 
 **Checkpoint**: Routing uses strategy-based event-type matching and hosts can configure matcher type.
 
@@ -47,13 +47,13 @@
 
 ### Tests for User Story 1
 
-- [ ] T009 [P] [US1] Add wildcard routing tests for multiple incoming event types in `tests/Webhooks.Core.Tests/Routing/WildcardEventTypeRoutingTests.cs`
-- [ ] T010 [P] [US1] Add wildcard tests for null/empty/whitespace incoming event types in `tests/Webhooks.Core.Tests/Routing/WildcardEventTypeRoutingEdgeCasesTests.cs`
+- [x] T009 [P] [US1] Add wildcard routing tests for multiple incoming event types in `tests/Webhooks.Core.Tests/Routing/WildcardEventTypeRoutingTests.cs`
+- [x] T010 [P] [US1] Add wildcard tests for null/empty/whitespace incoming event types in `tests/Webhooks.Core.Tests/Routing/WildcardEventTypeRoutingEdgeCasesTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Implement `*` full-token wildcard semantics in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
-- [ ] T012 [US1] Ensure wildcard matcher is the default strategy selection in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
+- [x] T011 [US1] Implement `*` full-token wildcard semantics in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
+- [x] T012 [US1] Set default `EventTypeMatcherStrategy` to wildcard matcher in `src/Webhooks.Core/Options/WebhookBroadcasterOptions.cs`
 
 **Checkpoint**: Wildcard subscriptions route all events and story-level tests pass independently.
 
@@ -67,15 +67,15 @@
 
 ### Tests for User Story 2
 
-- [ ] T013 [P] [US2] Add literal exact-match and non-match regression tests in `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs`
-- [ ] T014 [P] [US2] Add case-sensitivity regression tests for literal subscriptions in `tests/Webhooks.Core.Tests/Routing/LiteralEventTypeCaseSensitivityTests.cs`
-- [ ] T015 [P] [US2] Add invalid-subscription-value warning/non-match tests in `tests/Webhooks.Core.Tests/Routing/InvalidSubscriptionEventTypeTests.cs`
+- [x] T013 [P] [US2] Add literal exact-match and non-match regression tests in `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs`
+- [x] T014 [P] [US2] Add case-sensitivity regression tests for literal subscriptions in `tests/Webhooks.Core.Tests/Routing/LiteralEventTypeCaseSensitivityTests.cs`
+- [x] T015 [P] [US2] Add invalid-subscription-value warning/non-match tests in `tests/Webhooks.Core.Tests/Routing/InvalidSubscriptionEventTypeTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Enforce case-sensitive exact matching for non-wildcard values in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
-- [ ] T017 [US2] Treat leading/trailing-whitespace subscription values as invalid non-match with warning in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
-- [ ] T018 [US2] Keep payload filter behavior unchanged while using matcher-based routing in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
+- [x] T016 [US2] Enforce case-sensitive exact matching for non-wildcard values in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
+- [x] T017 [US2] Treat leading/trailing-whitespace subscription values as invalid non-match with warning in `src/Webhooks.Core/Strategies/WildcardEventTypeMatcherStrategy.cs`
+- [x] T018 [US2] Keep payload filter behavior unchanged while using matcher-based routing in `src/Webhooks.Core/Services/DefaultWebhookEventBroadcaster.cs`
 
 **Checkpoint**: Exact-match behavior remains stable and invalid subscription handling is covered by tests.
 
@@ -89,14 +89,14 @@
 
 ### Tests for User Story 3
 
-- [ ] T019 [P] [US3] Add host override routing test with custom matcher strategy in `tests/Webhooks.Core.Tests/Routing/CustomEventTypeMatcherOverrideTests.cs`
-- [ ] T020 [P] [US3] Add options validation tests for invalid matcher type configuration in `tests/Webhooks.Core.Tests/Validation/EventTypeMatcherStrategyValidationTests.cs`
+- [x] T019 [P] [US3] Add host override routing test with custom matcher strategy in `tests/Webhooks.Core.Tests/Routing/CustomEventTypeMatcherOverrideTests.cs`
+- [x] T020 [P] [US3] Add options validation tests for invalid matcher type configuration in `tests/Webhooks.Core.Tests/Validation/EventTypeMatcherStrategyValidationTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Resolve matcher strategy type via DI activation in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
-- [ ] T022 [US3] Add matcher override extension methods for typed and runtime configuration in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
-- [ ] T023 [US3] Document default and override matcher behavior in `README.md`
+- [x] T021 [US3] Resolve matcher strategy type via DI activation in `src/Webhooks.Core/Extensions/ServiceCollectionExtensions.cs`
+- [x] T022 [US3] Add matcher override extension methods for typed and runtime configuration in `src/Webhooks.Core/Extensions/WebhookEventBroadcasterOptionsExtensions.cs`
+- [x] T023 [US3] Document default and override matcher behavior in `README.md`
 
 **Checkpoint**: Host-provided matcher strategies drive routing when configured, with default behavior intact otherwise.
 
@@ -106,10 +106,13 @@
 
 **Purpose**: Final alignment, verification, and handoff readiness.
 
-- [ ] T024 [P] Update feature verification notes and expected outcomes in `specs/003-wildcard-event-matching/quickstart.md`
-- [ ] T025 [P] Cross-check contract wording against implementation expectations in `specs/003-wildcard-event-matching/contracts/event-type-matching-contract.md`
-- [ ] T026 Run routing-focused regression command in `specs/003-wildcard-event-matching/quickstart.md`
-- [ ] T027 Run full solution test command in `specs/003-wildcard-event-matching/quickstart.md`
+- [x] T024 [P] Update feature verification notes and expected outcomes in `specs/003-wildcard-event-matching/quickstart.md`
+- [x] T025 [P] Cross-check contract wording against implementation expectations in `specs/003-wildcard-event-matching/contracts/event-type-matching-contract.md`
+- [x] T026 Execute routing-focused regression tests and record pass/fail plus command output summary in `specs/003-wildcard-event-matching/quickstart.md`
+- [x] T027 Execute full solution tests and record pass/fail plus command output summary in `specs/003-wildcard-event-matching/quickstart.md`
+- [x] T028 Run solution build validation (`dotnet build Webhooks.sln`) and capture warnings disposition in `specs/003-wildcard-event-matching/quickstart.md`
+- [x] T029 Execute 5-minute sample smoke validation and record wildcard/literal delivery outcomes in `specs/003-wildcard-event-matching/quickstart.md`
+- [x] T030 Execute focused routing throughput regression check and record findings against performance goals in `specs/003-wildcard-event-matching/quickstart.md`
 
 ---
 
@@ -143,7 +146,7 @@
 - **US1**: `T009` and `T010` run in parallel.
 - **US2**: `T013`, `T014`, and `T015` run in parallel.
 - **US3**: `T019` and `T020` run in parallel.
-- **Polish**: `T024` and `T025` run in parallel.
+- **Polish**: `T024`, `T025`, and `T030` run in parallel.
 
 ---
 

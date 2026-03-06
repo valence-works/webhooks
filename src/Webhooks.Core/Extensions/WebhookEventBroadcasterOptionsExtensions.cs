@@ -96,6 +96,32 @@ public static class WebhookEventBroadcasterOptionsExtensions
         return options;
     }
 
+    /// <summary>
+    /// Sets the event-type matcher strategy to the specified type.
+    /// </summary>
+    public static WebhookBroadcasterOptions UseEventTypeMatcher<T>(this WebhookBroadcasterOptions options) where T : IEventTypeMatcherStrategy
+    {
+        options.EventTypeMatcherStrategy = typeof(T);
+        return options;
+    }
+
+    /// <summary>
+    /// Sets the event-type matcher strategy to the specified type.
+    /// </summary>
+    public static WebhookBroadcasterOptions UseEventTypeMatcher(this WebhookBroadcasterOptions options, Type matcherType)
+    {
+        if (!matcherType.IsAssignableTo(typeof(IEventTypeMatcherStrategy)))
+            throw new ArgumentException($"{nameof(matcherType)} must be assignable from {nameof(IEventTypeMatcherStrategy)}");
+
+        options.EventTypeMatcherStrategy = matcherType;
+        return options;
+    }
+
+    /// <summary>Configures the default wildcard-capable event-type matcher.</summary>
+    public static WebhookBroadcasterOptions UseWildcardEventTypeMatcher(this WebhookBroadcasterOptions options) => options.UseEventTypeMatcher<WildcardEventTypeMatcherStrategy>();
+    /// <summary>Configures exact-only event-type matching (no wildcard support).</summary>
+    public static WebhookBroadcasterOptions UseExactEventTypeMatcher(this WebhookBroadcasterOptions options) => options.UseEventTypeMatcher<ExactEventTypeMatcherStrategy>();
+
     /// <summary>Configures sequential broadcasting.</summary>
     public static WebhookBroadcasterOptions UseSequentialBroadcasterStrategy(this WebhookBroadcasterOptions options) => options.UseStrategy<SequentialBroadcasterStrategy>();
     /// <summary>Configures parallel broadcasting via concurrent task execution.</summary>

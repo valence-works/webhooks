@@ -13,6 +13,9 @@ public sealed class ConfigureWebhookEventBroadcasterOptions : IValidateOptions<W
         if (!options.BroadcasterStrategy.IsAssignableTo(typeof(IBroadcasterStrategy)))
             return ValidateOptionsResult.Fail($"BroadcasterStrategy type is not assignable to IBroadcasterStrategy");
 
+        if (!options.EventTypeMatcherStrategy.IsAssignableTo(typeof(IEventTypeMatcherStrategy)))
+            return ValidateOptionsResult.Fail($"EventTypeMatcherStrategy type is not assignable to IEventTypeMatcherStrategy");
+
         if (options.QueueCapacity is <= 0)
             return ValidateOptionsResult.Fail("QueueCapacity must be greater than zero when configured.");
 

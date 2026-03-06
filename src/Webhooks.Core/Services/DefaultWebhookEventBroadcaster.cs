@@ -15,6 +15,7 @@ public sealed class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
     private readonly IDispatcherInvocationCoordinator dispatcherInvocationCoordinator;
     private readonly ISystemClock systemClock;
     private readonly IBroadcasterStrategy strategy;
+    private readonly IEventTypeMatcherStrategy eventTypeMatcher;
     private readonly ILogger<DefaultWebhookEventBroadcaster> logger;
     private readonly IPayloadFieldSelectorStrategy selector;
     private readonly IPayloadValueComparisonStrategy comparator;
@@ -29,6 +30,7 @@ public sealed class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         IDispatcherInvocationCoordinator dispatcherInvocationCoordinator,
         ISystemClock systemClock,
         IBroadcasterStrategy strategy,
+        IEventTypeMatcherStrategy eventTypeMatcher,
         IEnumerable<IBroadcastMiddleware> broadcastMiddlewares,
         IEnumerable<IPayloadFieldSelectorStrategy> payloadFieldSelectorStrategies,
         IEnumerable<IPayloadValueComparisonStrategy> payloadValueComparisonStrategies,
@@ -39,6 +41,7 @@ public sealed class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         this.dispatcherInvocationCoordinator = dispatcherInvocationCoordinator;
         this.systemClock = systemClock;
         this.strategy = strategy;
+        this.eventTypeMatcher = eventTypeMatcher;
         this.broadcasterOptions = broadcasterOptions;
         this.logger = logger;
         this.broadcastMiddlewares = broadcastMiddlewares.ToList();
@@ -70,7 +73,7 @@ public sealed class DefaultWebhookEventBroadcaster : IWebhookEventBroadcaster
         {
             var query = from webhookSink in webhookSinks.AsQueryable()
                 from eventFilter in webhookSink.Subscriptions
-                where eventFilter.EventType == webhookEvent.EventType
+                where eventTypeMatcher.IsMatch(eventFilter.EventType, webhookEvent.EventType)
                 where eventFilter.PayloadFilters.Count == 0 || PayloadMatches(eventFilter, serializedPayload)
                 select webhookSink;
 

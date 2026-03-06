@@ -81,6 +81,48 @@ Alternatively, you can use the following types:
 Or any other type that can be deserialized from the received payload data.
 If no type is specified, the default will be a `JsonElement`.
 
+## Event-Type Matching
+
+By default, subscriptions support **wildcard matching** using `*`. A sink subscribed to `*` receives all event types. Literal subscriptions use **case-sensitive exact matching**.
+
+### Default behavior (wildcard enabled)
+
+```csharp
+builder.Services.AddWebhooksCore(); // WildcardEventTypeMatcherStrategy is the default
+```
+
+- `*` matches any incoming event type
+- `order.created` matches only `order.created` (case-sensitive)
+- Subscription values with leading/trailing whitespace are treated as invalid and logged as warnings
+
+### Disable wildcard matching
+
+To require strict exact matching and disable wildcard `*` support:
+
+```csharp
+builder.Services.AddWebhooksCore(options =>
+{
+    options.UseExactEventTypeMatcher();
+});
+```
+
+### Custom matching strategy
+
+Implement `IEventTypeMatcherStrategy` to define your own matching logic:
+
+```csharp
+public class CaseInsensitiveMatcher : IEventTypeMatcherStrategy
+{
+    public bool IsMatch(string? subscriptionEventType, string? incomingEventType)
+        => string.Equals(subscriptionEventType, incomingEventType, StringComparison.OrdinalIgnoreCase);
+}
+
+builder.Services.AddWebhooksCore(options =>
+{
+    options.UseEventTypeMatcher<CaseInsensitiveMatcher>();
+});
+```
+
 ## Glossary
 
 ```markdown

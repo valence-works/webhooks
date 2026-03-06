@@ -80,6 +80,7 @@ public sealed class PayloadMatchingModeTests
             coordinator,
             new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
             new SequentialBroadcasterStrategy(),
+            new WildcardEventTypeMatcherStrategy(NullLogger<WildcardEventTypeMatcherStrategy>.Instance),
             Array.Empty<IBroadcastMiddleware>(),
             new[] { new JsonPathPayloadFieldSelectorStrategy() },
             new[] { new ScalarStringEqualityComparisonStrategy() },

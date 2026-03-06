@@ -5,10 +5,10 @@ using Webhooks.Core.Strategies;
 
 namespace Webhooks.Core.Tests.Routing;
 
-public sealed class EventTypeRoutingTests
+public sealed class LiteralEventTypeCaseSensitivityTests
 {
     [Fact]
-    public async Task BroadcastAsync_Delivers_Only_To_Subscribed_EventType_Sinks()
+    public async Task BroadcastAsync_LiteralSubscription_IsCaseSensitive()
     {
         var sinkProvider = new TestWebhookSinkProvider(new[]
         {
@@ -18,75 +18,21 @@ public sealed class EventTypeRoutingTests
                 Destination = new Uri("https://example.com/a"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
-                    new() { EventType = "order.created" }
-                }
-            },
-            new WebhookSink
-            {
-                SinkId = "sink-b",
-                Destination = new Uri("https://example.com/b"),
-                Subscriptions = new List<WebhookEventFilter>
-                {
-                    new() { EventType = "invoice.created" }
+                    new() { EventType = "Order.Created" }
                 }
             }
         });
 
         var coordinator = new RecordingCoordinator();
-        var broadcaster = new DefaultWebhookEventBroadcaster(
-            sinkProvider,
-            coordinator,
-            new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
-            new SequentialBroadcasterStrategy(),
-            new WildcardEventTypeMatcherStrategy(NullLogger<WildcardEventTypeMatcherStrategy>.Instance),
-            Array.Empty<IBroadcastMiddleware>(),
-            new[] { new JsonPathPayloadFieldSelectorStrategy() },
-            new[] { new ScalarStringEqualityComparisonStrategy() },
-            Microsoft.Extensions.Options.Options.Create(new WebhookBroadcasterOptions()),
-            NullLogger<DefaultWebhookEventBroadcaster>.Instance);
+        var broadcaster = CreateBroadcaster(sinkProvider, coordinator);
 
         await broadcaster.BroadcastAsync(new NewWebhookEvent("order.created", new { id = "1" }));
-
-        Assert.Single(coordinator.DispatchedSinkIds);
-        Assert.Equal("sink-a", coordinator.DispatchedSinkIds.Single());
-    }
-
-    [Fact]
-    public async Task BroadcastAsync_LiteralSubscription_DoesNotMatchDifferentEventType()
-    {
-        var sinkProvider = new TestWebhookSinkProvider(new[]
-        {
-            new WebhookSink
-            {
-                SinkId = "sink-a",
-                Destination = new Uri("https://example.com/a"),
-                Subscriptions = new List<WebhookEventFilter>
-                {
-                    new() { EventType = "order.created" }
-                }
-            }
-        });
-
-        var coordinator = new RecordingCoordinator();
-        var broadcaster = new DefaultWebhookEventBroadcaster(
-            sinkProvider,
-            coordinator,
-            new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
-            new SequentialBroadcasterStrategy(),
-            new WildcardEventTypeMatcherStrategy(NullLogger<WildcardEventTypeMatcherStrategy>.Instance),
-            Array.Empty<IBroadcastMiddleware>(),
-            new[] { new JsonPathPayloadFieldSelectorStrategy() },
-            new[] { new ScalarStringEqualityComparisonStrategy() },
-            Microsoft.Extensions.Options.Options.Create(new WebhookBroadcasterOptions()),
-            NullLogger<DefaultWebhookEventBroadcaster>.Instance);
-
-        await broadcaster.BroadcastAsync(new NewWebhookEvent("invoice.paid", new { id = "1" }));
 
         Assert.Empty(coordinator.DispatchedSinkIds);
     }
 
     [Fact]
-    public async Task BroadcastAsync_LiteralSubscription_ExactMatchStillRoutes()
+    public async Task BroadcastAsync_LiteralSubscription_ExactCaseMatches()
     {
         var sinkProvider = new TestWebhookSinkProvider(new[]
         {
@@ -96,13 +42,71 @@ public sealed class EventTypeRoutingTests
                 Destination = new Uri("https://example.com/a"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
-                    new() { EventType = "order.created" }
+                    new() { EventType = "Heartbeat" }
                 }
             }
         });
 
         var coordinator = new RecordingCoordinator();
-        var broadcaster = new DefaultWebhookEventBroadcaster(
+        var broadcaster = CreateBroadcaster(sinkProvider, coordinator);
+
+        await broadcaster.BroadcastAsync(new NewWebhookEvent("Heartbeat", new { id = "1" }));
+
+        Assert.Single(coordinator.DispatchedSinkIds);
+        Assert.Equal("sink-a", coordinator.DispatchedSinkIds.Single());
+    }
+
+    [Fact]
+    public async Task BroadcastAsync_LiteralSubscription_UpperCaseVariantDoesNotMatch()
+    {
+        var sinkProvider = new TestWebhookSinkProvider(new[]
+        {
+            new WebhookSink
+            {
+                SinkId = "sink-a",
+                Destination = new Uri("https://example.com/a"),
+                Subscriptions = new List<WebhookEventFilter>
+                {
+                    new() { EventType = "Heartbeat" }
+                }
+            }
+        });
+
+        var coordinator = new RecordingCoordinator();
+        var broadcaster = CreateBroadcaster(sinkProvider, coordinator);
+
+        await broadcaster.BroadcastAsync(new NewWebhookEvent("HEARTBEAT", new { id = "1" }));
+
+        Assert.Empty(coordinator.DispatchedSinkIds);
+    }
+
+    [Fact]
+    public async Task BroadcastAsync_LiteralSubscription_LowerCaseVariantDoesNotMatch()
+    {
+        var sinkProvider = new TestWebhookSinkProvider(new[]
+        {
+            new WebhookSink
+            {
+                SinkId = "sink-a",
+                Destination = new Uri("https://example.com/a"),
+                Subscriptions = new List<WebhookEventFilter>
+                {
+                    new() { EventType = "Heartbeat" }
+                }
+            }
+        });
+
+        var coordinator = new RecordingCoordinator();
+        var broadcaster = CreateBroadcaster(sinkProvider, coordinator);
+
+        await broadcaster.BroadcastAsync(new NewWebhookEvent("heartbeat", new { id = "1" }));
+
+        Assert.Empty(coordinator.DispatchedSinkIds);
+    }
+
+    private static DefaultWebhookEventBroadcaster CreateBroadcaster(IWebhookSinkProvider sinkProvider, RecordingCoordinator coordinator)
+    {
+        return new DefaultWebhookEventBroadcaster(
             sinkProvider,
             coordinator,
             new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
@@ -113,11 +117,6 @@ public sealed class EventTypeRoutingTests
             new[] { new ScalarStringEqualityComparisonStrategy() },
             Microsoft.Extensions.Options.Options.Create(new WebhookBroadcasterOptions()),
             NullLogger<DefaultWebhookEventBroadcaster>.Instance);
-
-        await broadcaster.BroadcastAsync(new NewWebhookEvent("order.created", new { id = "1" }));
-
-        Assert.Single(coordinator.DispatchedSinkIds);
-        Assert.Equal("sink-a", coordinator.DispatchedSinkIds.Single());
     }
 
     private sealed class TestWebhookSinkProvider(IEnumerable<WebhookSink> sinks) : IWebhookSinkProvider
