@@ -15,8 +15,8 @@ public sealed class OverflowPolicyTests
             NullLogger<DispatcherInvocationCoordinator>.Instance);
 
         var result = await coordinator.DispatchAsync(
-            new DeliveryEnvelope("evt-1", "order.created", null, DateTimeOffset.UtcNow),
-            new WebhookSink { SinkId = "sink-a", Destination = new Uri("https://example.com/a") });
+            new("evt-1", "order.created", null, DateTimeOffset.UtcNow),
+            new() { SinkId = "sink-a", Destination = new("https://example.com/a") });
 
         Assert.Equal(DispatchHandoffStatus.Enqueued, result.HandoffStatus);
     }

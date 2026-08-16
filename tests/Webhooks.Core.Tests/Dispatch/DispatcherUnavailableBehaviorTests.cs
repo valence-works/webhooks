@@ -15,11 +15,11 @@ public sealed class DispatcherUnavailableBehaviorTests
             NullLogger<DispatcherInvocationCoordinator>.Instance);
 
         var result = await coordinator.DispatchAsync(
-            new DeliveryEnvelope("evt-1", "order.created", null, DateTimeOffset.UtcNow),
-            new WebhookSink
+            new("evt-1", "order.created", null, DateTimeOffset.UtcNow),
+            new()
             {
                 SinkId = "sink-a",
-                Destination = new Uri("https://example.com/a")
+                Destination = new("https://example.com/a")
             });
 
         Assert.Equal(DispatchHandoffStatus.Rejected, result.HandoffStatus);

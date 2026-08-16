@@ -15,7 +15,7 @@ public sealed class PayloadMatchingModeTests
             new WebhookSink
             {
                 SinkId = "sink-a",
-                Destination = new Uri("https://example.com/a"),
+                Destination = new("https://example.com/a"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
                     new()
@@ -35,7 +35,7 @@ public sealed class PayloadMatchingModeTests
         var coordinator = new RecordingCoordinator();
         var broadcaster = CreateBroadcaster(sinkProvider, coordinator);
 
-        await broadcaster.BroadcastAsync(new NewWebhookEvent("order.created", new { region = "eu", status = "pending" }));
+        await broadcaster.BroadcastAsync(new("order.created", new { region = "eu", status = "pending" }));
 
         Assert.Empty(coordinator.DispatchedSinkIds);
     }
@@ -48,7 +48,7 @@ public sealed class PayloadMatchingModeTests
             new WebhookSink
             {
                 SinkId = "sink-a",
-                Destination = new Uri("https://example.com/a"),
+                Destination = new("https://example.com/a"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
                     new()
@@ -68,17 +68,17 @@ public sealed class PayloadMatchingModeTests
         var coordinator = new RecordingCoordinator();
         var broadcaster = CreateBroadcaster(sinkProvider, coordinator);
 
-        await broadcaster.BroadcastAsync(new NewWebhookEvent("order.created", new { region = "eu", status = "pending" }));
+        await broadcaster.BroadcastAsync(new("order.created", new { region = "eu", status = "pending" }));
 
         Assert.Single(coordinator.DispatchedSinkIds);
     }
 
     private static DefaultWebhookEventBroadcaster CreateBroadcaster(IWebhookSinkProvider sinkProvider, RecordingCoordinator coordinator)
     {
-        return new DefaultWebhookEventBroadcaster(
+        return new(
             sinkProvider,
             coordinator,
-            new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
+            new StaticClock(new(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
             new SequentialBroadcasterStrategy(),
             Array.Empty<IBroadcastMiddleware>(),
             new[] { new JsonPathPayloadFieldSelectorStrategy() },

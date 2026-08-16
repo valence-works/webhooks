@@ -12,7 +12,7 @@ public sealed class SigningAuthenticationMiddlewareTests
     {
         var middleware = new SigningMiddleware();
         var invoker = new HttpWebhookEndpointInvoker(
-            new HttpClient(new OkHandler()),
+            new(new OkHandler()),
             new StaticClock(DateTimeOffset.UtcNow),
             new IWebhookEndpointInvokerMiddleware[] { middleware },
             new DefaultTransientFailureDetectionStrategy(),
@@ -21,11 +21,11 @@ public sealed class SigningAuthenticationMiddlewareTests
         var sink = new WebhookSink
         {
             SinkId = "sink-a",
-            Destination = new Uri("https://example.com/a"),
+            Destination = new("https://example.com/a"),
             Subscriptions = new List<WebhookEventFilter> { new() { EventType = "order.created" } }
         };
 
-        await invoker.InvokeAsync(sink, new NewWebhookEvent("order.created", new { id = "1" }));
+        await invoker.InvokeAsync(sink, new("order.created", new { id = "1" }));
 
         Assert.True(middleware.WasInvoked);
     }

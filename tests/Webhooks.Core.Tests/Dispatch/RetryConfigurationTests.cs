@@ -12,7 +12,7 @@ public sealed class RetryConfigurationTests
     {
         var handler = new CountingStatusHandler(HttpStatusCode.InternalServerError);
         var invoker = new HttpWebhookEndpointInvoker(
-            new HttpClient(handler),
+            new(handler),
             new StaticClock(DateTimeOffset.UtcNow),
             Array.Empty<IWebhookEndpointInvokerMiddleware>(),
             new DefaultTransientFailureDetectionStrategy(),
@@ -21,11 +21,11 @@ public sealed class RetryConfigurationTests
         var sink = new WebhookSink
         {
             SinkId = "sink-a",
-            Destination = new Uri("https://example.com/a"),
+            Destination = new("https://example.com/a"),
             Subscriptions = new List<WebhookEventFilter> { new() { EventType = "order.created" } }
         };
 
-        await Assert.ThrowsAsync<HttpRequestException>(() => invoker.InvokeAsync(sink, new NewWebhookEvent("order.created")));
+        await Assert.ThrowsAsync<HttpRequestException>(() => invoker.InvokeAsync(sink, new("order.created")));
         Assert.Equal(1, handler.CallCount);
     }
 

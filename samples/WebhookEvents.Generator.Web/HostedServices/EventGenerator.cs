@@ -17,7 +17,7 @@ public sealed class EventGenerator(IWebhookEventBroadcaster webhookEventBroadcas
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         this.stoppingToken = stoppingToken;
-        timer = new Timer(OnTimerTick, null, interval, interval);
+        timer = new(OnTimerTick, null, interval, interval);
         return Task.CompletedTask;
     }
 

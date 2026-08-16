@@ -15,7 +15,7 @@ public sealed class DeduplicationPolicyTests
             new WebhookSink
             {
                 SinkId = "sink-a",
-                Destination = new Uri("https://example.com/a"),
+                Destination = new("https://example.com/a"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
                     new() { EventType = "order.created" }
@@ -27,7 +27,7 @@ public sealed class DeduplicationPolicyTests
         var broadcaster = new DefaultWebhookEventBroadcaster(
             sinkProvider,
             coordinator,
-            new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
+            new StaticClock(new(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
             new SequentialBroadcasterStrategy(),
             Array.Empty<IBroadcastMiddleware>(),
             new[] { new JsonPathPayloadFieldSelectorStrategy() },

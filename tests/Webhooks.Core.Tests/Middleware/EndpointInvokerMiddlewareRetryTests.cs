@@ -23,11 +23,11 @@ public sealed class EndpointInvokerMiddlewareRetryTests
         var sink = new WebhookSink
         {
             SinkId = "sink-a",
-            Destination = new Uri("https://example.com/a"),
+            Destination = new("https://example.com/a"),
             Subscriptions = new List<WebhookEventFilter> { new() { EventType = "order.created" } }
         };
 
-        await invoker.InvokeAsync(sink, new NewWebhookEvent("order.created", new { id = "1" }, EventId: "evt-1"));
+        await invoker.InvokeAsync(sink, new("order.created", new { id = "1" }, EventId: "evt-1"));
 
         Assert.Equal(2, middleware.InvocationCount);
     }

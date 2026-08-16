@@ -15,7 +15,7 @@ public sealed class EventTypeRoutingTests
             new WebhookSink
             {
                 SinkId = "sink-a",
-                Destination = new Uri("https://example.com/a"),
+                Destination = new("https://example.com/a"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
                     new() { EventType = "order.created" }
@@ -24,7 +24,7 @@ public sealed class EventTypeRoutingTests
             new WebhookSink
             {
                 SinkId = "sink-b",
-                Destination = new Uri("https://example.com/b"),
+                Destination = new("https://example.com/b"),
                 Subscriptions = new List<WebhookEventFilter>
                 {
                     new() { EventType = "invoice.created" }
@@ -36,7 +36,7 @@ public sealed class EventTypeRoutingTests
         var broadcaster = new DefaultWebhookEventBroadcaster(
             sinkProvider,
             coordinator,
-            new StaticClock(new DateTimeOffset(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
+            new StaticClock(new(2026, 03, 01, 12, 0, 0, TimeSpan.Zero)),
             new SequentialBroadcasterStrategy(),
             Array.Empty<IBroadcastMiddleware>(),
             new[] { new JsonPathPayloadFieldSelectorStrategy() },
@@ -44,7 +44,7 @@ public sealed class EventTypeRoutingTests
             Microsoft.Extensions.Options.Options.Create(new WebhookBroadcasterOptions()),
             NullLogger<DefaultWebhookEventBroadcaster>.Instance);
 
-        await broadcaster.BroadcastAsync(new NewWebhookEvent("order.created", new { id = "1" }));
+        await broadcaster.BroadcastAsync(new("order.created", new { id = "1" }));
 
         Assert.Single(coordinator.DispatchedSinkIds);
         Assert.Equal("sink-a", coordinator.DispatchedSinkIds.Single());

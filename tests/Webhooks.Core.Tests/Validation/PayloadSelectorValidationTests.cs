@@ -15,7 +15,7 @@ public sealed class PayloadSelectorValidationTests
                 new()
                 {
                     SinkId = "sink-a",
-                    Destination = new Uri("https://example.com/a"),
+                    Destination = new("https://example.com/a"),
                     Subscriptions = new List<WebhookEventFilter>
                     {
                         new()

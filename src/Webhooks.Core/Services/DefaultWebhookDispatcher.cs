@@ -25,12 +25,12 @@ public sealed class DefaultWebhookDispatcher(
                 deliveryEnvelope.DispatchTimestamp);
             await endpointInvoker.InvokeAsync(webhookSink, outboundEvent, cancellationToken);
 
-            return new DispatchHandoffResult(Name, DispatchHandoffStatus.Accepted, deliveryEnvelope.EventId);
+            return new(Name, DispatchHandoffStatus.Accepted, deliveryEnvelope.EventId);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Dispatcher handoff failed for sink {SinkId}", webhookSink.SinkId);
-            return new DispatchHandoffResult(Name, DispatchHandoffStatus.Rejected, deliveryEnvelope.EventId, ex.Message);
+            return new(Name, DispatchHandoffStatus.Rejected, deliveryEnvelope.EventId, ex.Message);
         }
     }
 }

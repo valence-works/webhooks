@@ -13,6 +13,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebhooksCore.Shared\WebhooksCore.Shared.csproj" />
+    <ProjectReference Include="..\Webhooks.Shared\Webhooks.Shared.csproj" />
   </ItemGroup>
 </Project>

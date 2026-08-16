@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhooksEvents.Receiver.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookEvents.Shared", "samples\WebhookEvents.Shared\WebhookEvents.Shared.csproj", "{8FA7D061-2ACB-46FA-8EC7-D02037F54D49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhooksCore.Shared", "src\WebhooksCore.Shared\WebhooksCore.Shared.csproj", "{5F86A456-635D-43A9-B441-5608CF10563C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhooks.Shared", "src\Webhooks.Shared\Webhooks.Shared.csproj", "{5F86A456-635D-43A9-B441-5608CF10563C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{869345A7-68D4-4AD9-BBBB-AB91AFB8BF79}"
 	ProjectSection(SolutionItems) = preProject

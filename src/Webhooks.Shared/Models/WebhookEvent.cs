@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace WebhooksCore;
+namespace Webhooks;
 
 /// <summary>
 /// A webhook event to send to a webhook endpoint.

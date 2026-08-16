@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Webhooks.Core.Options;
-using WebhooksCore;
 
 namespace Webhooks.Core.Services;
 
@@ -33,10 +32,8 @@ public sealed class HttpWebhookEndpointInvoker(
 
         for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Post, webhookSink.Url)
-            {
-                Content = JsonContent.Create(webhookEvent)
-            };
+            using var request = new HttpRequestMessage(HttpMethod.Post, webhookSink.Url);
+            request.Content = JsonContent.Create(webhookEvent);
             request.Headers.TryAddWithoutValidation("X-Webhook-EventId", deliveryEnvelope.EventId);
             request.Headers.TryAddWithoutValidation("X-Webhook-DispatchTimestamp", deliveryEnvelope.DispatchTimestamp.ToString("O"));
 
@@ -84,16 +81,15 @@ public sealed class HttpWebhookEndpointInvoker(
             using var response = await httpClient.SendAsync(context.Request!, cancellationToken);
             if (response.IsSuccessStatusCode)
             {
-                return new DeliveryResult(
+                return new(
                     DeliveryStatus.Succeeded,
                     context.Attempt,
                     null,
-                    context.DeliveryEnvelope.EventId,
-                    "EndpointInvoker");
+                    context.DeliveryEnvelope.EventId);
             }
 
             var failureReason = $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}";
-            return new DeliveryResult(
+            return new(
                 DeliveryStatus.Failed,
                 context.Attempt,
                 failureReason,
@@ -103,21 +99,19 @@ public sealed class HttpWebhookEndpointInvoker(
         }
         catch (HttpRequestException ex)
         {
-            return new DeliveryResult(
+            return new(
                 DeliveryStatus.Failed,
                 context.Attempt,
                 ex.Message,
-                context.DeliveryEnvelope.EventId,
-                "EndpointInvoker");
+                context.DeliveryEnvelope.EventId);
         }
         catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
         {
-            return new DeliveryResult(
+            return new(
                 DeliveryStatus.Failed,
                 context.Attempt,
                 $"Request timed out: {ex.Message}",
-                context.DeliveryEnvelope.EventId,
-                "EndpointInvoker");
+                context.DeliveryEnvelope.EventId);
         }
     }
 }

@@ -27,7 +27,7 @@ public sealed class DispatcherInvocationCoordinator(
                 webhookSink.SinkId,
                 selectedDispatcherName ?? "<none>");
 
-            return new DispatchHandoffResult(
+            return new(
                 selectedDispatcherName ?? "<none>",
                 DispatchHandoffStatus.Rejected,
                 deliveryEnvelope.EventId,

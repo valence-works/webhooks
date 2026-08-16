@@ -5,7 +5,7 @@ public sealed class MiddlewareContextShapeTests
     [Fact]
     public void WebhookEndpointInvocationContext_Contains_Sink_Envelope_And_Attempt()
     {
-        var sink = new WebhookSink { SinkId = "sink-a", Destination = new Uri("https://example.com/a") };
+        var sink = new WebhookSink { SinkId = "sink-a", Destination = new("https://example.com/a") };
         var envelope = new DeliveryEnvelope("evt-1", "order.created", null, DateTimeOffset.UtcNow);
 
         var context = new WebhookEndpointInvocationContext(sink, envelope, 2);

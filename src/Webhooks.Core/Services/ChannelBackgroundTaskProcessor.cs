@@ -15,7 +15,7 @@ public sealed class ChannelBackgroundTaskProcessor(IBackgroundTaskChannel channe
     public ValueTask StartAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        cts = new CancellationTokenSource();
+        cts = new();
         isStarted = true;
 
         for (var i = 0; i < InitialWorkerCount; i++)

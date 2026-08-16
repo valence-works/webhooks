@@ -9,8 +9,7 @@ public sealed class DeliveryObservabilityFieldsTests
             DeliveryStatus.Failed,
             3,
             "network timeout",
-            "evt-1",
-            "EndpointInvoker");
+            "evt-1");
 
         Assert.Equal(DeliveryStatus.Failed, result.Status);
         Assert.Equal(3, result.AttemptCount);

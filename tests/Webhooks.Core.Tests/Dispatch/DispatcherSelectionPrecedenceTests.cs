@@ -20,7 +20,7 @@ public sealed class DispatcherSelectionPrecedenceTests
         var sink = new WebhookSink
         {
             SinkId = "sink-a",
-            Destination = new Uri("https://example.com/a"),
+            Destination = new("https://example.com/a"),
             Dispatcher = "custom"
         };
 

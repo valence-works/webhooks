@@ -57,7 +57,7 @@ public sealed class SinkRegistrationValidationTests
                 new()
                 {
                     SinkId = "sink-a",
-                    Destination = new Uri("https://example.com/a")
+                    Destination = new("https://example.com/a")
                 }
             }
         };
@@ -69,10 +69,10 @@ public sealed class SinkRegistrationValidationTests
 
     private static WebhookSink CreateSink(string id, string eventType)
     {
-        return new WebhookSink
+        return new()
         {
             SinkId = id,
-            Destination = new Uri($"https://example.com/{id}"),
+            Destination = new($"https://example.com/{id}"),
             Subscriptions = new List<WebhookEventFilter>
             {
                 new() { EventType = eventType }
