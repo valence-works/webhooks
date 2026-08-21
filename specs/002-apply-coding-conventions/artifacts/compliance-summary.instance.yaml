@@ -1,4 +1,4 @@
-summaryId: CS-001-apply-coding-conventions
+summaryId: CS-002-apply-coding-conventions
 scope:
   includePaths:
     - src/Webhooks.Core/**/*.cs

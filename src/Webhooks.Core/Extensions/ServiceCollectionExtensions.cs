@@ -46,6 +46,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IBackgroundTaskChannel, BackgroundTaskChannel>()
             .AddSingleton<ISystemClock, DefaultSystemClock>()
             .AddSingleton(CreateBroadcasterStrategy)
+            .AddSingleton(CreateEventTypeMatcherStrategy)
             .AddHostedService<ValidateOptionsOnStart>();
     }
 
@@ -63,5 +64,13 @@ public static class ServiceCollectionExtensions
         var type = options.Value.BroadcasterStrategy;
         var broadcasterStrategy = (IBroadcasterStrategy)ActivatorUtilities.CreateInstance(serviceProvider, type);
         return broadcasterStrategy;
+    }
+
+    private static IEventTypeMatcherStrategy CreateEventTypeMatcherStrategy(IServiceProvider serviceProvider)
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<WebhookBroadcasterOptions>>();
+        var type = options.Value.EventTypeMatcherStrategy;
+        var eventTypeMatcherStrategy = (IEventTypeMatcherStrategy)ActivatorUtilities.CreateInstance(serviceProvider, type);
+        return eventTypeMatcherStrategy;
     }
 }

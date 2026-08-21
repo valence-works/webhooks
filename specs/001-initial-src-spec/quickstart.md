@@ -16,11 +16,11 @@ dotnet test Webhooks.sln
 ```
 
 ## 3) Validate planning artifacts
-- Spec: `specs/002-initial-src-spec/spec.md`
-- Plan: `specs/002-initial-src-spec/plan.md`
-- Research: `specs/002-initial-src-spec/research.md`
-- Data model: `specs/002-initial-src-spec/data-model.md`
-- Contracts: `specs/002-initial-src-spec/contracts/`
+- Spec: `specs/001-initial-src-spec/spec.md`
+- Plan: `specs/001-initial-src-spec/plan.md`
+- Research: `specs/001-initial-src-spec/research.md`
+- Data model: `specs/001-initial-src-spec/data-model.md`
+- Contracts: `specs/001-initial-src-spec/contracts/`
 
 ## 4) Next command
 Generate executable implementation work items:

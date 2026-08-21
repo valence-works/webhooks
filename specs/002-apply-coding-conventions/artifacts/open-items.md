@@ -1,6 +1,6 @@
 # Open Items: Deferred & Waived Findings
 
-**Feature**: `001-apply-coding-conventions`  
+**Feature**: `002-apply-coding-conventions`  
 **Created**: 2026-03-04  
 **Updated**: 2026-03-04  
 **Source**: [decision-register.md](decision-register.md)

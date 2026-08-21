@@ -1,6 +1,6 @@
 # Feature Specification: Codebase Coding Conventions Review
 
-**Feature Branch**: `[001-apply-coding-conventions]`  
+**Feature Branch**: `[002-apply-coding-conventions]`  
 **Created**: 2026-03-04  
 **Status**: Draft  
 **Input**: User description: "Create a spec for review the codebase and apping the coding conventions, if and when applicable."

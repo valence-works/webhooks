@@ -1,12 +1,12 @@
 # Compliance Summary
 
-**Feature**: `001-apply-coding-conventions`  
+**Feature**: `002-apply-coding-conventions`  
 **Created**: 2026-03-04  
 **Contract**: [`../contracts/compliance-summary.contract.yaml`](../contracts/compliance-summary.contract.yaml)
 
 ## Summary ID
 
-`CS-001-apply-coding-conventions`
+`CS-002-apply-coding-conventions`
 
 ## Scope
 

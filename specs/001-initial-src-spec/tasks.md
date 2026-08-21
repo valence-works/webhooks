@@ -1,6 +1,6 @@
 # Tasks: Baseline Webhook Broadcasting Behavior
 
-**Input**: Design documents from `/specs/002-initial-src-spec/`
+**Input**: Design documents from `/specs/001-initial-src-spec/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/
 
 **Tests**: Included because `spec.md` defines mandatory user-scenario testing and measurable conformance outcomes.
@@ -196,9 +196,9 @@
 **Purpose**: Final consistency, docs, and end-to-end validation.
 
 - [x] T068 [P] [US3] Update architecture notes for final implementation behavior in `docs/architecture/system-components.md`
-- [x] T069 [P] [US3] Update feature quickstart verification checklist in `specs/002-initial-src-spec/quickstart.md`
-- [x] T070 [US3] Add scope-guard documentation/conformance check to ensure non-webhook stream/workflow features remain out of baseline scope in `specs/002-initial-src-spec/quickstart.md`
-- [x] T071 [US3] Run end-to-end build and tests per quickstart in `specs/002-initial-src-spec/quickstart.md`
+- [x] T069 [P] [US3] Update feature quickstart verification checklist in `specs/001-initial-src-spec/quickstart.md`
+- [x] T070 [US3] Add scope-guard documentation/conformance check to ensure non-webhook stream/workflow features remain out of baseline scope in `specs/001-initial-src-spec/quickstart.md`
+- [x] T071 [US3] Run end-to-end build and tests per quickstart in `specs/001-initial-src-spec/quickstart.md`
 
 ---
 

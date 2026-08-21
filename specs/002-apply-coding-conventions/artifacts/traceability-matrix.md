@@ -1,6 +1,6 @@
 # Finding-to-Rule Traceability Matrix
 
-**Feature**: `001-apply-coding-conventions`  
+**Feature**: `002-apply-coding-conventions`  
 **Created**: 2026-03-04  
 **Rationale**: FR-008
 

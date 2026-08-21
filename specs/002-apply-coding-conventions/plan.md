@@ -1,7 +1,7 @@
 # Implementation Plan: Codebase Coding Conventions Review
 
-**Branch**: `[001-apply-coding-conventions]` | **Date**: 2026-03-04 | **Spec**: `/specs/001-apply-coding-conventions/spec.md`
-**Input**: Feature specification from `/specs/001-apply-coding-conventions/spec.md`
+**Branch**: `[002-apply-coding-conventions]` | **Date**: 2026-03-04 | **Spec**: `/specs/002-apply-coding-conventions/spec.md`
+**Input**: Feature specification from `/specs/002-apply-coding-conventions/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
@@ -37,7 +37,7 @@ Review in-scope repository areas (`src/`, `tests/`, and manually-authored C# in 
 ### Documentation (this feature)
 
 ```text
-specs/001-apply-coding-conventions/
+specs/002-apply-coding-conventions/
 ├── plan.md              # This file (/speckit.plan command output)
 ├── research.md          # Phase 0 output (/speckit.plan command)
 ├── data-model.md        # Phase 1 output (/speckit.plan command)

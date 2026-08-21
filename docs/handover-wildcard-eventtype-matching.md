@@ -32,7 +32,7 @@ where eventFilter.EventType == webhookEvent.EventType
 
 ## Confirmed Spec Gap
 
-Analysis run against `specs/002-initial-src-spec/` revealed the following:
+Analysis run against `specs/001-initial-src-spec/` revealed the following:
 
 | ID | Severity | Summary |
 |----|----------|---------|
@@ -42,7 +42,7 @@ Analysis run against `specs/002-initial-src-spec/` revealed the following:
 | G1 | HIGH | No FR, no task, and no test exists for wildcard or pattern-based event-type matching. |
 | G2 | MEDIUM | Pluggable predicate strategy exists for **payload** criteria but not for **subscription / event-type** matching. |
 
-Relevant spec file: `specs/002-initial-src-spec/spec.md` — FR-004 (exact match), FR-005b/c/d (pluggable payload strategies, but no equivalent for event-type).
+Relevant spec file: `specs/001-initial-src-spec/spec.md` — FR-004 (exact match), FR-005b/c/d (pluggable payload strategies, but no equivalent for event-type).
 
 ---
 
@@ -58,8 +58,8 @@ Relevant spec file: `specs/002-initial-src-spec/spec.md` — FR-004 (exact match
 | `tests/Webhooks.Core.Tests/Routing/EventTypeRoutingTests.cs` | Existing routing tests (exact match only). New wildcard tests should go here (or a new file alongside it). |
 | `samples/WebhookEvents.Generator.Web/appsettings.json` | Already configured with `"*"` for sink 1 and `"Heartbeat"` for sink 2 — the test scenario is ready. |
 | `samples/WebhooksEvents.Receiver.Web/Program.cs` | Receiver 1 listens at `POST /webhooks`, prints `EventType + Timestamp`. Receiver 2 at `/webhooks/heartbeat` prints the typed `Heartbeat` payload. |
-| `specs/002-initial-src-spec/spec.md` | Contains all FRs. Needs a new/updated FR for wildcard + pluggable event-type matcher. |
-| `specs/002-initial-src-spec/tasks.md` | Needs new tasks: contract, default impl, DI wiring, tests, README alignment. |
+| `specs/001-initial-src-spec/spec.md` | Contains all FRs. Needs a new/updated FR for wildcard + pluggable event-type matcher. |
+| `specs/001-initial-src-spec/tasks.md` | Needs new tasks: contract, default impl, DI wiring, tests, README alignment. |
 
 ---
 

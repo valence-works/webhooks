@@ -13,6 +13,11 @@ public sealed class WebhookBroadcasterOptions
     public Type BroadcasterStrategy { get; set; } = typeof(SequentialBroadcasterStrategy);
 
     /// <summary>
+    /// Gets or sets the event-type matcher strategy type. Defaults to <see cref="WildcardEventTypeMatcherStrategy"/>.
+    /// </summary>
+    public Type EventTypeMatcherStrategy { get; set; } = typeof(WildcardEventTypeMatcherStrategy);
+
+    /// <summary>
     /// Gets or sets the default dispatcher name. When <c>null</c>, resolved by convention.
     /// </summary>
     public string? DefaultDispatcher { get; set; }
